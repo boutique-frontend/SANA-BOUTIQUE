@@ -1,0 +1,388 @@
+/* =========================================
+   SANA BOUTIQUE
+   PRODUCT DETAILS
+========================================= */
+
+.product-page {
+    width: 100%;
+    max-width: 700px;
+    margin: 0 auto;
+    padding-bottom: 120px;
+}
+
+
+/* =========================================
+   PRODUCT IMAGE
+========================================= */
+
+.product-main-image {
+    position: relative;
+
+    width: 100%;
+
+    aspect-ratio: 0.82;
+
+    overflow: hidden;
+
+    background: #111;
+}
+
+.product-main-image img {
+    width: 100%;
+    height: 100%;
+
+    display: block;
+
+    object-fit: cover;
+}
+
+
+/* Image counter */
+
+.image-counter {
+    position: absolute;
+
+    right: 15px;
+    bottom: 15px;
+
+    padding: 7px 11px;
+
+    border-radius: 20px;
+
+    background: rgba(0, 0, 0, 0.7);
+
+    color: #fff;
+
+    font-size: 10px;
+
+    backdrop-filter: blur(8px);
+}
+
+
+/* =========================================
+   PRODUCT INFORMATION
+========================================= */
+
+.product-information {
+    padding: 25px 20px;
+}
+
+
+/* Category */
+
+.product-category {
+    display: inline-block;
+
+    margin-bottom: 9px;
+
+    padding: 6px 10px;
+
+    border: 1px solid
+        rgba(217, 169, 40, 0.35);
+
+    border-radius: 20px;
+
+    color: var(--gold-light);
+
+    font-size: 9px;
+    font-weight: 700;
+
+    letter-spacing: 1.5px;
+
+    text-transform: uppercase;
+}
+
+
+/* Name */
+
+.product-information h1 {
+    margin-bottom: 9px;
+
+    color: var(--cream);
+
+    font-family:
+        "Cormorant Garamond",
+        serif;
+
+    font-size: 38px;
+
+    line-height: 1.05;
+}
+
+
+/* Price */
+
+.product-detail-price {
+    margin-bottom: 22px;
+
+    color: var(--gold-light);
+
+    font-size: 22px;
+    font-weight: 700;
+}
+
+
+/* =========================================
+   DESCRIPTION
+========================================= */
+
+.product-description {
+    padding: 18px 0;
+
+    border-top: 1px solid var(--border-light);
+
+    border-bottom: 1px solid var(--border-light);
+}
+
+.product-description h2,
+.product-extra h2,
+.product-sizes h2 {
+    margin-bottom: 9px;
+
+    color: var(--cream);
+
+    font-family: "Inter", sans-serif;
+
+    font-size: 14px;
+}
+
+.product-description p {
+    color: var(--muted);
+
+    font-size: 13px;
+
+    line-height: 1.7;
+}
+
+
+/* =========================================
+   EXTRA DETAILS
+========================================= */
+
+.product-extra {
+    padding: 20px 0;
+
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 10px;
+}
+
+.detail-item {
+    padding: 14px;
+
+    border: 1px solid var(--border-light);
+
+    border-radius: 13px;
+
+    background: #111;
+}
+
+.detail-label {
+    display: block;
+
+    margin-bottom: 5px;
+
+    color: var(--muted);
+
+    font-size: 9px;
+
+    text-transform: uppercase;
+
+    letter-spacing: 1px;
+}
+
+.detail-value {
+    color: var(--cream);
+
+    font-size: 12px;
+    font-weight: 600;
+}
+
+
+/* =========================================
+   SIZES
+========================================= */
+
+.product-sizes {
+    padding: 5px 0 20px;
+}
+
+.product-size-list {
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 8px;
+}
+
+.product-size {
+    min-width: 45px;
+    height: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0 12px;
+
+    border: 1px solid var(--border-light);
+
+    border-radius: 11px;
+
+    background: #111;
+
+    color: #aaa;
+
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.product-size.selected {
+    border-color: var(--gold);
+
+    background:
+        rgba(217, 169, 40, 0.12);
+
+    color: var(--gold-light);
+}
+
+
+/* =========================================
+   ACTIONS
+========================================= */
+
+.product-actions {
+    display: flex;
+
+    gap: 10px;
+
+    margin-top: 5px;
+}
+
+.add-to-bag {
+    flex: 1;
+
+    min-height: 54px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 15px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--gold-light),
+            var(--gold)
+        );
+
+    color: #080808;
+
+    font-size: 12px;
+    font-weight: 800;
+
+    letter-spacing: 0.7px;
+
+    box-shadow:
+        0 8px 25px
+        rgba(217, 169, 40, 0.18);
+}
+
+.share-product {
+    width: 54px;
+    height: 54px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid var(--border-light);
+
+    border-radius: 15px;
+
+    background: #111;
+
+    color: var(--gold-light);
+
+    font-size: 19px;
+}
+
+
+/* =========================================
+   FAVORITE BUTTON
+========================================= */
+
+#productFavorite.active {
+    color: var(--gold);
+
+    border-color: var(--gold);
+
+}
+
+
+/* =========================================
+   PRODUCT NOT FOUND
+========================================= */
+
+.product-not-found {
+    min-height: 60vh;
+
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 30px;
+
+    text-align: center;
+}
+
+.product-not-found-icon {
+    margin-bottom: 15px;
+
+    color: var(--gold);
+
+    font-size: 40px;
+}
+
+.product-not-found h2 {
+    margin-bottom: 8px;
+}
+
+.product-not-found p {
+    margin-bottom: 20px;
+
+    color: var(--muted);
+
+    font-size: 13px;
+}
+
+
+/* =========================================
+   LOADING
+========================================= */
+
+.product-details > .loading {
+    min-height: 65vh;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+/* =========================================
+   DESKTOP
+========================================= */
+
+@media (min-width: 700px) {
+
+    .product-main-image {
+        border-radius: 0 0 20px 20px;
+    }
+
+  }
