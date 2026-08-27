@@ -1,0 +1,219 @@
+/* =========================================
+   SANA BOUTIQUE
+   RESPONSIVE DESIGN
+========================================= */
+
+
+/* =========================================
+   SMALL PHONES
+   320px - 374px
+========================================= */
+
+@media (max-width: 374px) {
+
+    h1 {
+        font-size: 40px;
+    }
+
+    h2 {
+        font-size: 22px;
+    }
+
+    .section {
+        padding-left: 14px;
+        padding-right: 14px;
+    }
+
+    .hero {
+        min-height: 500px;
+    }
+
+    .hero-overlay {
+        min-height: 500px;
+        padding: 30px 18px 35px;
+    }
+
+    .category-grid,
+    .products-grid {
+        gap: 10px;
+    }
+
+    .category-card {
+        min-height: 205px;
+    }
+
+    .category-content {
+        padding: 15px 9px;
+    }
+
+    .category-content h3 {
+        font-size: 16px;
+    }
+
+    .product-info {
+        padding: 10px;
+    }
+
+    .product-info h3 {
+        font-size: 13px;
+    }
+
+    .product-price {
+        font-size: 14px;
+    }
+
+    .features {
+        gap: 7px;
+    }
+
+    .feature {
+        padding: 15px 7px;
+    }
+
+    .feature h3 {
+        font-size: 9px;
+    }
+
+    .feature p {
+        font-size: 9px;
+    }
+
+    .post-button {
+        width: 54px;
+        height: 54px;
+        font-size: 30px;
+    }
+}
+
+
+/* =========================================
+   NORMAL PHONES
+   375px - 430px
+========================================= */
+
+@media (min-width: 375px) and (max-width: 430px) {
+
+    .hero {
+        min-height: 560px;
+    }
+
+    .hero-overlay {
+        min-height: 560px;
+    }
+}
+
+
+/* =========================================
+   LARGE PHONES
+   431px - 767px
+========================================= */
+
+@media (min-width: 431px) and (max-width: 767px) {
+
+    .section {
+        max-width: 680px;
+    }
+
+    .category-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .products-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .hero {
+        min-height: 620px;
+    }
+
+    .hero-overlay {
+        min-height: 620px;
+        padding-left: 35px;
+        padding-right: 35px;
+    }
+}
+
+
+/* =========================================
+   TABLETS
+   768px+
+========================================= */
+
+@media (min-width: 768px) {
+
+    body {
+        background: #020202;
+    }
+
+    #app {
+        max-width: 700px;
+        margin: 0 auto;
+
+        box-shadow:
+            0 0 80px rgba(0, 0, 0, 0.7);
+    }
+
+    .hero {
+        min-height: 650px;
+        border-radius: 0 0 30px 30px;
+    }
+
+    .hero-overlay {
+        min-height: 650px;
+        padding: 50px;
+    }
+
+    .category-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .products-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+
+/* =========================================
+   LANDSCAPE PHONES
+========================================= */
+
+@media (
+    max-height: 500px
+) and (
+    orientation: landscape
+) {
+
+    .hero {
+        min-height: 420px;
+    }
+
+    .hero-overlay {
+        min-height: 420px;
+        padding-top: 25px;
+        padding-bottom: 25px;
+    }
+
+    .hero h1 {
+        font-size: 36px;
+    }
+
+    .bottom-navigation {
+        height: 65px;
+    }
+}
+
+
+/* =========================================
+   REDUCED MOTION
+========================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        transition: none !important;
+        animation: none !important;
+    }
+                                      }
