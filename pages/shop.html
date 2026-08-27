@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
+    >
+
+    <title>Shop | SANA Boutique</title>
+
+
+    <!-- Fonts -->
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <!-- Global CSS -->
+
+    <link
+        rel="stylesheet"
+        href="../css/base.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="../css/navigation.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="../css/shop.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="../css/responsive.css"
+    >
+
+</head>
+
+
+<body>
+
+
+<div id="app">
+
+
+    <!-- =====================================
+         HEADER
+    ====================================== -->
+
+    <header class="app-header">
+
+        <button
+            class="header-button"
+            onclick="history.back()"
+            aria-label="Go back"
+        >
+            ←
+        </button>
+
+
+        <div class="brand">
+
+            <div class="brand-name">
+                SANA
+            </div>
+
+            <div class="brand-subtitle">
+                SHOP
+            </div>
+
+        </div>
+
+
+        <button
+            class="header-button"
+            id="shopSearchButton"
+            aria-label="Search"
+        >
+            ⌕
+        </button>
+
+    </header>
+
+
+
+    <!-- =====================================
+         SHOP CONTENT
+    ====================================== -->
+
+    <main class="shop-page">
+
+
+        <!-- PAGE INTRO -->
+
+        <section class="shop-intro">
+
+            <span class="shop-eyebrow">
+                DISCOVER
+            </span>
+
+            <h1>
+                Our Collection
+            </h1>
+
+            <p>
+                Explore elegant pieces
+                carefully selected for you.
+            </p>
+
+        </section>
+
+
+
+        <!-- =====================================
+             SEARCH
+        ====================================== -->
+
+        <section
+            class="shop-search"
+            id="shopSearch"
+        >
+
+            <div class="search-box">
+
+                <span class="search-icon">
+                    ⌕
+                </span>
+
+                <input
+                    type="search"
+                    id="productSearch"
+                    placeholder="Search products..."
+                    autocomplete="off"
+                >
+
+                <button
+                    id="clearSearch"
+                    class="clear-search"
+                    aria-label="Clear search"
+                >
+                    ×
+                </button>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =====================================
+             CATEGORIES
+        ====================================== -->
+
+        <section class="shop-categories">
+
+            <div
+                class="category-scroll"
+                id="categoryFilters"
+            >
+
+                <button
+                    class="category-filter active"
+                    data-category="all"
+                >
+                    All
+                </button>
+
+
+                <button
+                    class="category-filter"
+                    data-category="unstitched"
+                >
+                    Unstitched
+                </button>
+
+
+                <button
+                    class="category-filter"
+                    data-category="kurtis"
+                >
+                    Kurtis
+                </button>
+
+
+                <button
+                    class="category-filter"
+                    data-category="abayas"
+                >
+                    Abayas
+                </button>
+
+
+                <button
+                    class="category-filter"
+                    data-category="shawls"
+                >
+                    Shawls
+                </button>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =====================================
+             RESULTS HEADER
+        ====================================== -->
+
+        <section class="results-header">
+
+            <div>
+
+                <span class="results-label">
+                    COLLECTION
+                </span>
+
+                <h2 id="resultsTitle">
+                    All Products
+                </h2>
+
+            </div>
+
+
+            <button
+                class="filter-button"
+                id="filterButton"
+            >
+                ☷ Filter
+            </button>
+
+        </section>
+
+
+
+        <!-- =====================================
+             PRODUCT GRID
+        ====================================== -->
+
+        <section class="shop-products">
+
+            <div
+                class="products-grid"
+                id="shopProducts"
+            >
+
+                <div class="loading">
+
+                    Loading products...
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+
+
+    <!-- =====================================
+         BOTTOM NAVIGATION
+    ====================================== -->
+
+    <nav class="bottom-navigation">
+
+
+        <a
+            href="../index.html"
+            class="nav-item"
+        >
+
+            <span class="nav-icon">
+                ⌂
+            </span>
+
+            <span>
+                Home
+            </span>
+
+        </a>
+
+
+
+        <a
+            href="shop.html"
+            class="nav-item active"
+        >
+
+            <span class="nav-icon">
+                ♧
+            </span>
+
+            <span>
+                Shop
+            </span>
+
+        </a>
+
+
+
+        <a
+            href="post.html"
+            class="post-button"
+            id="postButton"
+        >
+            +
+        </a>
+
+
+
+        <a
+            href="about.html"
+            class="nav-item"
+        >
+
+            <span class="nav-icon">
+                ♙
+            </span>
+
+            <span>
+                About
+            </span>
+
+        </a>
+
+
+
+        <a
+            href="contact.html"
+            class="nav-item"
+        >
+
+            <span class="nav-icon">
+                ⌕
+            </span>
+
+            <span>
+                Contact
+            </span>
+
+        </a>
+
+
+    </nav>
+
+
+</div>
+
+
+
+<!-- =====================================
+     JAVASCRIPT
+====================================== -->
+
+<script src="../js/app.js"></script>
+
+<script src="../js/navigation.js"></script>
+
+<script src="../js/shop.js"></script>
+
+
+</body>
+
+</html>pages/shop.html
