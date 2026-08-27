@@ -1,0 +1,550 @@
+/* =========================================
+   SANA BOUTIQUE
+   POST / CREATE PRODUCT
+========================================= */
+
+.post-page {
+    width: 100%;
+    max-width: 700px;
+    margin: 0 auto;
+    padding-bottom: 35px;
+}
+
+
+/* =========================================
+   INTRO
+========================================= */
+
+.post-intro {
+    padding: 32px 20px 25px;
+}
+
+.post-intro > span {
+    display: block;
+
+    margin-bottom: 8px;
+
+    color: var(--gold-light);
+
+    font-size: 11px;
+    font-weight: 700;
+
+    letter-spacing: 3px;
+}
+
+.post-intro h1 {
+    font-size: 40px;
+    line-height: 1;
+    margin-bottom: 10px;
+}
+
+.post-intro p {
+    max-width: 350px;
+
+    color: var(--muted);
+
+    font-size: 14px;
+}
+
+
+/* =========================================
+   FORM
+========================================= */
+
+.product-form {
+    width: 100%;
+}
+
+.form-section {
+    margin: 0 20px 20px;
+
+    padding: 20px;
+
+    border: 1px solid var(--border-light);
+
+    border-radius: var(--radius);
+
+    background:
+        linear-gradient(
+            145deg,
+            #151515,
+            #0c0c0c
+        );
+}
+
+
+/* =========================================
+   SECTION TITLE
+========================================= */
+
+.form-section-title {
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 13px;
+
+    margin-bottom: 20px;
+}
+
+.step-number {
+    flex: 0 0 auto;
+
+    width: 34px;
+    height: 34px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    border: 1px solid var(--gold);
+
+    color: var(--gold-light);
+
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.form-section-title h2 {
+    margin-bottom: 3px;
+
+    color: var(--cream);
+
+    font-family: "Inter", sans-serif;
+
+    font-size: 16px;
+
+    letter-spacing: 0;
+}
+
+.form-section-title p {
+    color: var(--muted);
+
+    font-size: 11px;
+}
+
+
+/* =========================================
+   IMAGE UPLOAD
+========================================= */
+
+.image-upload {
+    display: block;
+
+    width: 100%;
+
+    cursor: pointer;
+}
+
+.upload-preview {
+    width: 100%;
+    min-height: 240px;
+
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+
+    border: 1px dashed
+        rgba(217, 169, 40, 0.45);
+
+    border-radius: 18px;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(217, 169, 40, 0.07),
+            transparent 65%
+        );
+
+    text-align: center;
+
+    transition:
+        border-color 0.2s ease,
+        background 0.2s ease;
+}
+
+.upload-preview:active {
+    border-color: var(--gold);
+
+    background:
+        rgba(217, 169, 40, 0.08);
+}
+
+.upload-icon {
+    width: 52px;
+    height: 52px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: rgba(217, 169, 40, 0.12);
+
+    border: 1px solid var(--gold);
+
+    color: var(--gold-light);
+
+    font-size: 30px;
+}
+
+.upload-preview strong {
+    color: var(--cream);
+
+    font-size: 14px;
+}
+
+.upload-preview small {
+    color: var(--muted);
+
+    font-size: 10px;
+}
+
+
+/* Image preview */
+
+.upload-preview.has-image {
+    position: relative;
+
+    min-height: 280px;
+
+    overflow: hidden;
+
+    border-style: solid;
+}
+
+.upload-preview.has-image img {
+    position: absolute;
+
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+}
+
+.upload-preview.has-image::after {
+    content: "Tap to change image";
+
+    position: absolute;
+
+    left: 50%;
+    bottom: 14px;
+
+    transform: translateX(-50%);
+
+    padding: 7px 12px;
+
+    border-radius: 20px;
+
+    background: rgba(0, 0, 0, 0.75);
+
+    color: var(--white);
+
+    font-size: 10px;
+
+    backdrop-filter: blur(8px);
+}
+
+
+/* =========================================
+   FORM GROUP
+========================================= */
+
+.form-group {
+    margin-bottom: 17px;
+}
+
+.form-group:last-child {
+    margin-bottom: 0;
+}
+
+.form-group label {
+    display: block;
+
+    margin-bottom: 8px;
+
+    color: #d8d8d8;
+
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+    font-size: 13px;
+}
+
+
+/* =========================================
+   TWO COLUMN ROW
+========================================= */
+
+.form-row {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 12px;
+}
+
+
+/* =========================================
+   SIZE OPTIONS
+========================================= */
+
+.size-options {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 9px;
+}
+
+.size-option {
+    position: relative;
+
+    cursor: pointer;
+}
+
+.size-option input {
+    position: absolute;
+
+    opacity: 0;
+
+    pointer-events: none;
+}
+
+.size-option span {
+    min-height: 44px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid var(--border-light);
+
+    border-radius: 12px;
+
+    background: #101010;
+
+    color: #999;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease;
+}
+
+.size-option input:checked + span {
+    background: rgba(217, 169, 40, 0.14);
+
+    border-color: var(--gold);
+
+    color: var(--gold-light);
+
+    box-shadow:
+        0 0 15px rgba(217, 169, 40, 0.08);
+}
+
+
+/* =========================================
+   PUBLISH SECTION
+========================================= */
+
+.publish-section {
+    padding: 5px 20px 30px;
+}
+
+.publish-message {
+    display: flex;
+
+    gap: 10px;
+
+    margin-bottom: 15px;
+
+    padding: 14px;
+
+    border-radius: 14px;
+
+    background: rgba(217, 169, 40, 0.06);
+
+    border: 1px solid
+        rgba(217, 169, 40, 0.15);
+}
+
+.publish-message span {
+    flex: 0 0 auto;
+
+    color: var(--gold-light);
+}
+
+.publish-message p {
+    color: var(--muted);
+
+    font-size: 11px;
+
+    line-height: 1.5;
+}
+
+.publish-message strong {
+    color: var(--cream);
+}
+
+
+/* =========================================
+   PUBLISH BUTTON
+========================================= */
+
+.publish-button {
+    width: 100%;
+    min-height: 56px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 20px;
+
+    border-radius: 16px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--gold-light),
+            var(--gold)
+        );
+
+    color: #080808;
+
+    font-size: 13px;
+    font-weight: 800;
+
+    letter-spacing: 0.7px;
+
+    box-shadow:
+        0 8px 25px
+        rgba(217, 169, 40, 0.2);
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        opacity 0.2s ease;
+}
+
+.publish-button:active {
+    transform: scale(0.98);
+}
+
+.publish-button:disabled {
+    opacity: 0.55;
+
+    cursor: not-allowed;
+}
+
+
+/* =========================================
+   FORM ERROR
+========================================= */
+
+.form-error {
+    margin-top: 8px;
+
+    color: #e58b8b;
+
+    font-size: 11px;
+}
+
+
+/* =========================================
+   SUCCESS MESSAGE
+========================================= */
+
+.publish-success {
+    padding: 25px;
+
+    text-align: center;
+
+    border: 1px solid
+        rgba(217, 169, 40, 0.3);
+
+    border-radius: var(--radius);
+
+    background: #101010;
+}
+
+.publish-success-icon {
+    width: 55px;
+    height: 55px;
+
+    margin: 0 auto 12px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    border: 1px solid var(--gold);
+
+    color: var(--gold-light);
+
+    font-size: 25px;
+}
+
+.publish-success h2 {
+    margin-bottom: 7px;
+}
+
+.publish-success p {
+    color: var(--muted);
+
+    font-size: 12px;
+}
+
+
+/* =========================================
+   SMALL PHONES
+========================================= */
+
+@media (max-width: 374px) {
+
+    .post-intro h1 {
+        font-size: 35px;
+    }
+
+    .form-section {
+        margin-left: 14px;
+        margin-right: 14px;
+
+        padding: 16px;
+    }
+
+    .publish-section {
+        padding-left: 14px;
+        padding-right: 14px;
+    }
+
+    .upload-preview {
+        min-height: 210px;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+
+  }
