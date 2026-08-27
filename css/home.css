@@ -1,0 +1,477 @@
+/* =========================================
+   SANA BOUTIQUE
+   HOME PAGE
+========================================= */
+
+
+/* =========================================
+   HERO
+========================================= */
+
+.hero {
+    position: relative;
+    width: 100%;
+    min-height: 540px;
+    overflow: hidden;
+    background: #080808;
+}
+
+
+/* Hero image area */
+
+.hero-image {
+    position: absolute;
+    inset: 0;
+
+    background:
+        linear-gradient(
+            to bottom,
+            rgba(0, 0, 0, 0.05) 0%,
+            rgba(0, 0, 0, 0.35) 45%,
+            rgba(5, 5, 5, 0.98) 100%
+        );
+
+    background-size: cover;
+    background-position: center;
+}
+
+
+/*
+   Later we will put your real image here.
+
+   Example:
+
+   background-image:
+       linear-gradient(...),
+       url("../assets/hero/hero-1.jpg");
+*/
+
+
+/* Hero content */
+
+.hero-overlay {
+    position: relative;
+    z-index: 2;
+
+    min-height: 540px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+
+    padding: 40px 24px 45px;
+
+    max-width: 520px;
+}
+
+
+/* Small premium text */
+
+.hero-small-title {
+    color: var(--gold-light);
+
+    font-size: 13px;
+    font-weight: 600;
+
+    letter-spacing: 3px;
+
+    margin-bottom: 14px;
+}
+
+
+/* Main hero heading */
+
+.hero h1 {
+    color: var(--cream);
+
+    margin-bottom: 18px;
+
+    text-shadow:
+        0 4px 20px rgba(0, 0, 0, 0.8);
+}
+
+
+/* Gold part can be added later */
+
+.hero p {
+    color: #d5d5d5;
+
+    font-size: 15px;
+
+    margin-bottom: 25px;
+}
+
+
+/* =========================================
+   CATEGORY GRID
+========================================= */
+
+.category-grid {
+    display: grid;
+
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 14px;
+}
+
+
+/* Category card */
+
+.category-card {
+    position: relative;
+
+    min-height: 230px;
+
+    overflow: hidden;
+
+    border-radius: var(--radius);
+
+    border: 1px solid var(--border);
+
+    background: #101010;
+
+    box-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.4);
+
+    transition:
+        transform 0.2s ease,
+        border-color 0.2s ease;
+}
+
+
+.category-card:active {
+    transform: scale(0.97);
+}
+
+
+/* Category image */
+
+.category-image {
+    position: absolute;
+    inset: 0;
+
+    background:
+        linear-gradient(
+            to bottom,
+            rgba(0, 0, 0, 0.05),
+            rgba(0, 0, 0, 0.9)
+        );
+
+    background-size: cover;
+    background-position: center;
+}
+
+
+/*
+   Add your images later:
+
+   .unstitched-image {
+       background-image: url("../assets/categories/unstitched.jpg");
+   }
+
+   .kurtis-image {
+       background-image: url("../assets/categories/kurtis.jpg");
+   }
+
+   .abaya-image {
+       background-image: url("../assets/categories/abayas.jpg");
+   }
+
+   .shawl-image {
+       background-image: url("../assets/categories/shawls.jpg");
+   }
+*/
+
+
+/* Category content */
+
+.category-content {
+    position: absolute;
+
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    z-index: 2;
+
+    padding: 20px 14px 17px;
+
+    text-align: center;
+
+    background:
+        linear-gradient(
+            to top,
+            rgba(0, 0, 0, 0.95),
+            rgba(0, 0, 0, 0)
+        );
+}
+
+
+.category-content h3 {
+    color: var(--white);
+
+    font-size: 18px;
+
+    line-height: 1.05;
+
+    letter-spacing: 1px;
+
+    margin-bottom: 10px;
+}
+
+
+.category-content button {
+    background: transparent;
+
+    color: var(--gold-light);
+
+    font-size: 12px;
+
+    font-weight: 500;
+
+    letter-spacing: 0.5px;
+}
+
+
+/* =========================================
+   FEATURED PRODUCTS
+========================================= */
+
+.products-grid {
+    display: grid;
+
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 14px;
+}
+
+
+/* Product card */
+
+.product-card {
+    position: relative;
+
+    overflow: hidden;
+
+    border-radius: var(--radius);
+
+    background:
+        linear-gradient(
+            145deg,
+            #161616,
+            #0b0b0b
+        );
+
+    border: 1px solid var(--border);
+
+    box-shadow:
+        0 8px 25px rgba(0, 0, 0, 0.4);
+
+    transition:
+        transform 0.2s ease;
+}
+
+
+.product-card:active {
+    transform: scale(0.97);
+}
+
+
+/* Product image */
+
+.product-card-image {
+    width: 100%;
+
+    aspect-ratio: 0.82;
+
+    object-fit: cover;
+
+    display: block;
+
+    background: #151515;
+}
+
+
+/* Product information */
+
+.product-info {
+    padding: 13px;
+}
+
+
+.product-info h3 {
+    color: var(--white);
+
+    font-family: "Inter", sans-serif;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    line-height: 1.3;
+
+    margin-bottom: 6px;
+}
+
+
+.product-price {
+    color: var(--gold-light);
+
+    font-size: 16px;
+
+    font-weight: 700;
+}
+
+
+/* Favorite button */
+
+.product-favorite {
+    position: absolute;
+
+    top: 10px;
+    right: 10px;
+
+    width: 36px;
+    height: 36px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: rgba(0, 0, 0, 0.65);
+
+    border: 1px solid rgba(217, 169, 40, 0.5);
+
+    color: var(--gold-light);
+
+    font-size: 19px;
+
+    backdrop-filter: blur(8px);
+}
+
+
+/* =========================================
+   WHY SANA
+========================================= */
+
+.why-section {
+    padding-bottom: 55px;
+}
+
+
+.features {
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 10px;
+}
+
+
+.feature {
+    padding: 18px 10px;
+
+    text-align: center;
+
+    border: 1px solid var(--border-light);
+
+    border-radius: var(--radius);
+
+    background:
+        linear-gradient(
+            145deg,
+            #131313,
+            #0b0b0b
+        );
+}
+
+
+.feature-icon {
+    width: 42px;
+    height: 42px;
+
+    margin: 0 auto 10px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    border: 1px solid var(--gold);
+
+    color: var(--gold-light);
+
+    font-size: 21px;
+}
+
+
+.feature h3 {
+    font-family: "Inter", sans-serif;
+
+    color: var(--white);
+
+    font-size: 11px;
+
+    letter-spacing: 0.5px;
+
+    margin-bottom: 7px;
+}
+
+
+.feature p {
+    color: var(--muted);
+
+    font-size: 10px;
+
+    line-height: 1.45;
+}
+
+
+/* =========================================
+   GOLD DECORATION
+========================================= */
+
+.section-title h2 {
+    position: relative;
+}
+
+
+/* Small gold line under titles */
+
+.section-title h2::after {
+    content: "";
+
+    display: block;
+
+    width: 45px;
+    height: 1px;
+
+    margin: 8px auto 0;
+
+    background:
+        linear-gradient(
+            to right,
+            transparent,
+            var(--gold),
+            transparent
+        );
+}
+
+
+/* =========================================
+   MOBILE SPACING
+========================================= */
+
+main {
+    width: 100%;
+}
+
+
+/* Prevent content hiding behind navigation */
+
+main {
+    padding-bottom: 15px;
+  }
