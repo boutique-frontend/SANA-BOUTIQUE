@@ -17,9 +17,11 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
 
-    <link rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossorigin>
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
 
     <link
         href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap"
@@ -27,7 +29,7 @@
     >
 
 
-    <!-- Global CSS -->
+    <!-- CSS -->
 
     <link
         rel="stylesheet"
@@ -53,7 +55,6 @@
 
 
 <body>
-
 
 <div id="app">
 
@@ -141,12 +142,14 @@
                     ⌕
                 </span>
 
+
                 <input
                     type="search"
                     id="productSearch"
                     placeholder="Search products..."
                     autocomplete="off"
                 >
+
 
                 <button
                     id="clearSearch"
@@ -174,6 +177,7 @@
             >
 
                 <button
+                    type="button"
                     class="category-filter active"
                     data-category="all"
                 >
@@ -182,6 +186,7 @@
 
 
                 <button
+                    type="button"
                     class="category-filter"
                     data-category="unstitched"
                 >
@@ -190,6 +195,7 @@
 
 
                 <button
+                    type="button"
                     class="category-filter"
                     data-category="kurtis"
                 >
@@ -198,6 +204,7 @@
 
 
                 <button
+                    type="button"
                     class="category-filter"
                     data-category="abayas"
                 >
@@ -206,6 +213,7 @@
 
 
                 <button
+                    type="button"
                     class="category-filter"
                     data-category="shawls"
                 >
@@ -238,6 +246,7 @@
 
 
             <button
+                type="button"
                 class="filter-button"
                 id="filterButton"
             >
@@ -260,9 +269,7 @@
             >
 
                 <div class="loading">
-
                     Loading products...
-
                 </div>
 
             </div>
@@ -315,10 +322,13 @@
 
 
 
+        <!-- CENTER POST BUTTON -->
+
         <a
             href="post.html"
             class="post-button"
             id="postButton"
+            aria-label="Create post"
         >
             +
         </a>
@@ -373,9 +383,15 @@
 
 <script src="../js/navigation.js"></script>
 
+<!-- REAL BACKEND API -->
+
+<script src="../js/api.js"></script>
+
+<!-- SHOP CONTROLLER -->
+
 <script src="../js/shop.js"></script>
 
 
 </body>
 
-</html>pages/shop.html
+</html>
