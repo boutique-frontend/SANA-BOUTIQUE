@@ -11,33 +11,97 @@ const API_BASE_URL =
 
 
 /* =========================================
-   GET ALL POSTS
+   API REQUEST HELPER
+========================================= */
+
+async function apiRequest(
+    endpoint,
+    options = {}
+) {
+
+    try {
+
+        const response =
+            await fetch(
+                `${API_BASE_URL}${endpoint}`,
+                options
+            );
+
+
+        let data = null;
+
+
+        try {
+
+            data =
+                await response.json();
+
+        } catch {
+
+            data = null;
+
+        }
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                data?.error ||
+                `Server error (${response.status})`
+            );
+
+        }
+
+
+        return data;
+
+    } catch (error) {
+
+        console.error(
+            "SANA API Error:",
+            error
+        );
+
+
+        if (
+            error instanceof TypeError
+        ) {
+
+            throw new Error(
+                "Unable to connect to SANA server. Please check your internet connection."
+            );
+
+        }
+
+
+        throw error;
+
+    }
+
+}
+
+
+/* =========================================
+   GET ALL PRODUCTS
 ========================================= */
 
 async function getProducts() {
 
-    const response = await fetch(
-        `${API_BASE_URL}/api/posts`,
-        {
-            method: "GET",
-            headers: {
-                "Accept": "application/json"
-            }
-        }
-    );
-
-
-    if (!response.ok) {
-
-        throw new Error(
-            `Failed to load products (${response.status})`
-        );
-
-    }
-
-
     const data =
-        await response.json();
+        await apiRequest(
+            "/api/posts",
+            {
+                method: "GET",
+
+                headers: {
+                    "Accept":
+                        "application/json"
+                },
+
+                cache: "no-store"
+
+            }
+        );
 
 
     if (!Array.isArray(data)) {
@@ -62,17 +126,24 @@ async function getProductById(
     productId
 ) {
 
+    if (!productId) {
+
+        return null;
+
+    }
+
+
     const products =
         await getProducts();
 
 
-    return products.find(product => {
-
-        return String(
-            product.id
-        ) === String(productId);
-
-    }) || null;
+    return (
+        products.find(
+            product =>
+                String(product.id) ===
+                String(productId)
+        ) || null
+    );
 
 }
 
@@ -103,19 +174,36 @@ async function createProduct(
     }
 
 
+    if (
+        !(product.image instanceof File)
+    ) {
+
+        throw new Error(
+            "Invalid image file."
+        );
+
+    }
+
+
     const formData =
         new FormData();
 
 
     /*
-     * IMPORTANT:
-     * Your Flask backend expects
-     * "title", not "name".
+     * Flask expects:
+     *
+     * title
+     * category
+     * price
+     * sizes
+     * description
+     * image
      */
+
 
     formData.append(
         "title",
-        product.name || ""
+        product.name?.trim() || ""
     );
 
 
@@ -141,54 +229,33 @@ async function createProduct(
 
     formData.append(
         "description",
-        product.description || ""
+        product.description?.trim() || ""
     );
 
 
     formData.append(
         "image",
-        product.image
+        product.image,
+        product.image.name
     );
 
 
-    const response =
-        await fetch(
-            `${API_BASE_URL}/api/posts`,
-            {
-                method: "POST",
-                body: formData
-            }
-        );
+    /*
+     * DO NOT manually set
+     * Content-Type here.
+     *
+     * Browser automatically creates
+     * multipart/form-data boundary.
+     */
 
 
-    let data = null;
-
-
-    try {
-
-        data =
-            await response.json();
-
-    } catch {
-
-        throw new Error(
-            "The server returned an invalid response."
-        );
-
-    }
-
-
-    if (!response.ok) {
-
-        throw new Error(
-            data?.error ||
-            `Failed to publish product (${response.status})`
-        );
-
-    }
-
-
-    return data;
+    return await apiRequest(
+        "/api/posts",
+        {
+            method: "POST",
+            body: formData
+        }
+    );
 
 }
 
@@ -210,50 +277,23 @@ async function deleteProduct(
     }
 
 
-    const response =
-        await fetch(
-            `${API_BASE_URL}/api/posts/${encodeURIComponent(productId)}`,
-            {
-                method: "DELETE",
-                headers: {
-                    "Accept": "application/json"
-                }
+    return await apiRequest(
+        `/api/posts/${encodeURIComponent(productId)}`,
+        {
+            method: "DELETE",
+
+            headers: {
+                "Accept":
+                    "application/json"
             }
-        );
-
-
-    let data = null;
-
-
-    try {
-
-        data =
-            await response.json();
-
-    } catch {
-
-        data = {};
-
-    }
-
-
-    if (!response.ok) {
-
-        throw new Error(
-            data?.error ||
-            `Failed to delete product (${response.status})`
-        );
-
-    }
-
-
-    return data;
+        }
+    );
 
 }
 
 
 /* =========================================
-   HEALTH CHECK
+   BACKEND HEALTH CHECK
 ========================================= */
 
 async function checkBackend() {
@@ -264,7 +304,8 @@ async function checkBackend() {
             await fetch(
                 API_BASE_URL,
                 {
-                    method: "GET"
+                    method: "GET",
+                    cache: "no-store"
                 }
             );
 
@@ -294,11 +335,35 @@ async function checkBackend() {
 
 
 /* =========================================
+   WARM UP BACKEND
+========================================= */
+
+async function wakeBackend() {
+
+    try {
+
+        await checkBackend();
+
+        return true;
+
+    } catch {
+
+        return false;
+
+    }
+
+}
+
+
+/* =========================================
    EXPOSE API
 ========================================= */
 
 window.API_BASE_URL =
     API_BASE_URL;
+
+window.apiRequest =
+    apiRequest;
 
 window.getProducts =
     getProducts;
@@ -314,3 +379,6 @@ window.deleteProduct =
 
 window.checkBackend =
     checkBackend;
+
+window.wakeBackend =
+    wakeBackend;
