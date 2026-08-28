@@ -7,19 +7,31 @@
 
     <meta
         name="viewport"
-        content="width=device-width, initial-scale=1.0"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
     >
 
-    <title>Post Product | SANA Boutique</title>
+    <meta
+        name="description"
+        content="Create and publish a new product to SANA Boutique."
+    >
+
+    <meta
+        name="theme-color"
+        content="#0f0f0f"
+    >
+
+    <title>Add Product | SANA Boutique</title>
 
 
-    <!-- Fonts -->
+    <!-- =====================================
+         FONTS
+    ====================================== -->
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
 
     <link
         rel="preconnect"
-        href="https://fonts.googleapis.com"
+        href="https://fonts.gstatic.com"
         crossorigin
     >
 
@@ -29,7 +41,9 @@
     >
 
 
-    <!-- CSS -->
+    <!-- =====================================
+         CSS
+    ====================================== -->
 
     <link
         rel="stylesheet"
@@ -66,8 +80,9 @@
     <header class="app-header">
 
         <button
+            type="button"
             class="header-button"
-            onclick="history.back()"
+            id="backButton"
             aria-label="Go back"
         >
             ←
@@ -81,7 +96,7 @@
             </div>
 
             <div class="brand-subtitle">
-                NEW POST
+                NEW PRODUCT
             </div>
 
         </div>
@@ -94,11 +109,15 @@
 
 
     <!-- =====================================
-         POST PAGE
+         MAIN
     ====================================== -->
 
     <main class="post-page">
 
+
+        <!-- =====================================
+             INTRO
+        ====================================== -->
 
         <section class="post-intro">
 
@@ -111,8 +130,9 @@
             </h1>
 
             <p>
-                Add your product details and
-                publish it to the boutique.
+                Add your product details,
+                choose the available options,
+                and publish it to SANA Boutique.
             </p>
 
         </section>
@@ -126,10 +146,14 @@
         <form
             id="productForm"
             class="product-form"
+            enctype="multipart/form-data"
+            novalidate
         >
 
 
-            <!-- IMAGE -->
+            <!-- =================================
+                 STEP 01 — IMAGE
+            ================================== -->
 
             <section class="form-section">
 
@@ -146,7 +170,7 @@
                         </h2>
 
                         <p>
-                            Upload the main product photo.
+                            Upload a clear photo of your product.
                         </p>
 
                     </div>
@@ -164,7 +188,7 @@
                         type="file"
                         id="productImage"
                         name="image"
-                        accept="image/*"
+                        accept="image/jpeg,image/png,image/webp"
                         hidden
                         required
                     >
@@ -184,18 +208,27 @@
                         </strong>
 
                         <small>
-                            JPG, PNG or WEBP
+                            JPG, PNG or WEBP • Max 10MB
                         </small>
 
                     </div>
 
                 </label>
 
+
+                <p
+                    class="form-help"
+                    id="imageHelp"
+                    aria-live="polite"
+                ></p>
+
             </section>
 
 
 
-            <!-- BASIC INFORMATION -->
+            <!-- =================================
+                 STEP 02 — INFORMATION
+            ================================== -->
 
             <section class="form-section">
 
@@ -212,13 +245,15 @@
                         </h2>
 
                         <p>
-                            Tell customers about your item.
+                            Give customers the important details.
                         </p>
 
                     </div>
 
                 </div>
 
+
+                <!-- PRODUCT NAME -->
 
                 <div class="form-group">
 
@@ -231,12 +266,15 @@
                         id="productName"
                         name="name"
                         placeholder="e.g. Royal Black Suit"
+                        maxlength="120"
+                        autocomplete="off"
                         required
                     >
 
                 </div>
 
 
+                <!-- DESCRIPTION -->
 
                 <div class="form-group">
 
@@ -247,9 +285,19 @@
                     <textarea
                         id="productDescription"
                         name="description"
-                        placeholder="Describe the product..."
+                        placeholder="Describe the material, design, style and other important details..."
+                        maxlength="1000"
+                        rows="6"
                         required
                     ></textarea>
+
+
+                    <small
+                        class="character-count"
+                        id="descriptionCount"
+                    >
+                        0 / 1000
+                    </small>
 
                 </div>
 
@@ -257,7 +305,9 @@
 
 
 
-            <!-- PRICE + CATEGORY -->
+            <!-- =================================
+                 STEP 03 — PRICE & CATEGORY
+            ================================== -->
 
             <section class="form-section">
 
@@ -274,7 +324,7 @@
                         </h2>
 
                         <p>
-                            Set the price and category.
+                            Set how the product will be displayed.
                         </p>
 
                     </div>
@@ -284,6 +334,8 @@
 
                 <div class="form-row">
 
+
+                    <!-- PRICE -->
 
                     <div class="form-group">
 
@@ -298,12 +350,19 @@
                             placeholder="0"
                             min="0"
                             step="0.01"
+                            inputmode="decimal"
                             required
                         >
+
+                        <small class="input-hint">
+                            Price will be displayed in Rs.
+                        </small>
 
                     </div>
 
 
+
+                    <!-- CATEGORY -->
 
                     <div class="form-group">
 
@@ -317,8 +376,12 @@
                             required
                         >
 
-                            <option value="">
-                                Select
+                            <option
+                                value=""
+                                selected
+                                disabled
+                            >
+                                Select category
                             </option>
 
                             <option value="Unstitched">
@@ -351,7 +414,9 @@
 
 
 
-            <!-- SIZE -->
+            <!-- =================================
+                 STEP 04 — SIZES
+            ================================== -->
 
             <section class="form-section">
 
@@ -368,7 +433,7 @@
                         </h2>
 
                         <p>
-                            Choose the available sizes.
+                            Select every size currently available.
                         </p>
 
                     </div>
@@ -381,34 +446,99 @@
                     id="sizeOptions"
                 >
 
-                    <label class="size-option">
-                        <input type="checkbox" name="sizes" value="XS">
-                        <span>XS</span>
-                    </label>
 
                     <label class="size-option">
-                        <input type="checkbox" name="sizes" value="S">
-                        <span>S</span>
+
+                        <input
+                            type="checkbox"
+                            name="sizes"
+                            value="XS"
+                        >
+
+                        <span>
+                            XS
+                        </span>
+
                     </label>
 
-                    <label class="size-option">
-                        <input type="checkbox" name="sizes" value="M">
-                        <span>M</span>
-                    </label>
+
 
                     <label class="size-option">
-                        <input type="checkbox" name="sizes" value="L">
-                        <span>L</span>
+
+                        <input
+                            type="checkbox"
+                            name="sizes"
+                            value="S"
+                        >
+
+                        <span>
+                            S
+                        </span>
+
                     </label>
 
-                    <label class="size-option">
-                        <input type="checkbox" name="sizes" value="XL">
-                        <span>XL</span>
-                    </label>
+
 
                     <label class="size-option">
-                        <input type="checkbox" name="sizes" value="XXL">
-                        <span>XXL</span>
+
+                        <input
+                            type="checkbox"
+                            name="sizes"
+                            value="M"
+                        >
+
+                        <span>
+                            M
+                        </span>
+
+                    </label>
+
+
+
+                    <label class="size-option">
+
+                        <input
+                            type="checkbox"
+                            name="sizes"
+                            value="L"
+                        >
+
+                        <span>
+                            L
+                        </span>
+
+                    </label>
+
+
+
+                    <label class="size-option">
+
+                        <input
+                            type="checkbox"
+                            name="sizes"
+                            value="XL"
+                        >
+
+                        <span>
+                            XL
+                        </span>
+
+                    </label>
+
+
+
+                    <label class="size-option">
+
+                        <input
+                            type="checkbox"
+                            name="sizes"
+                            value="XXL"
+                        >
+
+                        <span>
+                            XXL
+                        </span>
+
                     </label>
 
                 </div>
@@ -417,7 +547,9 @@
 
 
 
-            <!-- EXTRA INFORMATION -->
+            <!-- =================================
+                 STEP 05 — EXTRA INFORMATION
+            ================================== -->
 
             <section class="form-section">
 
@@ -434,13 +566,15 @@
                         </h2>
 
                         <p>
-                            Optional product information.
+                            Add optional information about the item.
                         </p>
 
                     </div>
 
                 </div>
 
+
+                <!-- COLOR -->
 
                 <div class="form-group">
 
@@ -453,10 +587,14 @@
                         id="productColor"
                         name="color"
                         placeholder="e.g. Black"
+                        maxlength="50"
+                        autocomplete="off"
                     >
 
                 </div>
 
+
+                <!-- STOCK -->
 
                 <div class="form-group">
 
@@ -470,7 +608,13 @@
                         name="stock"
                         placeholder="Available quantity"
                         min="0"
+                        step="1"
+                        inputmode="numeric"
                     >
+
+                    <small class="input-hint">
+                        Leave empty if stock is managed separately.
+                    </small>
 
                 </div>
 
@@ -478,9 +622,12 @@
 
 
 
-            <!-- PUBLISH -->
+            <!-- =================================
+                 PUBLISH SECTION
+            ================================== -->
 
             <section class="publish-section">
+
 
                 <div class="publish-message">
 
@@ -489,16 +636,29 @@
                     </span>
 
                     <p>
-                        Your product will appear
+                        Once published, your product can appear
                         automatically in the
                         <strong>Home</strong>
                         and
                         <strong>Shop</strong>
-                        sections after publishing.
+                        sections.
                     </p>
 
                 </div>
 
+
+
+                <!-- STATUS -->
+
+                <div
+                    class="publish-status"
+                    id="publishStatus"
+                    aria-live="polite"
+                ></div>
+
+
+
+                <!-- BUTTON -->
 
                 <button
                     type="submit"
@@ -529,52 +689,92 @@
          BOTTOM NAVIGATION
     ====================================== -->
 
-    <nav class="bottom-navigation">
+    <nav
+        class="bottom-navigation"
+        aria-label="Main navigation"
+    >
+
 
         <a
             href="../index.html"
             class="nav-item"
         >
-            <span class="nav-icon">⌂</span>
-            <span>Home</span>
+
+            <span class="nav-icon">
+                ⌂
+            </span>
+
+            <span>
+                Home
+            </span>
+
         </a>
+
 
 
         <a
             href="shop.html"
             class="nav-item"
         >
-            <span class="nav-icon">♧</span>
-            <span>Shop</span>
+
+            <span class="nav-icon">
+                ♧
+            </span>
+
+            <span>
+                Shop
+            </span>
+
         </a>
 
+
+
+        <!-- CENTER POST -->
 
         <a
             href="post.html"
             class="post-button active"
             id="postButton"
             aria-label="Create product"
+            aria-current="page"
         >
             +
         </a>
+
 
 
         <a
             href="about.html"
             class="nav-item"
         >
-            <span class="nav-icon">♙</span>
-            <span>About</span>
+
+            <span class="nav-icon">
+                ♙
+            </span>
+
+            <span>
+                About
+            </span>
+
         </a>
+
 
 
         <a
             href="contact.html"
             class="nav-item"
         >
-            <span class="nav-icon">⌕</span>
-            <span>Contact</span>
+
+            <span class="nav-icon">
+                ⌕
+            </span>
+
+            <span>
+                Contact
+            </span>
+
         </a>
+
 
     </nav>
 
@@ -591,13 +791,152 @@
 
 <script src="../js/navigation.js"></script>
 
-<!-- REAL BACKEND API -->
+<!-- BACKEND API -->
 
 <script src="../js/api.js"></script>
 
 <!-- POST CONTROLLER -->
 
 <script src="../js/post.js"></script>
+
+
+<!-- =====================================
+     SMALL PAGE ENHANCEMENTS
+====================================== -->
+
+<script>
+
+"use strict";
+
+
+/*
+ * BACK BUTTON
+ */
+
+const backButton =
+    document.getElementById("backButton");
+
+if (backButton) {
+
+    backButton.addEventListener(
+        "click",
+        () => {
+
+            if (
+                window.history.length > 1
+            ) {
+
+                window.history.back();
+
+            } else {
+
+                window.location.href =
+                    "shop.html";
+
+            }
+
+        }
+    );
+
+}
+
+
+/*
+ * DESCRIPTION COUNTER
+ */
+
+const description =
+    document.getElementById(
+        "productDescription"
+    );
+
+const descriptionCount =
+    document.getElementById(
+        "descriptionCount"
+    );
+
+
+if (
+    description &&
+    descriptionCount
+) {
+
+    const updateCount = () => {
+
+        descriptionCount.textContent =
+            `${description.value.length} / 1000`;
+
+    };
+
+
+    description.addEventListener(
+        "input",
+        updateCount
+    );
+
+
+    updateCount();
+
+}
+
+
+/*
+ * IMAGE INPUT FEEDBACK
+ *
+ * post.js still handles the
+ * actual image preview and
+ * validation.
+ */
+
+const imageInput =
+    document.getElementById(
+        "productImage"
+    );
+
+const imageHelp =
+    document.getElementById(
+        "imageHelp"
+    );
+
+
+if (
+    imageInput &&
+    imageHelp
+) {
+
+    imageInput.addEventListener(
+        "change",
+        () => {
+
+            const file =
+                imageInput.files?.[0];
+
+            if (!file) {
+
+                imageHelp.textContent =
+                    "";
+
+                return;
+
+            }
+
+
+            const sizeMB =
+                (
+                    file.size /
+                    (1024 * 1024)
+                ).toFixed(2);
+
+
+            imageHelp.textContent =
+                `${file.name} • ${sizeMB} MB`;
+
+        }
+    );
+
+}
+
+</script>
 
 
 </body>
