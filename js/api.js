@@ -15,21 +15,41 @@ const API_BASE_URL =
 ========================================= */
 
 async function apiRequest(
-    endpoint,
+    url,
     options = {}
 ) {
 
+    let response;
+
     try {
 
-        const response =
-            await fetch(
-                `${API_BASE_URL}${endpoint}`,
-                options
-            );
+        response = await fetch(
+            url,
+            options
+        );
+
+    } catch (error) {
+
+        throw new Error(
+            "Unable to connect to SANA server. Please check your internet connection."
+        );
+
+    }
 
 
-        let data = null;
+    let data = null;
 
+    const contentType =
+        response.headers.get(
+            "content-type"
+        ) || "";
+
+
+    if (
+        contentType.includes(
+            "application/json"
+        )
+    ) {
 
         try {
 
@@ -42,41 +62,39 @@ async function apiRequest(
 
         }
 
+    } else {
 
-        if (!response.ok) {
+        try {
 
-            throw new Error(
-                data?.error ||
-                `Server error (${response.status})`
-            );
+            const text =
+                await response.text();
 
-        }
+            data =
+                text
+                    ? { message: text }
+                    : null;
 
+        } catch {
 
-        return data;
-
-    } catch (error) {
-
-        console.error(
-            "SANA API Error:",
-            error
-        );
-
-
-        if (
-            error instanceof TypeError
-        ) {
-
-            throw new Error(
-                "Unable to connect to SANA server. Please check your internet connection."
-            );
+            data = null;
 
         }
-
-
-        throw error;
 
     }
+
+
+    if (!response.ok) {
+
+        throw new Error(
+            data?.error ||
+            data?.message ||
+            `Server error (${response.status})`
+        );
+
+    }
+
+
+    return data;
 
 }
 
@@ -89,7 +107,7 @@ async function getProducts() {
 
     const data =
         await apiRequest(
-            "/api/posts",
+            `${API_BASE_URL}/api/posts`,
             {
                 method: "GET",
 
@@ -99,21 +117,50 @@ async function getProducts() {
                 },
 
                 cache: "no-store"
-
             }
         );
 
 
-    if (!Array.isArray(data)) {
+    /*
+     * Support different backend response shapes:
+     *
+     * []
+     * { posts: [] }
+     * { products: [] }
+     * { data: [] }
+     */
 
-        throw new Error(
-            "Backend returned invalid product data."
-        );
+    if (Array.isArray(data)) {
+
+        return data;
 
     }
 
 
-    return data;
+    if (Array.isArray(data?.posts)) {
+
+        return data.posts;
+
+    }
+
+
+    if (Array.isArray(data?.products)) {
+
+        return data.products;
+
+    }
+
+
+    if (Array.isArray(data?.data)) {
+
+        return data.data;
+
+    }
+
+
+    throw new Error(
+        "Backend returned invalid product data."
+    );
 
 }
 
@@ -126,9 +173,15 @@ async function getProductById(
     productId
 ) {
 
-    if (!productId) {
+    if (
+        productId === null ||
+        productId === undefined ||
+        productId === ""
+    ) {
 
-        return null;
+        throw new Error(
+            "Product ID is required."
+        );
 
     }
 
@@ -137,13 +190,21 @@ async function getProductById(
         await getProducts();
 
 
-    return (
-        products.find(
-            product =>
-                String(product.id) ===
-                String(productId)
-        ) || null
-    );
+    return products.find(
+        product => {
+
+            const id =
+                product?.id ??
+                product?._id ??
+                product?.product_id ??
+                product?.post_id;
+
+
+            return String(id) ===
+                String(productId);
+
+        }
+    ) || null;
 
 }
 
@@ -174,48 +235,29 @@ async function createProduct(
     }
 
 
-    if (
-        !(product.image instanceof File)
-    ) {
-
-        throw new Error(
-            "Invalid image file."
-        );
-
-    }
-
-
     const formData =
         new FormData();
 
 
     /*
-     * Flask expects:
-     *
-     * title
-     * category
-     * price
-     * sizes
-     * description
-     * image
+     * BACKEND FIELD MAPPING
      */
-
 
     formData.append(
         "title",
-        product.name?.trim() || ""
+        String(product.name || "")
     );
 
 
     formData.append(
         "category",
-        product.category || ""
+        String(product.category || "")
     );
 
 
     formData.append(
         "price",
-        product.price || "0"
+        String(product.price || "0")
     );
 
 
@@ -223,39 +265,62 @@ async function createProduct(
         "sizes",
         Array.isArray(product.sizes)
             ? product.sizes.join(", ")
-            : product.sizes || ""
+            : String(product.sizes || "")
     );
 
 
     formData.append(
         "description",
-        product.description?.trim() || ""
-    );
-
-
-    formData.append(
-        "image",
-        product.image,
-        product.image.name
+        String(product.description || "")
     );
 
 
     /*
-     * DO NOT manually set
-     * Content-Type here.
-     *
-     * Browser automatically creates
-     * multipart/form-data boundary.
+     * EXTRA INFORMATION
      */
 
-
-    return await apiRequest(
-        "/api/posts",
-        {
-            method: "POST",
-            body: formData
-        }
+    formData.append(
+        "color",
+        String(product.color || "")
     );
+
+
+    formData.append(
+        "stock",
+        String(product.stock || "0")
+    );
+
+
+    /*
+     * IMAGE
+     */
+
+    formData.append(
+        "image",
+        product.image
+    );
+
+
+    /*
+     * IMPORTANT:
+     *
+     * Do NOT manually set Content-Type here.
+     * Browser automatically adds the multipart
+     * boundary when FormData is used.
+     */
+
+    const data =
+        await apiRequest(
+            `${API_BASE_URL}/api/posts`,
+            {
+                method: "POST",
+
+                body: formData
+            }
+        );
+
+
+    return data;
 
 }
 
@@ -268,7 +333,11 @@ async function deleteProduct(
     productId
 ) {
 
-    if (!productId) {
+    if (
+        productId === null ||
+        productId === undefined ||
+        productId === ""
+    ) {
 
         throw new Error(
             "Product ID is required."
@@ -277,74 +346,52 @@ async function deleteProduct(
     }
 
 
-    return await apiRequest(
-        `/api/posts/${encodeURIComponent(productId)}`,
-        {
-            method: "DELETE",
+    const data =
+        await apiRequest(
+            `${API_BASE_URL}/api/posts/${encodeURIComponent(productId)}`,
+            {
+                method: "DELETE",
 
-            headers: {
-                "Accept":
-                    "application/json"
+                headers: {
+                    "Accept":
+                        "application/json"
+                }
             }
-        }
-    );
+        );
+
+
+    return data;
 
 }
 
 
 /* =========================================
-   BACKEND HEALTH CHECK
+   HEALTH CHECK
 ========================================= */
 
 async function checkBackend() {
 
     try {
 
-        const response =
-            await fetch(
+        const data =
+            await apiRequest(
                 API_BASE_URL,
                 {
                     method: "GET",
+
+                    headers: {
+                        "Accept":
+                            "application/json"
+                    },
+
                     cache: "no-store"
                 }
             );
 
 
-        if (!response.ok) {
-
-            return false;
-
-        }
-
-
-        const data =
-            await response.json();
-
-
         return Boolean(
             data?.message
         );
-
-    } catch {
-
-        return false;
-
-    }
-
-}
-
-
-/* =========================================
-   WARM UP BACKEND
-========================================= */
-
-async function wakeBackend() {
-
-    try {
-
-        await checkBackend();
-
-        return true;
 
     } catch {
 
@@ -362,9 +409,6 @@ async function wakeBackend() {
 window.API_BASE_URL =
     API_BASE_URL;
 
-window.apiRequest =
-    apiRequest;
-
 window.getProducts =
     getProducts;
 
@@ -379,6 +423,3 @@ window.deleteProduct =
 
 window.checkBackend =
     checkBackend;
-
-window.wakeBackend =
-    wakeBackend;
