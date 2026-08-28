@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
 
     <meta
@@ -10,23 +12,50 @@
 
     <title>SANA Boutique</title>
 
+
     <!-- Google Font -->
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
 
     <link
         href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap"
         rel="stylesheet"
     >
 
+
     <!-- CSS -->
-    <link rel="stylesheet" href="css/base.css">
-    <link rel="stylesheet" href="css/home.css">
-    <link rel="stylesheet" href="css/navigation.css">
-    <link rel="stylesheet" href="css/responsive.css">
+
+    <link
+        rel="stylesheet"
+        href="css/base.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/home.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/navigation.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/responsive.css"
+    >
+
 </head>
 
+
 <body>
+
 
     <!-- =====================================
          APP
@@ -34,23 +63,47 @@
 
     <div id="app">
 
-        <!-- HEADER -->
+
+        <!-- =====================================
+             HEADER
+        ====================================== -->
+
         <header class="app-header">
 
-            <button class="header-button" id="menuButton">
+
+            <button
+                class="header-button"
+                id="menuButton"
+                aria-label="Open menu"
+            >
                 ☰
             </button>
 
+
             <div class="brand">
-                <div class="brand-name">SANA</div>
-                <div class="brand-subtitle">BOUTIQUE</div>
+
+                <div class="brand-name">
+                    SANA
+                </div>
+
+                <div class="brand-subtitle">
+                    BOUTIQUE
+                </div>
+
             </div>
 
-            <button class="header-button" id="bagButton">
+
+            <button
+                class="header-button"
+                id="bagButton"
+                aria-label="Favorites"
+            >
                 ♡
             </button>
 
+
         </header>
+
 
 
         <!-- =====================================
@@ -59,18 +112,26 @@
 
         <main id="main-content">
 
-            <!-- HERO -->
+
+            <!-- =====================================
+                 HERO
+            ====================================== -->
+
             <section class="hero">
+
 
                 <div class="hero-image">
                     <!-- Real hero image will be added later -->
                 </div>
 
+
                 <div class="hero-overlay">
+
 
                     <span class="hero-small-title">
                         PREMIUM FASHION
                     </span>
+
 
                     <h1>
                         ELEGANCE
@@ -80,19 +141,27 @@
                         THREAD
                     </h1>
 
+
                     <p>
                         Crafted for comfort.
                         <br>
                         Designed for you.
                     </p>
 
-                    <button class="gold-button">
+
+                    <button
+                        class="gold-button"
+                        id="shopCollectionButton"
+                    >
                         SHOP COLLECTION
                     </button>
 
+
                 </div>
 
+
             </section>
+
 
 
             <!-- =====================================
@@ -101,19 +170,35 @@
 
             <section class="section">
 
+
                 <div class="section-title">
+
                     <span>✦</span>
-                    <h2>SHOP BY CATEGORY</h2>
+
+                    <h2>
+                        SHOP BY CATEGORY
+                    </h2>
+
                     <span>✦</span>
+
                 </div>
+
 
 
                 <div class="category-grid">
 
-                    <!-- UNSTITCHED -->
-                    <article class="category-card">
 
-                        <div class="category-image unstitched-image"></div>
+                    <!-- UNSTITCHED -->
+
+                    <article
+                        class="category-card"
+                        data-category="Unstitched"
+                    >
+
+                        <div
+                            class="category-image unstitched-image"
+                        ></div>
+
 
                         <div class="category-content">
 
@@ -123,7 +208,12 @@
                                 SUITS
                             </h3>
 
-                            <button>
+
+                            <button
+                                type="button"
+                                class="category-button"
+                                data-category="Unstitched"
+                            >
                                 Explore Collection →
                             </button>
 
@@ -132,10 +222,18 @@
                     </article>
 
 
-                    <!-- KURTIS -->
-                    <article class="category-card">
 
-                        <div class="category-image kurtis-image"></div>
+                    <!-- KURTIS -->
+
+                    <article
+                        class="category-card"
+                        data-category="Kurtis"
+                    >
+
+                        <div
+                            class="category-image kurtis-image"
+                        ></div>
+
 
                         <div class="category-content">
 
@@ -145,25 +243,45 @@
                                 KURTIS
                             </h3>
 
-                            <button>
+
+                            <button
+                                type="button"
+                                class="category-button"
+                                data-category="Kurtis"
+                            >
                                 Explore Collection →
                             </button>
 
                         </div>
 
                     </article>
+
 
 
                     <!-- ABAYAS -->
-                    <article class="category-card">
 
-                        <div class="category-image abaya-image"></div>
+                    <article
+                        class="category-card"
+                        data-category="Abayas"
+                    >
+
+                        <div
+                            class="category-image abaya-image"
+                        ></div>
+
 
                         <div class="category-content">
 
-                            <h3>ABAYAS</h3>
+                            <h3>
+                                ABAYAS
+                            </h3>
 
-                            <button>
+
+                            <button
+                                type="button"
+                                class="category-button"
+                                data-category="Abayas"
+                            >
                                 Explore Collection →
                             </button>
 
@@ -172,26 +290,43 @@
                     </article>
 
 
-                    <!-- SHAWS -->
-                    <article class="category-card">
 
-                        <div class="category-image shawl-image"></div>
+                    <!-- SHAWLS -->
+
+                    <article
+                        class="category-card"
+                        data-category="Shawls"
+                    >
+
+                        <div
+                            class="category-image shawl-image"
+                        ></div>
+
 
                         <div class="category-content">
 
-                            <h3>SHAWLS</h3>
+                            <h3>
+                                SHAWLS
+                            </h3>
 
-                            <button>
+
+                            <button
+                                type="button"
+                                class="category-button"
+                                data-category="Shawls"
+                            >
                                 Explore Collection →
                             </button>
 
                         </div>
 
                     </article>
+
 
                 </div>
 
             </section>
+
 
 
             <!-- =====================================
@@ -200,18 +335,27 @@
 
             <section class="section">
 
+
                 <div class="section-title">
+
                     <span>✦</span>
-                    <h2>FEATURED</h2>
+
+                    <h2>
+                        FEATURED
+                    </h2>
+
                     <span>✦</span>
+
                 </div>
+
+
 
                 <div
                     class="products-grid"
                     id="featuredProducts"
                 >
 
-                    <!-- Products will come from backend -->
+                    <!-- Real products loaded from backend -->
 
                     <div class="loading">
                         Loading products...
@@ -219,58 +363,101 @@
 
                 </div>
 
+
             </section>
+
 
 
             <!-- =====================================
                  WHY SANA
             ====================================== -->
 
-            <section class="section why-section">
+            <section
+                class="section why-section"
+            >
+
 
                 <div class="section-title">
+
                     <span>✦</span>
-                    <h2>WHY SANA?</h2>
+
+                    <h2>
+                        WHY SANA?
+                    </h2>
+
                     <span>✦</span>
+
                 </div>
+
 
 
                 <div class="features">
 
+
                     <div class="feature">
-                        <div class="feature-icon">◇</div>
-                        <h3>PREMIUM QUALITY</h3>
+
+                        <div class="feature-icon">
+                            ◇
+                        </div>
+
+                        <h3>
+                            PREMIUM QUALITY
+                        </h3>
+
                         <p>
                             Carefully selected fabrics
                             and beautiful craftsmanship.
                         </p>
+
                     </div>
 
 
+
                     <div class="feature">
-                        <div class="feature-icon">♡</div>
-                        <h3>TIMELESS STYLE</h3>
+
+                        <div class="feature-icon">
+                            ♡
+                        </div>
+
+                        <h3>
+                            TIMELESS STYLE
+                        </h3>
+
                         <p>
                             Elegant designs made
                             for every occasion.
                         </p>
+
                     </div>
 
 
+
                     <div class="feature">
-                        <div class="feature-icon">✦</div>
-                        <h3>TRUSTED BRAND</h3>
+
+                        <div class="feature-icon">
+                            ✦
+                        </div>
+
+                        <h3>
+                            TRUSTED BRAND
+                        </h3>
+
                         <p>
                             Fashion created with
                             care and attention.
                         </p>
+
                     </div>
+
 
                 </div>
 
+
             </section>
 
+
         </main>
+
 
 
         <!-- =====================================
@@ -279,22 +466,39 @@
 
         <nav class="bottom-navigation">
 
+
             <a
                 href="index.html"
                 class="nav-item active"
             >
-                <span class="nav-icon">⌂</span>
-                <span>Home</span>
+
+                <span class="nav-icon">
+                    ⌂
+                </span>
+
+                <span>
+                    Home
+                </span>
+
             </a>
+
 
 
             <a
                 href="pages/shop.html"
                 class="nav-item"
             >
-                <span class="nav-icon">♧</span>
-                <span>Shop</span>
+
+                <span class="nav-icon">
+                    ♧
+                </span>
+
+                <span>
+                    Shop
+                </span>
+
             </a>
+
 
 
             <!-- CENTER POST BUTTON -->
@@ -303,37 +507,70 @@
                 href="pages/post.html"
                 class="post-button"
                 id="postButton"
+                aria-label="Create post"
             >
                 +
             </a>
+
 
 
             <a
                 href="pages/about.html"
                 class="nav-item"
             >
-                <span class="nav-icon">♙</span>
-                <span>About</span>
+
+                <span class="nav-icon">
+                    ♙
+                </span>
+
+                <span>
+                    About
+                </span>
+
             </a>
+
 
 
             <a
                 href="pages/contact.html"
                 class="nav-item"
             >
-                <span class="nav-icon">⌕</span>
-                <span>Contact</span>
+
+                <span class="nav-icon">
+                    ⌕
+                </span>
+
+                <span>
+                    Contact
+                </span>
+
             </a>
 
+
         </nav>
+
 
     </div>
 
 
-    <!-- JavaScript -->
+
+    <!-- =====================================
+         JAVASCRIPT
+    ====================================== -->
+
     <script src="js/app.js"></script>
+
     <script src="js/navigation.js"></script>
+
+    <!-- REAL BACKEND API -->
+
+    <script src="js/api.js"></script>
+
+    <!-- HOME CONTROLLER -->
+
     <script src="js/home.js"></script>
 
+
 </body>
+
 </html>
