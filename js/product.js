@@ -5,19 +5,21 @@
 
 "use strict";
 
+
 let currentProduct = null;
+
 let selectedSize = "";
 
-
-/* =========================================
-   INITIALIZE
-========================================= */
 
 document.addEventListener(
     "DOMContentLoaded",
     initializeProduct
 );
 
+
+/* =========================================
+   INITIALIZE
+========================================= */
 
 async function initializeProduct() {
 
@@ -36,6 +38,7 @@ async function initializeProduct() {
 
     setupFavoriteButton();
 
+
     await loadProduct(
         productId
     );
@@ -44,7 +47,7 @@ async function initializeProduct() {
 
 
 /* =========================================
-   GET PRODUCT ID
+   PRODUCT ID
 ========================================= */
 
 function getProductId() {
@@ -55,7 +58,9 @@ function getProductId() {
         );
 
 
-    return params.get("id");
+    return params.get(
+        "id"
+    );
 
 }
 
@@ -90,7 +95,7 @@ async function loadProduct(
         ) {
 
             throw new Error(
-                "Product API is not connected."
+                "API connection is not loaded."
             );
 
         }
@@ -115,10 +120,9 @@ async function loadProduct(
             product;
 
 
-        /*
-         * Only update AppState
-         * if it exists.
-         */
+        selectedSize =
+            "";
+
 
         if (
             typeof AppState !==
@@ -160,7 +164,7 @@ async function loadProduct(
 
 
 /* =========================================
-   RENDER PRODUCT
+   RENDER
 ========================================= */
 
 function renderProduct(
@@ -168,45 +172,63 @@ function renderProduct(
     container
 ) {
 
+    const id =
+        product?.id ??
+        product?._id ??
+        product?.product_id ??
+        product?.post_id;
+
+
     const name =
-        product.title ??
-        product.name ??
+        product?.name ??
+        product?.title ??
         "SANA Boutique Item";
 
 
     const description =
-        product.description ??
+        product?.description ??
         "No description available.";
 
 
     const price =
-        product.price ??
+        product?.price ??
+        product?.amount ??
         "";
 
 
     const category =
-        product.category ??
+        product?.category ??
+        product?.categories ??
         "Collection";
 
 
+    const color =
+        product?.color ??
+        "Not specified";
+
+
+    const stock =
+        product?.stock ??
+        product?.quantity ??
+        "Available";
+
+
     const image =
-        product.image_url ??
-        product.image ??
-        product.photo ??
+        product?.image_url ??
+        product?.image ??
+        product?.photo ??
         "";
 
 
     const sizes =
         normalizeSizes(
-            product.sizes
+            product?.sizes
         );
 
 
     container.innerHTML = `
 
-        <!-- =================================
-             MAIN PRODUCT IMAGE
-        ================================== -->
+        <!-- IMAGE -->
 
         <div class="product-main-image">
 
@@ -216,65 +238,95 @@ function renderProduct(
                         <img
                             src="${escapeHTML(image)}"
                             alt="${escapeHTML(name)}"
-                            class="product-large-image"
+                            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
                         >
-                      `
+
+                        <div
+                            class="image-placeholder"
+                            style="display:none;"
+                        ></div>
+                    `
                     : `
                         <div
-                            class="
-                                image-placeholder
-                            "
-                        >
-                            <span>
-                                SANA
-                            </span>
-                        </div>
-                      `
+                            class="image-placeholder"
+                        ></div>
+                    `
             }
 
         </div>
 
 
-        <!-- =================================
-             PRODUCT INFORMATION
-        ================================== -->
+        <!-- INFORMATION -->
 
-        <section class="product-information">
+        <section
+            class="product-information"
+        >
 
 
-            <span class="product-category">
-
+            <span
+                class="product-category"
+            >
                 ${escapeHTML(category)}
-
             </span>
 
 
-            <h1 class="product-title">
-
+            <h1>
                 ${escapeHTML(name)}
-
             </h1>
 
 
-            <div class="product-detail-price">
-
+            <div
+                class="product-detail-price"
+            >
                 ${formatProductPrice(price)}
-
             </div>
 
 
             <!-- DESCRIPTION -->
 
-            <div class="product-description">
+            <div
+                class="product-description"
+            >
 
                 <h2>
                     Description
                 </h2>
 
-
                 <p>
                     ${escapeHTML(description)}
                 </p>
+
+            </div>
+
+
+            <!-- DETAILS -->
+
+            <div class="product-extra">
+
+                <div class="detail-item">
+
+                    <span class="detail-label">
+                        Color
+                    </span>
+
+                    <span class="detail-value">
+                        ${escapeHTML(color)}
+                    </span>
+
+                </div>
+
+
+                <div class="detail-item">
+
+                    <span class="detail-label">
+                        Stock
+                    </span>
+
+                    <span class="detail-value">
+                        ${escapeHTML(stock)}
+                    </span>
+
+                </div>
 
             </div>
 
@@ -301,46 +353,38 @@ function renderProduct(
                                 ${sizes.map(
                                     size => `
 
-                                    <button
-                                        type="button"
-                                        class="product-size"
-                                        data-size="${escapeHTML(size)}"
-                                    >
-                                        ${escapeHTML(size)}
-                                    </button>
+                                        <button
+                                            type="button"
+                                            class="product-size"
+                                            data-size="${escapeHTML(size)}"
+                                        >
+                                            ${escapeHTML(size)}
+                                        </button>
 
-                                `
+                                    `
                                 ).join("")}
 
                             </div>
 
                         </div>
 
-                      `
-                    : `
-                        <div
-                            class="product-no-size"
-                        >
-                            Size information
-                            not available.
-                        </div>
-                      `
+                    `
+                    : ""
             }
 
 
             <!-- ACTIONS -->
 
-            <div class="product-actions">
-
+            <div
+                class="product-actions"
+            >
 
                 <button
                     type="button"
                     class="add-to-bag"
                     id="addToBag"
                 >
-
                     ADD TO BAG
-
                 </button>
 
 
@@ -350,11 +394,8 @@ function renderProduct(
                     id="shareProduct"
                     aria-label="Share product"
                 >
-
                     ↗
-
                 </button>
-
 
             </div>
 
@@ -405,7 +446,8 @@ function setupSizeSelection() {
 
 
                     selectedSize =
-                        button.dataset.size;
+                        button.dataset.size ||
+                        "";
 
                 }
             );
@@ -438,7 +480,7 @@ function setupProductActions(
 
                 const sizes =
                     normalizeSizes(
-                        product.sizes
+                        product?.sizes
                     );
 
 
@@ -448,7 +490,7 @@ function setupProductActions(
                 ) {
 
                     showToast(
-                        "Please select a size"
+                        "Please select a size."
                     );
 
                     return;
@@ -476,6 +518,7 @@ function setupProductActions(
                         item
                     );
 
+
                     showToast(
                         "Added to bag"
                     );
@@ -483,7 +526,7 @@ function setupProductActions(
                 } else {
 
                     showToast(
-                        "Cart is not connected yet."
+                        "Shopping bag is unavailable."
                     );
 
                 }
@@ -518,7 +561,7 @@ function setupProductActions(
 
 
 /* =========================================
-   FAVORITE BUTTON
+   FAVORITE
 ========================================= */
 
 function setupFavoriteButton() {
@@ -540,25 +583,22 @@ function setupFavoriteButton() {
 
 
             const id =
-                getProductIdValue(
-                    currentProduct
-                );
+                currentProduct.id ??
+                currentProduct._id ??
+                currentProduct.product_id ??
+                currentProduct.post_id;
 
 
             if (
-                !id ||
-                typeof toggleFavorite !==
+                typeof toggleFavorite ===
                 "function"
             ) {
 
-                return;
+                toggleFavorite(
+                    id
+                );
 
             }
-
-
-            toggleFavorite(
-                id
-            );
 
 
             updateProductFavoriteButton(
@@ -590,32 +630,15 @@ function setupHeaderFavorite(
 
 
     const id =
-        getProductIdValue(
-            product
-        );
+        product?.id ??
+        product?._id ??
+        product?.product_id ??
+        product?.post_id;
 
 
     updateProductFavoriteButton(
         button,
         id
-    );
-
-}
-
-
-/* =========================================
-   GET PRODUCT ID
-========================================= */
-
-function getProductIdValue(
-    product
-) {
-
-    return (
-        product?.id ??
-        product?._id ??
-        product?.product_id ??
-        null
     );
 
 }
@@ -632,7 +655,8 @@ function updateProductFavoriteButton(
 
     if (
         !button ||
-        !productId
+        productId === undefined ||
+        productId === null
     ) {
 
         return;
@@ -650,7 +674,7 @@ function updateProductFavoriteButton(
     }
 
 
-    const active =
+    const favorite =
         isFavorite(
             productId
         );
@@ -658,12 +682,12 @@ function updateProductFavoriteButton(
 
     button.classList.toggle(
         "active",
-        active
+        favorite
     );
 
 
     button.textContent =
-        active
+        favorite
             ? "♥"
             : "♡";
 
@@ -671,7 +695,7 @@ function updateProductFavoriteButton(
 
 
 /* =========================================
-   SHARE PRODUCT
+   SHARE
 ========================================= */
 
 async function shareProduct() {
@@ -680,8 +704,8 @@ async function shareProduct() {
 
 
     const name =
-        currentProduct.title ??
         currentProduct.name ??
+        currentProduct.title ??
         "SANA Boutique Product";
 
 
@@ -690,7 +714,8 @@ async function shareProduct() {
 
 
     if (
-        navigator.share
+        typeof navigator.share ===
+        "function"
     ) {
 
         try {
@@ -702,7 +727,7 @@ async function shareProduct() {
                 text:
                     `Check out ${name} on SANA Boutique.`,
 
-                url: url
+                url
 
             });
 
@@ -722,15 +747,26 @@ async function shareProduct() {
 
     try {
 
-        await navigator.clipboard.writeText(
-            url
-        );
+        if (
+            navigator.clipboard
+        ) {
+
+            await navigator.clipboard.writeText(
+                url
+            );
 
 
-        showToast(
-            "Product link copied"
-        );
+            showToast(
+                "Product link copied"
+            );
 
+        } else {
+
+            throw new Error(
+                "Clipboard unavailable"
+            );
+
+        }
 
     } catch {
 
@@ -768,8 +804,7 @@ function normalizeSizes(
 
 
     if (
-        typeof sizes ===
-        "string" &&
+        typeof sizes === "string" &&
         sizes.trim()
     ) {
 
@@ -790,7 +825,7 @@ function normalizeSizes(
 
 
 /* =========================================
-   FORMAT PRICE
+   PRICE
 ========================================= */
 
 function formatProductPrice(
@@ -825,7 +860,7 @@ function formatProductPrice(
     ) {
 
         return escapeHTML(
-            price
+            String(price)
         );
 
     }
@@ -847,9 +882,7 @@ function setProductLoading(
     container.innerHTML = `
 
         <div class="loading">
-
             Loading product...
-
         </div>
 
     `;
@@ -969,26 +1002,26 @@ function escapeHTML(
     return String(
         value ?? ""
     )
-    .replace(
-        /&/g,
-        "&amp;"
-    )
-    .replace(
-        /</g,
-        "&lt;"
-    )
-    .replace(
-        />/g,
-        "&gt;"
-    )
-    .replace(
-        /"/g,
-        "&quot;"
-    )
-    .replace(
-        /'/g,
-        "&#039;"
-    );
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+        .replace(
+            /</g,
+            "&lt;"
+        )
+        .replace(
+            />/g,
+            "&gt;"
+        )
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+        .replace(
+            /'/g,
+            "&#039;"
+        );
 
 }
 
@@ -999,7 +1032,6 @@ function escapeHTML(
 
 window.loadProduct =
     loadProduct;
-
 
 window.shareProduct =
     shareProduct;
