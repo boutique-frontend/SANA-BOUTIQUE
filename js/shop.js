@@ -7,13 +7,11 @@
 
 
 let shopProducts = [];
+
 let activeCategory = "all";
+
 let searchTerm = "";
 
-
-/* =========================================
-   INITIALIZE
-========================================= */
 
 document.addEventListener(
     "DOMContentLoaded",
@@ -21,9 +19,15 @@ document.addEventListener(
 );
 
 
+/* =========================================
+   INITIALIZE
+========================================= */
+
 async function initializeShop() {
 
     setupSearch();
+
+    setupSearchButton();
 
     setupCategoryFilters();
 
@@ -37,7 +41,7 @@ async function initializeShop() {
 
 
 /* =========================================
-   LOAD PRODUCTS FROM BACKEND
+   LOAD PRODUCTS
 ========================================= */
 
 async function loadShopProducts() {
@@ -53,7 +57,9 @@ async function loadShopProducts() {
 
     try {
 
-        setShopLoading(container);
+        setShopLoading(
+            container
+        );
 
 
         if (
@@ -62,7 +68,7 @@ async function loadShopProducts() {
         ) {
 
             throw new Error(
-                "API connection is not available."
+                "API connection is not loaded."
             );
 
         }
@@ -77,10 +83,6 @@ async function loadShopProducts() {
                 ? products
                 : [];
 
-
-        /*
-         * Save globally only if AppState exists.
-         */
 
         if (
             typeof AppState !==
@@ -114,7 +116,7 @@ async function loadShopProducts() {
 
 
 /* =========================================
-   RENDER PRODUCTS
+   RENDER
 ========================================= */
 
 function renderShopProducts() {
@@ -144,7 +146,10 @@ function renderShopProducts() {
         );
 
 
-        updateResultsTitle(0);
+        updateResultsTitle(
+            0
+        );
+
 
         return;
 
@@ -176,7 +181,7 @@ function renderShopProducts() {
 
 
 /* =========================================
-   FILTER PRODUCTS
+   FILTER
 ========================================= */
 
 function filterProducts(
@@ -191,23 +196,22 @@ function filterProducts(
                     product?.name ??
                     product?.title ??
                     ""
-                )
-                .toLowerCase();
+                ).toLowerCase();
 
 
             const description =
                 String(
                     product?.description ??
                     ""
-                )
-                .toLowerCase();
+                ).toLowerCase();
 
 
             const category =
-                normalizeCategory(
+                String(
                     product?.category ??
+                    product?.categories ??
                     ""
-                );
+                ).toLowerCase();
 
 
             const matchesSearch =
@@ -225,9 +229,9 @@ function filterProducts(
 
             const matchesCategory =
                 activeCategory === "all" ||
-                category ===
-                normalizeCategory(
+                category.includes(
                     activeCategory
+                        .toLowerCase()
                 );
 
 
@@ -263,17 +267,19 @@ function createShopProductCard(
     const id =
         product?.id ??
         product?._id ??
-        product?.product_id;
+        product?.product_id ??
+        product?.post_id;
 
 
     const name =
-        product?.title ??
         product?.name ??
+        product?.title ??
         "SANA Boutique Item";
 
 
     const price =
         product?.price ??
+        product?.amount ??
         "";
 
 
@@ -286,6 +292,7 @@ function createShopProductCard(
 
     const category =
         product?.category ??
+        product?.categories ??
         "";
 
 
@@ -294,12 +301,10 @@ function createShopProductCard(
         ${
             category
                 ? `
-                    <span
-                        class="product-badge"
-                    >
+                    <span class="product-badge">
                         ${escapeHTML(category)}
                     </span>
-                  `
+                `
                 : ""
         }
 
@@ -307,7 +312,7 @@ function createShopProductCard(
         <button
             type="button"
             class="product-favorite"
-            data-favorite="${escapeHTML(id ?? "")}"
+            data-favorite="${escapeHTML(id)}"
             aria-label="Favorite"
         >
             ♡
@@ -322,20 +327,19 @@ function createShopProductCard(
                         src="${escapeHTML(image)}"
                         alt="${escapeHTML(name)}"
                         loading="lazy"
+                        onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
                     >
-                  `
+
+                    <div
+                        class="product-card-image image-placeholder"
+                        style="display:none;"
+                    ></div>
+                `
                 : `
                     <div
-                        class="
-                            product-card-image
-                            image-placeholder
-                        "
-                    >
-                        <span>
-                            SANA
-                        </span>
-                    </div>
-                  `
+                        class="product-card-image image-placeholder"
+                    ></div>
+                `
         }
 
 
@@ -347,9 +351,7 @@ function createShopProductCard(
 
 
             <div class="product-price">
-
                 ${formatShopPrice(price)}
-
             </div>
 
         </div>
@@ -357,9 +359,7 @@ function createShopProductCard(
     `;
 
 
-    /* =====================================
-       OPEN PRODUCT
-    ===================================== */
+    /* OPEN PRODUCT */
 
     card.addEventListener(
         "click",
@@ -376,29 +376,19 @@ function createShopProductCard(
             }
 
 
-            if (!id) {
+            if (id !== undefined && id !== null) {
 
-                console.warn(
-                    "Product has no ID:",
-                    product
+                openProduct(
+                    id
                 );
 
-                return;
-
             }
-
-
-            openProduct(
-                id
-            );
 
         }
     );
 
 
-    /* =====================================
-       FAVORITE
-    ===================================== */
+    /* FAVORITE */
 
     const favorite =
         card.querySelector(
@@ -450,24 +440,7 @@ function createShopProductCard(
 
 
 /* =========================================
-   OPEN PRODUCT PAGE
-========================================= */
-
-function openProduct(
-    productId
-) {
-
-    if (!productId) return;
-
-
-    window.location.href =
-        `product.html?id=${encodeURIComponent(productId)}`;
-
-}
-
-
-/* =========================================
-   FAVORITE STATE
+   FAVORITE
 ========================================= */
 
 function updateShopFavorite(
@@ -477,7 +450,8 @@ function updateShopFavorite(
 
     if (
         !button ||
-        !productId
+        productId === undefined ||
+        productId === null
     ) {
 
         return;
@@ -563,18 +537,17 @@ function setupSearch() {
             "click",
             () => {
 
-                input.value = "";
+                input.value =
+                    "";
 
-                searchTerm = "";
-
+                searchTerm =
+                    "";
 
                 updateClearButton(
                     clearButton
                 );
 
-
                 renderShopProducts();
-
 
                 input.focus();
 
@@ -582,6 +555,62 @@ function setupSearch() {
         );
 
     }
+
+}
+
+
+/* =========================================
+   SEARCH HEADER BUTTON
+========================================= */
+
+function setupSearchButton() {
+
+    const button =
+        document.getElementById(
+            "shopSearchButton"
+        );
+
+
+    const search =
+        document.getElementById(
+            "shopSearch"
+        );
+
+
+    const input =
+        document.getElementById(
+            "productSearch"
+        );
+
+
+    if (!button || !search) return;
+
+
+    button.addEventListener(
+        "click",
+        () => {
+
+            search.classList.toggle(
+                "visible"
+            );
+
+
+            if (
+                search.classList.contains(
+                    "visible"
+                ) &&
+                input
+            ) {
+
+                setTimeout(
+                    () => input.focus(),
+                    100
+                );
+
+            }
+
+        }
+    );
 
 }
 
@@ -625,10 +654,11 @@ function setupCategoryFilters() {
                 () => {
 
                     activeCategory =
-                        normalizeCategory(
-                            button.dataset.category ||
+                        (
+                            button.dataset
+                                .category ||
                             "all"
-                        );
+                        ).toLowerCase();
 
 
                     buttons.forEach(
@@ -661,7 +691,7 @@ function setupCategoryFilters() {
 
 
 /* =========================================
-   CATEGORY FROM URL
+   URL CATEGORY
 ========================================= */
 
 function readCategoryFromURL() {
@@ -678,13 +708,22 @@ function readCategoryFromURL() {
         );
 
 
-    if (!category) return;
+    if (!category) {
+
+        updateCategoryTitle();
+
+        return;
+
+    }
 
 
     const normalized =
-        normalizeCategory(
-            category
-        );
+        category
+            .toLowerCase()
+            .replace(
+                /\s+/g,
+                ""
+            );
 
 
     activeCategory =
@@ -701,8 +740,14 @@ function readCategoryFromURL() {
         button => {
 
             const buttonCategory =
-                normalizeCategory(
-                    button.dataset.category ||
+                (
+                    button.dataset
+                        .category ||
+                    ""
+                )
+                .toLowerCase()
+                .replace(
+                    /\s+/g,
                     ""
                 );
 
@@ -710,7 +755,7 @@ function readCategoryFromURL() {
             button.classList.toggle(
                 "active",
                 buttonCategory ===
-                normalized
+                    normalized
             );
 
         }
@@ -718,27 +763,6 @@ function readCategoryFromURL() {
 
 
     updateCategoryTitle();
-
-}
-
-
-/* =========================================
-   NORMALIZE CATEGORY
-========================================= */
-
-function normalizeCategory(
-    value
-) {
-
-    return String(
-        value ?? ""
-    )
-    .toLowerCase()
-    .trim()
-    .replace(
-        /[\s_-]+/g,
-        ""
-    );
 
 }
 
@@ -758,29 +782,18 @@ function updateCategoryTitle() {
     if (!title) return;
 
 
-    if (
-        activeCategory ===
-        "all"
-    ) {
-
-        title.textContent =
-            "All Products";
-
-        return;
-
-    }
-
-
     title.textContent =
-        capitalizeWords(
-            activeCategory
-        );
+        activeCategory === "all"
+            ? "All Products"
+            : capitalizeWords(
+                activeCategory
+            );
 
 }
 
 
 /* =========================================
-   RESULTS COUNT
+   RESULTS
 ========================================= */
 
 function updateResultsTitle(
@@ -830,7 +843,7 @@ function setupFilterButton() {
         () => {
 
             showToast(
-                "More filters coming soon"
+                "More filters coming soon."
             );
 
         }
@@ -911,12 +924,13 @@ function showShopError(
 
 
             <h3>
-                Something went wrong
+                Couldn't Load Collection
             </h3>
 
 
             <p>
-                We couldn't load the collection.
+                Please check your connection
+                and try again.
             </p>
 
 
@@ -924,6 +938,7 @@ function showShopError(
                 type="button"
                 class="gold-button"
                 id="retryShop"
+                style="margin-top:18px;"
             >
                 TRY AGAIN
             </button>
@@ -987,7 +1002,7 @@ function formatShopPrice(
     ) {
 
         return escapeHTML(
-            price
+            String(price)
         );
 
     }
@@ -1031,26 +1046,26 @@ function escapeHTML(
     return String(
         value ?? ""
     )
-    .replace(
-        /&/g,
-        "&amp;"
-    )
-    .replace(
-        /</g,
-        "&lt;"
-    )
-    .replace(
-        />/g,
-        "&gt;"
-    )
-    .replace(
-        /"/g,
-        "&quot;"
-    )
-    .replace(
-        /'/g,
-        "&#039;"
-    );
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+        .replace(
+            /</g,
+            "&lt;"
+        )
+        .replace(
+            />/g,
+            "&gt;"
+        )
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+        .replace(
+            /'/g,
+            "&#039;"
+        );
 
 }
 
@@ -1062,10 +1077,5 @@ function escapeHTML(
 window.loadShopProducts =
     loadShopProducts;
 
-
 window.renderShopProducts =
     renderShopProducts;
-
-
-window.openProduct =
-    openProduct;
