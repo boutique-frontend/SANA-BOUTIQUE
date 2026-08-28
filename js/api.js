@@ -6,8 +6,20 @@
 "use strict";
 
 
+/* =========================================
+   API CONFIGURATION
+========================================= */
+
 const API_BASE_URL =
     "https://boutique-backend-6fcr.onrender.com";
+
+
+const API_ENDPOINTS = {
+
+    posts:
+        `${API_BASE_URL}/api/posts`
+
+};
 
 
 /* =========================================
@@ -21,14 +33,32 @@ async function apiRequest(
 
     let response;
 
+
     try {
 
         response = await fetch(
             url,
-            options
+            {
+                ...options,
+
+                /*
+                 * Prevent cached GET requests from
+                 * showing old products.
+                 */
+
+                cache:
+                    options.cache ||
+                    "no-store"
+            }
         );
 
     } catch (error) {
+
+        console.error(
+            "SANA API connection error:",
+            error
+        );
+
 
         throw new Error(
             "Unable to connect to SANA server. Please check your internet connection."
@@ -39,16 +69,21 @@ async function apiRequest(
 
     let data = null;
 
+
     const contentType =
         response.headers.get(
             "content-type"
         ) || "";
 
 
+    /* =====================================
+       JSON RESPONSE
+    ====================================== */
+
     if (
-        contentType.includes(
-            "application/json"
-        )
+        contentType
+            .toLowerCase()
+            .includes("application/json")
     ) {
 
         try {
@@ -56,23 +91,39 @@ async function apiRequest(
             data =
                 await response.json();
 
-        } catch {
+        } catch (error) {
+
+            console.error(
+                "JSON parsing failed:",
+                error
+            );
 
             data = null;
 
         }
 
-    } else {
+    }
+
+
+    /* =====================================
+       TEXT RESPONSE
+    ====================================== */
+
+    else {
 
         try {
 
             const text =
                 await response.text();
 
-            data =
-                text
-                    ? { message: text }
-                    : null;
+
+            if (text) {
+
+                data = {
+                    message: text
+                };
+
+            }
 
         } catch {
 
@@ -83,12 +134,20 @@ async function apiRequest(
     }
 
 
+    /* =====================================
+       HTTP ERROR
+    ====================================== */
+
     if (!response.ok) {
 
-        throw new Error(
+        const message =
             data?.error ||
             data?.message ||
-            `Server error (${response.status})`
+            `Server error (${response.status})`;
+
+
+        throw new Error(
+            message
         );
 
     }
@@ -100,34 +159,53 @@ async function apiRequest(
 
 
 /* =========================================
-   GET ALL PRODUCTS
+   NORMALIZE PRODUCT ID
 ========================================= */
 
-async function getProducts() {
+function getProductId(
+    product
+) {
 
-    const data =
-        await apiRequest(
-            `${API_BASE_URL}/api/posts`,
-            {
-                method: "GET",
+    if (!product) {
+        return null;
+    }
 
-                headers: {
-                    "Accept":
-                        "application/json"
-                },
 
-                cache: "no-store"
-            }
-        );
+    return (
+        product.id ??
+        product._id ??
+        product.product_id ??
+        product.post_id ??
+        null
+    );
 
+}
+
+
+/* =========================================
+   NORMALIZE PRODUCT LIST
+========================================= */
+
+function normalizeProductList(
+    data
+) {
 
     /*
-     * Support different backend response shapes:
+     * Backend can return:
      *
      * []
-     * { posts: [] }
-     * { products: [] }
-     * { data: [] }
+     *
+     * {
+     *   posts: []
+     * }
+     *
+     * {
+     *   products: []
+     * }
+     *
+     * {
+     *   data: []
+     * }
      */
 
     if (Array.isArray(data)) {
@@ -158,9 +236,51 @@ async function getProducts() {
     }
 
 
-    throw new Error(
-        "Backend returned invalid product data."
-    );
+    return null;
+
+}
+
+
+/* =========================================
+   GET ALL PRODUCTS
+========================================= */
+
+async function getProducts() {
+
+    const data =
+        await apiRequest(
+            API_ENDPOINTS.posts,
+            {
+                method: "GET",
+
+                headers: {
+                    "Accept":
+                        "application/json"
+                }
+            }
+        );
+
+
+    const products =
+        normalizeProductList(data);
+
+
+    if (!products) {
+
+        console.error(
+            "Invalid backend response:",
+            data
+        );
+
+
+        throw new Error(
+            "Backend returned invalid product data."
+        );
+
+    }
+
+
+    return products;
 
 }
 
@@ -186,25 +306,41 @@ async function getProductById(
     }
 
 
+    /*
+     * We currently use the existing
+     * GET /api/posts endpoint because
+     * your backend API structure provided
+     * does not confirm a dedicated
+     * /api/posts/:id GET endpoint.
+     */
+
     const products =
         await getProducts();
 
 
-    return products.find(
-        product => {
-
-            const id =
-                product?.id ??
-                product?._id ??
-                product?.product_id ??
-                product?.post_id;
+    const requestedId =
+        String(productId);
 
 
-            return String(id) ===
-                String(productId);
+    const product =
+        products.find(
+            item => {
 
-        }
-    ) || null;
+                const id =
+                    getProductId(item);
+
+
+                return (
+                    id !== null &&
+                    String(id) ===
+                    requestedId
+                );
+
+            }
+        );
+
+
+    return product || null;
 
 }
 
@@ -226,6 +362,10 @@ async function createProduct(
     }
 
 
+    /* =====================================
+       IMAGE VALIDATION
+    ====================================== */
+
     if (!product.image) {
 
         throw new Error(
@@ -235,83 +375,279 @@ async function createProduct(
     }
 
 
+    if (
+        !(
+            product.image
+            instanceof File
+        )
+    ) {
+
+        throw new Error(
+            "Invalid product image."
+        );
+
+    }
+
+
+    if (
+        !product.image.type
+            .toLowerCase()
+            .startsWith("image/")
+    ) {
+
+        throw new Error(
+            "The selected file is not a valid image."
+        );
+
+    }
+
+
+    const MAX_IMAGE_SIZE =
+        10 * 1024 * 1024;
+
+
+    if (
+        product.image.size >
+        MAX_IMAGE_SIZE
+    ) {
+
+        throw new Error(
+            "Image must be smaller than 10MB."
+        );
+
+    }
+
+
+    /* =====================================
+       REQUIRED FIELD VALIDATION
+    ====================================== */
+
+    const title =
+        String(
+            product.name ||
+            ""
+        ).trim();
+
+
+    const description =
+        String(
+            product.description ||
+            ""
+        ).trim();
+
+
+    const category =
+        String(
+            product.category ||
+            ""
+        ).trim();
+
+
+    const price =
+        String(
+            product.price ||
+            ""
+        ).trim();
+
+
+    if (!title) {
+
+        throw new Error(
+            "Product name is required."
+        );
+
+    }
+
+
+    if (!description) {
+
+        throw new Error(
+            "Product description is required."
+        );
+
+    }
+
+
+    if (!category) {
+
+        throw new Error(
+            "Product category is required."
+        );
+
+    }
+
+
+    if (
+        price === "" ||
+        Number.isNaN(Number(price)) ||
+        Number(price) < 0
+    ) {
+
+        throw new Error(
+            "Please enter a valid price."
+        );
+
+    }
+
+
+    /* =====================================
+       CREATE FORMDATA
+    ====================================== */
+
     const formData =
         new FormData();
 
 
     /*
-     * BACKEND FIELD MAPPING
+     * IMPORTANT:
+     *
+     * Flask backend expects "title".
+     * Frontend uses "name".
      */
 
     formData.append(
         "title",
-        String(product.name || "")
+        title
     );
 
 
     formData.append(
         "category",
-        String(product.category || "")
+        category
     );
 
 
     formData.append(
         "price",
-        String(product.price || "0")
+        price
     );
+
+
+    /* =====================================
+       SIZES
+    ====================================== */
+
+    let sizes = "";
+
+
+    if (
+        Array.isArray(
+            product.sizes
+        )
+    ) {
+
+        sizes =
+            product.sizes
+                .map(
+                    size =>
+                        String(size).trim()
+                )
+                .filter(Boolean)
+                .join(", ");
+
+    }
+
+    else if (
+        product.sizes
+    ) {
+
+        sizes =
+            String(
+                product.sizes
+            ).trim();
+
+    }
 
 
     formData.append(
         "sizes",
-        Array.isArray(product.sizes)
-            ? product.sizes.join(", ")
-            : String(product.sizes || "")
+        sizes
     );
 
+
+    /* =====================================
+       DESCRIPTION
+    ====================================== */
 
     formData.append(
         "description",
-        String(product.description || "")
+        description
     );
 
 
-    /*
-     * EXTRA INFORMATION
-     */
+    /* =====================================
+       COLOR
+    ====================================== */
+
+    const color =
+        String(
+            product.color ||
+            ""
+        ).trim();
+
 
     formData.append(
         "color",
-        String(product.color || "")
+        color
     );
+
+
+    /* =====================================
+       STOCK
+    ====================================== */
+
+    let stock =
+        String(
+            product.stock ??
+            ""
+        ).trim();
+
+
+    if (stock === "") {
+
+        stock = "0";
+
+    }
+
+
+    if (
+        Number.isNaN(
+            Number(stock)
+        ) ||
+        Number(stock) < 0
+    ) {
+
+        throw new Error(
+            "Please enter a valid stock quantity."
+        );
+
+    }
 
 
     formData.append(
         "stock",
-        String(product.stock || "0")
+        stock
     );
 
 
-    /*
-     * IMAGE
-     */
+    /* =====================================
+       IMAGE
+    ====================================== */
 
     formData.append(
         "image",
-        product.image
+        product.image,
+        product.image.name
     );
 
 
-    /*
-     * IMPORTANT:
-     *
-     * Do NOT manually set Content-Type here.
-     * Browser automatically adds the multipart
-     * boundary when FormData is used.
-     */
+    /* =====================================
+       SEND REQUEST
+    ====================================== */
 
     const data =
         await apiRequest(
-            `${API_BASE_URL}/api/posts`,
+            API_ENDPOINTS.posts,
             {
                 method: "POST",
 
@@ -319,6 +655,10 @@ async function createProduct(
             }
         );
 
+
+    /*
+     * Return backend response directly.
+     */
 
     return data;
 
@@ -346,9 +686,15 @@ async function deleteProduct(
     }
 
 
+    const encodedId =
+        encodeURIComponent(
+            String(productId)
+        );
+
+
     const data =
         await apiRequest(
-            `${API_BASE_URL}/api/posts/${encodeURIComponent(productId)}`,
+            `${API_ENDPOINTS.posts}/${encodedId}`,
             {
                 method: "DELETE",
 
@@ -382,20 +728,69 @@ async function checkBackend() {
                     headers: {
                         "Accept":
                             "application/json"
-                    },
-
-                    cache: "no-store"
+                    }
                 }
             );
 
 
         return Boolean(
-            data?.message
+            data &&
+            (
+                data.message ||
+                data.status ||
+                data.success
+            )
         );
 
-    } catch {
+    } catch (error) {
+
+        console.warn(
+            "SANA backend health check failed:",
+            error.message
+        );
+
 
         return false;
+
+    }
+
+}
+
+
+/* =========================================
+   DEBUG API
+========================================= */
+
+async function testProductsAPI() {
+
+    try {
+
+        const products =
+            await getProducts();
+
+
+        console.log(
+            "SANA API connected successfully."
+        );
+
+
+        console.log(
+            "Products:",
+            products
+        );
+
+
+        return products;
+
+    } catch (error) {
+
+        console.error(
+            "SANA API test failed:",
+            error
+        );
+
+
+        throw error;
 
     }
 
@@ -409,17 +804,30 @@ async function checkBackend() {
 window.API_BASE_URL =
     API_BASE_URL;
 
+
+window.API_ENDPOINTS =
+    API_ENDPOINTS;
+
+
 window.getProducts =
     getProducts;
+
 
 window.getProductById =
     getProductById;
 
+
 window.createProduct =
     createProduct;
+
 
 window.deleteProduct =
     deleteProduct;
 
+
 window.checkBackend =
     checkBackend;
+
+
+window.testProductsAPI =
+    testProductsAPI;
