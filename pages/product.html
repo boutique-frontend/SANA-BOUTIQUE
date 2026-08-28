@@ -7,13 +7,20 @@
 
     <meta
         name="viewport"
-        content="width=device-width, initial-scale=1.0"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
+    >
+
+    <meta
+        name="theme-color"
+        content="#0d0d0d"
     >
 
     <title>Product | SANA Boutique</title>
 
 
-    <!-- Fonts -->
+    <!-- =====================================
+         FONTS
+    ====================================== -->
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
 
@@ -29,7 +36,9 @@
     >
 
 
-    <!-- CSS -->
+    <!-- =====================================
+         CSS
+    ====================================== -->
 
     <link
         rel="stylesheet"
@@ -51,6 +60,295 @@
         href="../css/responsive.css"
     >
 
+
+    <!-- =====================================
+         EXTRA PRODUCT VIEWER CSS
+    ====================================== -->
+
+    <style>
+
+        /* =====================================
+           PRODUCT IMAGE TAP AREA
+        ====================================== */
+
+        .product-main-image {
+
+            position: relative;
+
+            cursor: zoom-in;
+
+            overflow: hidden;
+
+        }
+
+
+        .product-main-image img {
+
+            display: block;
+
+            width: 100%;
+
+            height: auto;
+
+            cursor: zoom-in;
+
+            transition:
+                transform 0.35s ease,
+                opacity 0.25s ease;
+
+        }
+
+
+        .product-main-image:hover img {
+
+            transform: scale(1.02);
+
+        }
+
+
+        /* =====================================
+           IMAGE VIEW HINT
+        ====================================== */
+
+        .product-image-view-hint {
+
+            position: absolute;
+
+            right: 14px;
+
+            bottom: 14px;
+
+            z-index: 5;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 7px;
+
+            padding: 9px 13px;
+
+            border-radius: 999px;
+
+            background: rgba(0, 0, 0, 0.68);
+
+            color: #ffffff;
+
+            font-family: Inter, sans-serif;
+
+            font-size: 11px;
+
+            font-weight: 600;
+
+            letter-spacing: 0.08em;
+
+            pointer-events: none;
+
+            backdrop-filter: blur(8px);
+
+        }
+
+
+        /* =====================================
+           FULLSCREEN IMAGE VIEWER
+        ====================================== */
+
+        .product-image-viewer {
+
+            position: fixed;
+
+            inset: 0;
+
+            z-index: 99999;
+
+            display: none;
+
+            align-items: center;
+
+            justify-content: center;
+
+            padding: 20px;
+
+            background: rgba(0, 0, 0, 0.94);
+
+            backdrop-filter: blur(12px);
+
+            opacity: 0;
+
+            transition: opacity 0.25s ease;
+
+        }
+
+
+        .product-image-viewer.active {
+
+            display: flex;
+
+            opacity: 1;
+
+        }
+
+
+        .product-image-viewer img {
+
+            display: block;
+
+            max-width: 96vw;
+
+            max-height: 88vh;
+
+            width: auto;
+
+            height: auto;
+
+            object-fit: contain;
+
+            border-radius: 4px;
+
+            box-shadow:
+                0 20px 70px rgba(0, 0, 0, 0.55);
+
+            animation:
+                productImageZoom 0.25s ease;
+
+        }
+
+
+        @keyframes productImageZoom {
+
+            from {
+
+                transform: scale(0.94);
+
+                opacity: 0;
+
+            }
+
+            to {
+
+                transform: scale(1);
+
+                opacity: 1;
+
+            }
+
+        }
+
+
+        /* =====================================
+           CLOSE BUTTON
+        ====================================== */
+
+        .product-viewer-close {
+
+            position: fixed;
+
+            top: 18px;
+
+            right: 18px;
+
+            z-index: 100000;
+
+            width: 46px;
+
+            height: 46px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border: 1px solid rgba(255,255,255,0.2);
+
+            border-radius: 50%;
+
+            background: rgba(20,20,20,0.8);
+
+            color: #ffffff;
+
+            font-size: 28px;
+
+            line-height: 1;
+
+            cursor: pointer;
+
+        }
+
+
+        .product-viewer-close:active {
+
+            transform: scale(0.94);
+
+        }
+
+
+        /* =====================================
+           IMAGE LOADING
+        ====================================== */
+
+        .product-viewer-loading {
+
+            position: absolute;
+
+            color: #ffffff;
+
+            font-family: Inter, sans-serif;
+
+            font-size: 13px;
+
+            letter-spacing: 0.08em;
+
+        }
+
+
+        /* =====================================
+           BODY LOCK
+        ====================================== */
+
+        body.product-viewer-open {
+
+            overflow: hidden;
+
+        }
+
+
+        /* =====================================
+           MOBILE
+        ====================================== */
+
+        @media (max-width: 600px) {
+
+            .product-image-viewer {
+
+                padding: 10px;
+
+            }
+
+
+            .product-image-viewer img {
+
+                max-width: 100vw;
+
+                max-height: 82vh;
+
+                border-radius: 0;
+
+            }
+
+
+            .product-viewer-close {
+
+                top: 12px;
+
+                right: 12px;
+
+            }
+
+        }
+
+    </style>
+
 </head>
 
 
@@ -59,7 +357,9 @@
 <div id="app">
 
 
-    <!-- HEADER -->
+    <!-- =====================================
+         HEADER
+    ====================================== -->
 
     <header class="app-header">
 
@@ -90,7 +390,7 @@
             type="button"
             class="header-button"
             id="productFavorite"
-            aria-label="Favorite"
+            aria-label="Favorite product"
         >
             ♡
         </button>
@@ -98,7 +398,10 @@
     </header>
 
 
-    <!-- PRODUCT -->
+
+    <!-- =====================================
+         PRODUCT CONTENT
+    ====================================== -->
 
     <main class="product-page">
 
@@ -116,16 +419,67 @@
     </main>
 
 
-    <!-- BOTTOM NAVIGATION -->
+
+    <!-- =====================================
+         FULLSCREEN IMAGE VIEWER
+    ====================================== -->
+
+    <div
+        id="productImageViewer"
+        class="product-image-viewer"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Product image viewer"
+    >
+
+        <button
+            type="button"
+            id="productViewerClose"
+            class="product-viewer-close"
+            aria-label="Close image"
+        >
+            ×
+        </button>
+
+
+        <div
+            class="product-viewer-loading"
+            id="productViewerLoading"
+        >
+            Loading image...
+        </div>
+
+
+        <img
+            id="productViewerImage"
+            src=""
+            alt="Product image"
+        >
+
+    </div>
+
+
+
+    <!-- =====================================
+         BOTTOM NAVIGATION
+    ====================================== -->
 
     <nav class="bottom-navigation">
+
 
         <a
             href="../index.html"
             class="nav-item"
         >
-            <span class="nav-icon">⌂</span>
-            <span>Home</span>
+
+            <span class="nav-icon">
+                ⌂
+            </span>
+
+            <span>
+                Home
+            </span>
+
         </a>
 
 
@@ -133,8 +487,15 @@
             href="shop.html"
             class="nav-item"
         >
-            <span class="nav-icon">♧</span>
-            <span>Shop</span>
+
+            <span class="nav-icon">
+                ♧
+            </span>
+
+            <span>
+                Shop
+            </span>
+
         </a>
 
 
@@ -152,8 +513,15 @@
             href="about.html"
             class="nav-item"
         >
-            <span class="nav-icon">♙</span>
-            <span>About</span>
+
+            <span class="nav-icon">
+                ♙
+            </span>
+
+            <span>
+                About
+            </span>
+
         </a>
 
 
@@ -161,25 +529,338 @@
             href="contact.html"
             class="nav-item"
         >
-            <span class="nav-icon">⌕</span>
-            <span>Contact</span>
+
+            <span class="nav-icon">
+                ⌕
+            </span>
+
+            <span>
+                Contact
+            </span>
+
         </a>
 
     </nav>
 
+
 </div>
 
 
-<!-- JAVASCRIPT -->
+
+<!-- =====================================
+     JAVASCRIPT
+====================================== -->
 
 <script src="../js/app.js"></script>
 
 <script src="../js/navigation.js"></script>
 
-<!-- IMPORTANT: API MUST LOAD BEFORE product.js -->
 <script src="../js/api.js"></script>
 
 <script src="../js/product.js"></script>
+
+
+<!-- =====================================
+     PRODUCT IMAGE VIEWER
+====================================== -->
+
+<script>
+
+"use strict";
+
+
+document.addEventListener(
+    "DOMContentLoaded",
+    setupProductImageViewer
+);
+
+
+function setupProductImageViewer() {
+
+    const viewer =
+        document.getElementById(
+            "productImageViewer"
+        );
+
+    const viewerImage =
+        document.getElementById(
+            "productViewerImage"
+        );
+
+    const closeButton =
+        document.getElementById(
+            "productViewerClose"
+        );
+
+    const loading =
+        document.getElementById(
+            "productViewerLoading"
+        );
+
+
+    if (
+        !viewer ||
+        !viewerImage ||
+        !closeButton
+    ) {
+
+        return;
+
+    }
+
+
+    /*
+     * Watch for the product image
+     * created dynamically by product.js.
+     */
+
+    const observer =
+        new MutationObserver(() => {
+
+            const productImage =
+                document.querySelector(
+                    ".product-main-image img"
+                );
+
+
+            if (!productImage) return;
+
+
+            if (
+                productImage.dataset.viewerReady ===
+                "true"
+            ) {
+
+                return;
+
+            }
+
+
+            productImage.dataset.viewerReady =
+                "true";
+
+
+            productImage.style.cursor =
+                "zoom-in";
+
+
+            productImage.addEventListener(
+                "click",
+                event => {
+
+                    event.preventDefault();
+
+                    event.stopPropagation();
+
+                    openProductImage(
+                        productImage.src,
+                        productImage.alt
+                    );
+
+                }
+            );
+
+
+            /*
+             * Add visual tap hint.
+             */
+
+            const imageContainer =
+                productImage.closest(
+                    ".product-main-image"
+                );
+
+
+            if (
+                imageContainer &&
+                !imageContainer.querySelector(
+                    ".product-image-view-hint"
+                )
+            ) {
+
+                const hint =
+                    document.createElement(
+                        "div"
+                    );
+
+                hint.className =
+                    "product-image-view-hint";
+
+                hint.innerHTML =
+                    "⌕ TAP TO VIEW";
+
+                imageContainer.appendChild(
+                    hint
+                );
+
+            }
+
+        });
+
+
+    const productDetails =
+        document.getElementById(
+            "productDetails"
+        );
+
+
+    if (productDetails) {
+
+        observer.observe(
+            productDetails,
+            {
+                childList: true,
+                subtree: true
+            }
+        );
+
+    }
+
+
+    /* =====================================
+       OPEN VIEWER
+    ====================================== */
+
+    function openProductImage(
+        src,
+        alt
+    ) {
+
+        if (!src) return;
+
+
+        viewerImage.src = "";
+
+        viewerImage.alt =
+            alt || "Product image";
+
+
+        if (loading) {
+
+            loading.style.display =
+                "block";
+
+        }
+
+
+        viewer.classList.add(
+            "active"
+        );
+
+
+        document.body.classList.add(
+            "product-viewer-open"
+        );
+
+
+        requestAnimationFrame(() => {
+
+            viewerImage.src = src;
+
+        });
+
+
+        viewerImage.onload = () => {
+
+            if (loading) {
+
+                loading.style.display =
+                    "none";
+
+            }
+
+        };
+
+
+        viewerImage.onerror = () => {
+
+            if (loading) {
+
+                loading.textContent =
+                    "Unable to load image";
+
+            }
+
+        };
+
+    }
+
+
+    /* =====================================
+       CLOSE VIEWER
+    ====================================== */
+
+    function closeViewer() {
+
+        viewer.classList.remove(
+            "active"
+        );
+
+        document.body.classList.remove(
+            "product-viewer-open"
+        );
+
+
+        setTimeout(() => {
+
+            viewerImage.src = "";
+
+        }, 250);
+
+    }
+
+
+    closeButton.addEventListener(
+        "click",
+        closeViewer
+    );
+
+
+    /*
+     * Tap outside image to close.
+     */
+
+    viewer.addEventListener(
+        "click",
+        event => {
+
+            if (
+                event.target === viewer
+            ) {
+
+                closeViewer();
+
+            }
+
+        }
+    );
+
+
+    /*
+     * ESC key.
+     */
+
+    document.addEventListener(
+        "keydown",
+        event => {
+
+            if (
+                event.key === "Escape" &&
+                viewer.classList.contains(
+                    "active"
+                )
+            ) {
+
+                closeViewer();
+
+            }
+
+        }
+    );
+
+}
+
+</script>
 
 
 </body>
