@@ -48,16 +48,24 @@ function setupImagePreview() {
         if (!file) return;
 
 
+        /* IMAGE TYPE */
+
         if (!file.type.startsWith("image/")) {
 
-            showToast("Please select an image");
+            showToast(
+                "Please select a valid image"
+            );
 
             input.value = "";
+
+            resetImagePreview();
 
             return;
 
         }
 
+
+        /* IMAGE SIZE */
 
         const maxSize =
             10 * 1024 * 1024;
@@ -71,10 +79,14 @@ function setupImagePreview() {
 
             input.value = "";
 
+            resetImagePreview();
+
             return;
 
         }
 
+
+        /* PREVIEW */
 
         const reader =
             new FileReader();
@@ -94,6 +106,10 @@ function setupImagePreview() {
                     alt="Product preview"
                 >
 
+                <div class="preview-overlay">
+                    <span>Change Image</span>
+                </div>
+
             `;
 
         };
@@ -102,6 +118,44 @@ function setupImagePreview() {
         reader.readAsDataURL(file);
 
     });
+
+}
+
+
+/* =========================================
+   RESET IMAGE PREVIEW
+========================================= */
+
+function resetImagePreview() {
+
+    const preview =
+        document.getElementById(
+            "uploadPreview"
+        );
+
+    if (!preview) return;
+
+
+    preview.classList.remove(
+        "has-image"
+    );
+
+
+    preview.innerHTML = `
+
+        <div class="upload-icon">
+            +
+        </div>
+
+        <strong>
+            Add Product Image
+        </strong>
+
+        <small>
+            JPG, PNG or WEBP
+        </small>
+
+    `;
 
 }
 
@@ -147,12 +201,12 @@ async function handleProductSubmit(event) {
         );
 
 
-    const formData =
+    const product =
         collectProductData(form);
 
 
     const validation =
-        validateProductData(formData);
+        validateProductData(product);
 
 
     if (!validation.valid) {
@@ -175,42 +229,30 @@ async function handleProductSubmit(event) {
 
 
         /*
-         * IMPORTANT:
-         *
-         * The actual backend request will be
-         * connected in api.js.
-         *
-         * We do NOT invent your endpoint.
+         * createProduct()
+         * comes from api.js
          */
 
-        let result;
-
-
         if (
-            typeof createProduct ===
+            typeof createProduct !==
             "function"
         ) {
 
-            result =
-                await createProduct(
-                    formData
-                );
-
-        } else {
-
-            /*
-             * API function isn't connected yet.
-             */
-
             throw new Error(
-                "createProduct() is not connected to the backend yet."
+                "Backend API is not connected."
             );
 
         }
 
 
+        const result =
+            await createProduct(
+                product
+            );
+
+
         console.log(
-            "Product published:",
+            "Product published successfully:",
             result
         );
 
@@ -229,8 +271,7 @@ async function handleProductSubmit(event) {
 
 
         showToast(
-            error.message ||
-            "Could not publish product"
+            getErrorMessage(error)
         );
 
 
@@ -247,7 +288,7 @@ async function handleProductSubmit(event) {
 
 
 /* =========================================
-   COLLECT FORM DATA
+   COLLECT PRODUCT DATA
 ========================================= */
 
 function collectProductData(form) {
@@ -269,31 +310,55 @@ function collectProductData(form) {
 
     return {
 
+        /*
+         * HTML name:
+         * name
+         *
+         * Backend field:
+         * title
+         */
+
         name:
             formData.get("name")?.trim() ||
             "",
+
 
         description:
             formData.get("description")?.trim() ||
             "",
 
+
         price:
             formData.get("price") ||
             "",
+
 
         category:
             formData.get("category") ||
             "",
 
+
         sizes,
+
+
+        /*
+         * These are currently collected
+         * for future backend support.
+         */
 
         color:
             formData.get("color")?.trim() ||
             "",
 
+
         stock:
             formData.get("stock") ||
             "",
+
+
+        /*
+         * REAL FILE
+         */
 
         image:
             formData.get("image") ||
@@ -313,8 +378,29 @@ function validateProductData(data) {
     if (!data.image) {
 
         return {
+
             valid: false,
-            message: "Please add a product image"
+
+            message:
+                "Please add a product image"
+
+        };
+
+    }
+
+
+    if (
+        !data.image.type ||
+        !data.image.type.startsWith("image/")
+    ) {
+
+        return {
+
+            valid: false,
+
+            message:
+                "Please select a valid image"
+
         };
 
     }
@@ -323,8 +409,12 @@ function validateProductData(data) {
     if (!data.name) {
 
         return {
+
             valid: false,
-            message: "Please enter a product name"
+
+            message:
+                "Please enter a product name"
+
         };
 
     }
@@ -333,9 +423,12 @@ function validateProductData(data) {
     if (!data.description) {
 
         return {
+
             valid: false,
+
             message:
                 "Please enter a product description"
+
         };
 
     }
@@ -343,12 +436,17 @@ function validateProductData(data) {
 
     if (
         data.price === "" ||
+        Number.isNaN(Number(data.price)) ||
         Number(data.price) < 0
     ) {
 
         return {
+
             valid: false,
-            message: "Please enter a valid price"
+
+            message:
+                "Please enter a valid price"
+
         };
 
     }
@@ -357,17 +455,23 @@ function validateProductData(data) {
     if (!data.category) {
 
         return {
+
             valid: false,
+
             message:
                 "Please select a category"
+
         };
 
     }
 
 
     return {
+
         valid: true,
+
         message: ""
+
     };
 
 }
@@ -391,8 +495,12 @@ function setPublishLoading(
 
     if (loading) {
 
-        button.dataset.originalText =
-            button.innerHTML;
+        if (!button.dataset.originalText) {
+
+            button.dataset.originalText =
+                button.innerHTML;
+
+        }
 
 
         button.innerHTML = `
@@ -463,7 +571,6 @@ function showPublishSuccess(form) {
                 type="button"
                 class="publish-button"
                 id="viewShopButton"
-                style="margin-top:20px;"
             >
 
                 <span>
@@ -500,6 +607,27 @@ function showPublishSuccess(form) {
         );
 
     }
+
+}
+
+
+/* =========================================
+   ERROR MESSAGE
+========================================= */
+
+function getErrorMessage(error) {
+
+    if (!error) {
+
+        return "Could not publish product";
+
+    }
+
+
+    return (
+        error.message ||
+        "Could not publish product"
+    );
 
 }
 
