@@ -12,20 +12,44 @@
 
     <title>Post Product | SANA Boutique</title>
 
+
+    <!-- Fonts -->
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossorigin>
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+        crossorigin
+    >
 
     <link
         href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap"
         rel="stylesheet"
     >
 
-    <link rel="stylesheet" href="../css/base.css">
-    <link rel="stylesheet" href="../css/navigation.css">
-    <link rel="stylesheet" href="../css/post.css">
-    <link rel="stylesheet" href="../css/responsive.css">
+
+    <!-- CSS -->
+
+    <link
+        rel="stylesheet"
+        href="../css/base.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="../css/navigation.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="../css/post.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="../css/responsive.css"
+    >
 
 </head>
 
@@ -116,6 +140,7 @@
                     </span>
 
                     <div>
+
                         <h2>
                             Product Image
                         </h2>
@@ -123,6 +148,7 @@
                         <p>
                             Upload the main product photo.
                         </p>
+
                     </div>
 
                 </div>
@@ -140,6 +166,7 @@
                         name="image"
                         accept="image/*"
                         hidden
+                        required
                     >
 
 
@@ -193,8 +220,6 @@
                 </div>
 
 
-                <!-- NAME -->
-
                 <div class="form-group">
 
                     <label for="productName">
@@ -212,8 +237,6 @@
                 </div>
 
 
-
-                <!-- DESCRIPTION -->
 
                 <div class="form-group">
 
@@ -262,8 +285,6 @@
                 <div class="form-row">
 
 
-                    <!-- PRICE -->
-
                     <div class="form-group">
 
                         <label for="productPrice">
@@ -283,8 +304,6 @@
                     </div>
 
 
-
-                    <!-- CATEGORY -->
 
                     <div class="form-group">
 
@@ -363,92 +382,33 @@
                 >
 
                     <label class="size-option">
-
-                        <input
-                            type="checkbox"
-                            name="sizes"
-                            value="XS"
-                        >
-
-                        <span>
-                            XS
-                        </span>
-
+                        <input type="checkbox" name="sizes" value="XS">
+                        <span>XS</span>
                     </label>
 
-
                     <label class="size-option">
-
-                        <input
-                            type="checkbox"
-                            name="sizes"
-                            value="S"
-                        >
-
-                        <span>
-                            S
-                        </span>
-
+                        <input type="checkbox" name="sizes" value="S">
+                        <span>S</span>
                     </label>
 
-
                     <label class="size-option">
-
-                        <input
-                            type="checkbox"
-                            name="sizes"
-                            value="M"
-                        >
-
-                        <span>
-                            M
-                        </span>
-
+                        <input type="checkbox" name="sizes" value="M">
+                        <span>M</span>
                     </label>
 
-
                     <label class="size-option">
-
-                        <input
-                            type="checkbox"
-                            name="sizes"
-                            value="L"
-                        >
-
-                        <span>
-                            L
-                        </span>
-
+                        <input type="checkbox" name="sizes" value="L">
+                        <span>L</span>
                     </label>
 
-
                     <label class="size-option">
-
-                        <input
-                            type="checkbox"
-                            name="sizes"
-                            value="XL"
-                        >
-
-                        <span>
-                            XL
-                        </span>
-
+                        <input type="checkbox" name="sizes" value="XL">
+                        <span>XL</span>
                     </label>
 
-
                     <label class="size-option">
-
-                        <input
-                            type="checkbox"
-                            name="sizes"
-                            value="XXL"
-                        >
-
-                        <span>
-                            XXL
-                        </span>
-
+                        <input type="checkbox" name="sizes" value="XXL">
+                        <span>XXL</span>
                     </label>
 
                 </div>
@@ -591,8 +551,9 @@
 
         <a
             href="post.html"
-            class="post-button"
+            class="post-button active"
             id="postButton"
+            aria-label="Create product"
         >
             +
         </a>
@@ -617,12 +578,28 @@
 
     </nav>
 
+
 </div>
 
 
+
+<!-- =====================================
+     JAVASCRIPT
+====================================== -->
+
 <script src="../js/app.js"></script>
+
 <script src="../js/navigation.js"></script>
+
+<!-- REAL BACKEND API -->
+
+<script src="../js/api.js"></script>
+
+<!-- POST CONTROLLER -->
+
 <script src="../js/post.js"></script>
 
+
 </body>
+
 </html>
