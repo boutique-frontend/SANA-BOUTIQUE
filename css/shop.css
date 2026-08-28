@@ -1,6 +1,7 @@
 /* =========================================
    SANA BOUTIQUE
    SHOP PAGE
+   PREMIUM INTERACTION UPDATE
 ========================================= */
 
 
@@ -26,7 +27,6 @@
 
 .shop-eyebrow {
     display: block;
-
     margin-bottom: 8px;
 
     color: var(--gold-light);
@@ -131,6 +131,8 @@
     color: #aaa;
 
     font-size: 18px;
+
+    border: none;
 }
 
 .clear-search.show {
@@ -184,7 +186,12 @@
     transition:
         background 0.2s ease,
         color 0.2s ease,
-        border-color 0.2s ease;
+        border-color 0.2s ease,
+        transform 0.15s ease;
+}
+
+.category-filter:active {
+    transform: scale(0.94);
 }
 
 .category-filter.active {
@@ -233,7 +240,9 @@
 }
 
 
-/* Filter button */
+/* =========================================
+   FILTER BUTTON
+========================================= */
 
 .filter-button {
     padding: 9px 13px;
@@ -247,6 +256,19 @@
     color: var(--gold-light);
 
     font-size: 11px;
+
+    transition:
+        transform 0.15s ease,
+        border-color 0.2s ease,
+        background 0.2s ease;
+}
+
+.filter-button:active {
+    transform: scale(0.94);
+
+    border-color: var(--gold);
+
+    background: #181818;
 }
 
 
@@ -261,7 +283,8 @@
 .shop-products .products-grid {
     display: grid;
 
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
 
     gap: 14px;
 }
@@ -272,29 +295,437 @@
 ========================================= */
 
 .shop-products .product-card {
+
+    position: relative;
+
     min-width: 0;
 
     cursor: pointer;
+
+    overflow: hidden;
+
+    /*
+     * Remove the ugly blue browser tap
+     * highlight on Android.
+     */
+
+    -webkit-tap-highlight-color:
+        transparent;
+
+    /*
+     * Make transforms smooth.
+     */
+
+    transform:
+        translateZ(0);
+
+    transition:
+        transform 0.22s
+        cubic-bezier(
+            0.22,
+            1,
+            0.36,
+            1
+        ),
+        filter 0.22s ease;
+
+    user-select: none;
+
+    touch-action: manipulation;
 }
 
-.shop-products .product-card-image {
+
+/* =========================================
+   PRODUCT CARD TAP
+========================================= */
+
+.shop-products .product-card:active {
+
+    transform:
+        scale(0.965)
+        translateZ(0);
+
+    filter:
+        brightness(0.88);
+}
+
+
+/* =========================================
+   PRODUCT IMAGE WRAPPER
+========================================= */
+
+.shop-products
+.product-image-wrapper {
+
+    position: relative;
+
     width: 100%;
 
     aspect-ratio: 0.78;
 
-    object-fit: cover;
+    overflow: hidden;
+
+    border-radius: 14px;
+
+    background: #111;
+
+    /*
+     * Remove blue Android tap highlight.
+     */
+
+    -webkit-tap-highlight-color:
+        transparent;
+
+    /*
+     * Prevent image dragging.
+     */
+
+    user-select: none;
+
+    -webkit-user-drag: none;
+
+    /*
+     * GPU acceleration.
+     */
+
+    transform:
+        translateZ(0);
 }
 
 
-/* Product badge */
+/* =========================================
+   PRODUCT IMAGE
+========================================= */
+
+.shop-products
+.product-card-image {
+
+    width: 100%;
+
+    height: 100%;
+
+    display: block;
+
+    object-fit: cover;
+
+    transition:
+        transform 0.45s
+        cubic-bezier(
+            0.22,
+            1,
+            0.36,
+            1
+        ),
+        filter 0.3s ease;
+
+    user-select: none;
+
+    -webkit-user-drag: none;
+}
+
+
+/* =========================================
+   IMAGE TAP ZOOM
+========================================= */
+
+.shop-products
+.product-card:active
+.product-card-image {
+
+    transform:
+        scale(1.055);
+
+    filter:
+        brightness(0.78);
+}
+
+
+/* =========================================
+   VIEW PRODUCT OVERLAY
+========================================= */
+
+.product-view-overlay {
+
+    position: absolute;
+
+    inset: 0;
+
+    z-index: 4;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    pointer-events: none;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(
+                217,
+                169,
+                40,
+                0.16
+            ),
+            rgba(
+                0,
+                0,
+                0,
+                0.58
+            )
+        );
+
+    opacity: 0;
+
+    transform:
+        scale(1.04);
+
+    transition:
+        opacity 0.2s ease,
+        transform 0.25s
+        cubic-bezier(
+            0.22,
+            1,
+            0.36,
+            1
+        );
+}
+
+
+/*
+ * Desktop hover.
+ */
+
+@media (hover: hover) {
+
+    .shop-products
+    .product-card:hover
+    .product-view-overlay {
+
+        opacity: 1;
+
+        transform:
+            scale(1);
+
+    }
+
+}
+
+
+/*
+ * Mobile tap.
+ */
+
+.shop-products
+.product-card:active
+.product-view-overlay {
+
+    opacity: 1;
+
+    transform:
+        scale(1);
+}
+
+
+/* =========================================
+   VIEW PRODUCT TEXT
+========================================= */
+
+.product-view-overlay span {
+
+    padding: 9px 14px;
+
+    border: 1px solid
+        rgba(
+            217,
+            169,
+            40,
+            0.7
+        );
+
+    border-radius: 30px;
+
+    background:
+        rgba(
+            8,
+            8,
+            8,
+            0.68
+        );
+
+    color: var(--gold-light);
+
+    font-size: 9px;
+
+    font-weight: 800;
+
+    letter-spacing: 1.5px;
+
+    backdrop-filter:
+        blur(8px);
+
+    transform:
+        translateY(8px);
+
+    opacity: 0;
+
+    transition:
+        opacity 0.2s ease,
+        transform 0.25s ease;
+}
+
+
+@media (hover: hover) {
+
+    .shop-products
+    .product-card:hover
+    .product-view-overlay span {
+
+        opacity: 1;
+
+        transform:
+            translateY(0);
+
+    }
+
+}
+
+
+.shop-products
+.product-card:active
+.product-view-overlay span {
+
+    opacity: 1;
+
+    transform:
+        translateY(0);
+}
+
+
+/* =========================================
+   GOLD TAP FLASH
+========================================= */
+
+.shop-products
+.product-card::after {
+
+    content: "";
+
+    position: absolute;
+
+    left: 50%;
+    top: 35%;
+
+    width: 10px;
+    height: 10px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(
+            217,
+            169,
+            40,
+            0.55
+        );
+
+    transform:
+        translate(
+            -50%,
+            -50%
+        )
+        scale(0);
+
+    opacity: 0;
+
+    pointer-events: none;
+
+    z-index: 10;
+}
+
+
+/*
+ * The JS will add this class
+ * when the product is tapped.
+ */
+
+.shop-products
+.product-card.tap-animation::after {
+
+    animation:
+        productTapRipple
+        0.55s
+        ease-out;
+}
+
+
+@keyframes productTapRipple {
+
+    0% {
+
+        width: 10px;
+        height: 10px;
+
+        opacity: 0.65;
+
+        transform:
+            translate(
+                -50%,
+                -50%
+            )
+            scale(0);
+
+    }
+
+    70% {
+
+        width: 240px;
+        height: 240px;
+
+        opacity: 0.12;
+
+        transform:
+            translate(
+                -50%,
+                -50%
+            )
+            scale(1);
+
+    }
+
+    100% {
+
+        width: 280px;
+        height: 280px;
+
+        opacity: 0;
+
+        transform:
+            translate(
+                -50%,
+                -50%
+            )
+            scale(1);
+
+    }
+
+}
+
+
+/* =========================================
+   PRODUCT BADGE
+========================================= */
 
 .product-badge {
+
     position: absolute;
 
     top: 10px;
     left: 10px;
 
-    z-index: 3;
+    z-index: 6;
 
     padding: 5px 8px;
 
@@ -305,9 +736,95 @@
     color: #080808;
 
     font-size: 8px;
+
     font-weight: 800;
 
     letter-spacing: 0.5px;
+}
+
+
+/* =========================================
+   FAVORITE BUTTON
+========================================= */
+
+.shop-products
+.product-favorite {
+
+    position: absolute;
+
+    top: 9px;
+    right: 9px;
+
+    z-index: 8;
+
+    width: 34px;
+    height: 34px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border: 1px solid
+        rgba(
+            255,
+            255,
+            255,
+            0.12
+        );
+
+    border-radius: 50%;
+
+    background:
+        rgba(
+            8,
+            8,
+            8,
+            0.62
+        );
+
+    color: #fff;
+
+    font-size: 17px;
+
+    backdrop-filter:
+        blur(8px);
+
+    -webkit-tap-highlight-color:
+        transparent;
+
+    transition:
+        transform 0.18s ease,
+        background 0.18s ease,
+        color 0.18s ease;
+}
+
+
+.shop-products
+.product-favorite:active {
+
+    transform:
+        scale(0.82);
+
+}
+
+
+.shop-products
+.product-favorite.active {
+
+    color: var(--gold-light);
+
+    border-color:
+        var(--gold);
+
+    background:
+        rgba(
+            217,
+            169,
+            40,
+            0.12
+        );
 }
 
 
@@ -316,9 +833,11 @@
 ========================================= */
 
 .shop-products .product-info h3 {
+
     display: -webkit-box;
 
     -webkit-line-clamp: 2;
+
     -webkit-box-orient: vertical;
 
     overflow: hidden;
@@ -326,8 +845,36 @@
     min-height: 36px;
 }
 
+
 .shop-products .product-price {
+
     margin-top: 3px;
+}
+
+
+/* =========================================
+   IMAGE PLACEHOLDER
+========================================= */
+
+.shop-products
+.image-placeholder {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    width: 100%;
+
+    height: 100%;
+
+    background:
+        linear-gradient(
+            145deg,
+            #171717,
+            #0d0d0d
+        );
 }
 
 
@@ -336,6 +883,7 @@
 ========================================= */
 
 .no-products {
+
     grid-column: 1 / -1;
 
     padding: 70px 20px;
@@ -344,6 +892,7 @@
 }
 
 .no-products-icon {
+
     margin-bottom: 15px;
 
     color: var(--gold);
@@ -352,12 +901,14 @@
 }
 
 .no-products h3 {
+
     margin-bottom: 7px;
 
     color: var(--white);
 }
 
 .no-products p {
+
     color: var(--muted);
 
     font-size: 13px;
@@ -369,13 +920,32 @@
 ========================================= */
 
 .shop-products .loading {
+
     grid-column: 1 / -1;
 
     min-height: 250px;
 
     display: flex;
+
     align-items: center;
+
     justify-content: center;
+}
+
+
+/* =========================================
+   ACCESSIBILITY
+========================================= */
+
+.shop-products
+.product-image-wrapper:focus-visible {
+
+    outline: 2px solid
+        var(--gold);
+
+    outline-offset: 3px;
+
+    border-radius: 14px;
 }
 
 
@@ -385,8 +955,13 @@
 
 @media (min-width: 600px) {
 
-    .shop-products .products-grid {
+    .shop-products
+    .products-grid {
+
         grid-template-columns:
-            repeat(3, minmax(0, 1fr));
+            repeat(
+                3,
+                minmax(0, 1fr)
+            );
     }
 }
