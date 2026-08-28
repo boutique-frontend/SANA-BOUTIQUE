@@ -1,6 +1,7 @@
 /* =========================================
    SANA BOUTIQUE
    API CONNECTION
+   PRODUCT ID FIX
 ========================================= */
 
 "use strict";
@@ -41,11 +42,6 @@ async function apiRequest(
             {
                 ...options,
 
-                /*
-                 * Prevent cached GET requests from
-                 * showing old products.
-                 */
-
                 cache:
                     options.cache ||
                     "no-store"
@@ -77,13 +73,15 @@ async function apiRequest(
 
 
     /* =====================================
-       JSON RESPONSE
+       JSON
     ====================================== */
 
     if (
         contentType
             .toLowerCase()
-            .includes("application/json")
+            .includes(
+                "application/json"
+            )
     ) {
 
         try {
@@ -106,7 +104,7 @@ async function apiRequest(
 
 
     /* =====================================
-       TEXT RESPONSE
+       TEXT
     ====================================== */
 
     else {
@@ -159,7 +157,7 @@ async function apiRequest(
 
 
 /* =========================================
-   NORMALIZE PRODUCT ID
+   GET PRODUCT ID
 ========================================= */
 
 function getProductId(
@@ -167,17 +165,97 @@ function getProductId(
 ) {
 
     if (!product) {
+
         return null;
+
     }
 
 
-    return (
-        product.id ??
-        product._id ??
-        product.product_id ??
-        product.post_id ??
-        null
-    );
+    /*
+     * Check the most common backend
+     * identifier names.
+     */
+
+    const possibleIds = [
+
+        product.id,
+
+        product._id,
+
+        product.product_id,
+
+        product.post_id,
+
+        product.uuid,
+
+        product.productId,
+
+        product.postId
+
+    ];
+
+
+    for (
+        const value of possibleIds
+    ) {
+
+        if (
+            value !== undefined &&
+            value !== null &&
+            String(value).trim() !== ""
+        ) {
+
+            return value;
+
+        }
+
+    }
+
+
+    return null;
+
+}
+
+
+/* =========================================
+   NORMALIZE PRODUCT
+========================================= */
+
+function normalizeProduct(
+    product
+) {
+
+    if (
+        !product ||
+        typeof product !== "object"
+    ) {
+
+        return null;
+
+    }
+
+
+    const id =
+        getProductId(
+            product
+        );
+
+
+    /*
+     * Keep the original backend object,
+     * but expose one reliable ID.
+     */
+
+    return {
+
+        ...product,
+
+        id:
+            id !== null
+                ? id
+                : product.id
+
+    };
 
 }
 
@@ -190,53 +268,64 @@ function normalizeProductList(
     data
 ) {
 
+    let products = null;
+
+
+    if (
+        Array.isArray(data)
+    ) {
+
+        products =
+            data;
+
+    }
+
+    else if (
+        Array.isArray(data?.posts)
+    ) {
+
+        products =
+            data.posts;
+
+    }
+
+    else if (
+        Array.isArray(data?.products)
+    ) {
+
+        products =
+            data.products;
+
+    }
+
+    else if (
+        Array.isArray(data?.data)
+    ) {
+
+        products =
+            data.data;
+
+    }
+
+
+    if (!products) {
+
+        return null;
+
+    }
+
+
     /*
-     * Backend can return:
-     *
-     * []
-     *
-     * {
-     *   posts: []
-     * }
-     *
-     * {
-     *   products: []
-     * }
-     *
-     * {
-     *   data: []
-     * }
+     * Normalize every product individually.
      */
 
-    if (Array.isArray(data)) {
-
-        return data;
-
-    }
-
-
-    if (Array.isArray(data?.posts)) {
-
-        return data.posts;
-
-    }
-
-
-    if (Array.isArray(data?.products)) {
-
-        return data.products;
-
-    }
-
-
-    if (Array.isArray(data?.data)) {
-
-        return data.data;
-
-    }
-
-
-    return null;
+    return products
+        .map(
+            normalizeProduct
+        )
+        .filter(
+            product => product !== null
+        );
 
 }
 
@@ -254,15 +343,20 @@ async function getProducts() {
                 method: "GET",
 
                 headers: {
+
                     "Accept":
                         "application/json"
+
                 }
+
             }
         );
 
 
     const products =
-        normalizeProductList(data);
+        normalizeProductList(
+            data
+        );
 
 
     if (!products) {
@@ -278,6 +372,38 @@ async function getProducts() {
         );
 
     }
+
+
+    /*
+     * IMPORTANT DEBUGGING
+     *
+     * This lets us see exactly what
+     * IDs the backend is returning.
+     */
+
+    console.table(
+        products.map(
+            (product, index) => ({
+
+                index,
+
+                id:
+                    getProductId(
+                        product
+                    ),
+
+                name:
+                    product.name ??
+                    product.title ??
+                    "Unnamed",
+
+                category:
+                    product.category ??
+                    ""
+
+            })
+        )
+    );
 
 
     return products;
@@ -306,20 +432,14 @@ async function getProductById(
     }
 
 
-    /*
-     * We currently use the existing
-     * GET /api/posts endpoint because
-     * your backend API structure provided
-     * does not confirm a dedicated
-     * /api/posts/:id GET endpoint.
-     */
-
     const products =
         await getProducts();
 
 
     const requestedId =
-        String(productId);
+        String(
+            productId
+        ).trim();
 
 
     const product =
@@ -327,17 +447,46 @@ async function getProductById(
             item => {
 
                 const id =
-                    getProductId(item);
+                    getProductId(
+                        item
+                    );
+
+
+                if (
+                    id === null ||
+                    id === undefined
+                ) {
+
+                    return false;
+
+                }
 
 
                 return (
-                    id !== null &&
-                    String(id) ===
+                    String(id).trim() ===
                     requestedId
                 );
 
             }
         );
+
+
+    if (!product) {
+
+        console.warn(
+            "Product not found for ID:",
+            requestedId
+        );
+
+
+        console.log(
+            "Available product IDs:",
+            products.map(
+                getProductId
+            )
+        );
+
+    }
 
 
     return product || null;
@@ -363,7 +512,7 @@ async function createProduct(
 
 
     /* =====================================
-       IMAGE VALIDATION
+       IMAGE
     ====================================== */
 
     if (!product.image) {
@@ -419,7 +568,7 @@ async function createProduct(
 
 
     /* =====================================
-       REQUIRED FIELD VALIDATION
+       REQUIRED FIELDS
     ====================================== */
 
     const title =
@@ -479,7 +628,9 @@ async function createProduct(
 
     if (
         price === "" ||
-        Number.isNaN(Number(price)) ||
+        Number.isNaN(
+            Number(price)
+        ) ||
         Number(price) < 0
     ) {
 
@@ -491,19 +642,12 @@ async function createProduct(
 
 
     /* =====================================
-       CREATE FORMDATA
+       FORMDATA
     ====================================== */
 
     const formData =
         new FormData();
 
-
-    /*
-     * IMPORTANT:
-     *
-     * Flask backend expects "title".
-     * Frontend uses "name".
-     */
 
     formData.append(
         "title",
@@ -642,7 +786,7 @@ async function createProduct(
 
 
     /* =====================================
-       SEND REQUEST
+       SEND
     ====================================== */
 
     const data =
@@ -651,14 +795,12 @@ async function createProduct(
             {
                 method: "POST",
 
-                body: formData
+                body:
+                    formData
+
             }
         );
 
-
-    /*
-     * Return backend response directly.
-     */
 
     return data;
 
@@ -692,21 +834,20 @@ async function deleteProduct(
         );
 
 
-    const data =
-        await apiRequest(
-            `${API_ENDPOINTS.posts}/${encodedId}`,
-            {
-                method: "DELETE",
+    return await apiRequest(
+        `${API_ENDPOINTS.posts}/${encodedId}`,
+        {
+            method: "DELETE",
 
-                headers: {
-                    "Accept":
-                        "application/json"
-                }
+            headers: {
+
+                "Accept":
+                    "application/json"
+
             }
-        );
 
-
-    return data;
+        }
+    );
 
 }
 
@@ -726,9 +867,12 @@ async function checkBackend() {
                     method: "GET",
 
                     headers: {
+
                         "Accept":
                             "application/json"
+
                     }
+
                 }
             );
 
@@ -815,6 +959,10 @@ window.getProducts =
 
 window.getProductById =
     getProductById;
+
+
+window.getProductId =
+    getProductId;
 
 
 window.createProduct =
