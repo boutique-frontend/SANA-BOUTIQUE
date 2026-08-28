@@ -72,10 +72,6 @@ async function apiRequest(
         ) || "";
 
 
-    /* =====================================
-       JSON
-    ====================================== */
-
     if (
         contentType
             .toLowerCase()
@@ -100,14 +96,7 @@ async function apiRequest(
 
         }
 
-    }
-
-
-    /* =====================================
-       TEXT
-    ====================================== */
-
-    else {
+    } else {
 
         try {
 
@@ -132,10 +121,6 @@ async function apiRequest(
     }
 
 
-    /* =====================================
-       HTTP ERROR
-    ====================================== */
-
     if (!response.ok) {
 
         const message =
@@ -158,6 +143,15 @@ async function apiRequest(
 
 /* =========================================
    GET PRODUCT ID
+
+   FIX:
+   - Reordered so real unique backend
+     identifiers (_id, post_id, uuid, etc.)
+     are checked BEFORE the generic "id"
+     field, since "id" was found to be a
+     non-unique/placeholder value on this
+     backend, causing every product to
+     resolve to the same ID.
 ========================================= */
 
 function getProductId(
@@ -171,26 +165,21 @@ function getProductId(
     }
 
 
-    /*
-     * Check the most common backend
-     * identifier names.
-     */
-
     const possibleIds = [
-
-        product.id,
 
         product._id,
 
-        product.product_id,
-
         product.post_id,
+
+        product.postId,
 
         product.uuid,
 
         product.productId,
 
-        product.postId
+        product.product_id,
+
+        product.id
 
     ];
 
@@ -241,11 +230,6 @@ function normalizeProduct(
         );
 
 
-    /*
-     * Keep the original backend object,
-     * but expose one reliable ID.
-     */
-
     return {
 
         ...product,
@@ -262,6 +246,20 @@ function normalizeProduct(
 
 /* =========================================
    NORMALIZE PRODUCT LIST
+
+   FIX:
+   - After normalizing, checks whether the
+     resolved IDs are actually unique.
+   - If any duplicates are found (backend
+     sending non-unique/missing IDs), every
+     product is given a guaranteed-unique
+     fallback ID based on its position in
+     the list, so taps always open the
+     correct product.
+   - This is a client-side safety net.
+     Long-term, the backend should return
+     a real unique field (e.g. _id) for
+     every post.
 ========================================= */
 
 function normalizeProductList(
@@ -315,17 +313,60 @@ function normalizeProductList(
     }
 
 
+    const normalized =
+        products
+            .map(
+                normalizeProduct
+            )
+            .filter(
+                product => product !== null
+            );
+
+
     /*
-     * Normalize every product individually.
+     * DUPLICATE ID CHECK
      */
 
-    return products
-        .map(
-            normalizeProduct
-        )
-        .filter(
-            product => product !== null
+    const ids =
+        normalized.map(
+            product =>
+                String(product.id)
         );
+
+
+    const uniqueIds =
+        new Set(ids);
+
+
+    const hasDuplicates =
+        uniqueIds.size !==
+        ids.length;
+
+
+    if (hasDuplicates) {
+
+        console.warn(
+            "SANA API: duplicate/missing product IDs detected. " +
+            "Falling back to index-based IDs so each product stays unique. " +
+            "Fix the backend to return a real unique field for permanent links."
+        );
+
+
+        return normalized.map(
+            (product, index) => ({
+
+                ...product,
+
+                id:
+                    String(index)
+
+            })
+        );
+
+    }
+
+
+    return normalized;
 
 }
 
@@ -374,13 +415,6 @@ async function getProducts() {
     }
 
 
-    /*
-     * IMPORTANT DEBUGGING
-     *
-     * This lets us see exactly what
-     * IDs the backend is returning.
-     */
-
     console.table(
         products.map(
             (product, index) => ({
@@ -388,9 +422,7 @@ async function getProducts() {
                 index,
 
                 id:
-                    getProductId(
-                        product
-                    ),
+                    product.id,
 
                 name:
                     product.name ??
@@ -444,30 +476,9 @@ async function getProductById(
 
     const product =
         products.find(
-            item => {
-
-                const id =
-                    getProductId(
-                        item
-                    );
-
-
-                if (
-                    id === null ||
-                    id === undefined
-                ) {
-
-                    return false;
-
-                }
-
-
-                return (
-                    String(id).trim() ===
-                    requestedId
-                );
-
-            }
+            item =>
+                String(item.id).trim() ===
+                requestedId
         );
 
 
@@ -482,7 +493,7 @@ async function getProductById(
         console.log(
             "Available product IDs:",
             products.map(
-                getProductId
+                item => item.id
             )
         );
 
@@ -510,10 +521,6 @@ async function createProduct(
 
     }
 
-
-    /* =====================================
-       IMAGE
-    ====================================== */
 
     if (!product.image) {
 
@@ -566,10 +573,6 @@ async function createProduct(
 
     }
 
-
-    /* =====================================
-       REQUIRED FIELDS
-    ====================================== */
 
     const title =
         String(
@@ -641,10 +644,6 @@ async function createProduct(
     }
 
 
-    /* =====================================
-       FORMDATA
-    ====================================== */
-
     const formData =
         new FormData();
 
@@ -666,10 +665,6 @@ async function createProduct(
         price
     );
 
-
-    /* =====================================
-       SIZES
-    ====================================== */
 
     let sizes = "";
 
@@ -709,19 +704,11 @@ async function createProduct(
     );
 
 
-    /* =====================================
-       DESCRIPTION
-    ====================================== */
-
     formData.append(
         "description",
         description
     );
 
-
-    /* =====================================
-       COLOR
-    ====================================== */
 
     const color =
         String(
@@ -735,10 +722,6 @@ async function createProduct(
         color
     );
 
-
-    /* =====================================
-       STOCK
-    ====================================== */
 
     let stock =
         String(
@@ -774,20 +757,12 @@ async function createProduct(
     );
 
 
-    /* =====================================
-       IMAGE
-    ====================================== */
-
     formData.append(
         "image",
         product.image,
         product.image.name
     );
 
-
-    /* =====================================
-       SEND
-    ====================================== */
 
     const data =
         await apiRequest(
