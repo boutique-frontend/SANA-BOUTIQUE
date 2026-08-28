@@ -6,11 +6,10 @@
 "use strict";
 
 
-document.addEventListener("DOMContentLoaded", () => {
-
-    initializePost();
-
-});
+document.addEventListener(
+    "DOMContentLoaded",
+    initializePost
+);
 
 
 /* =========================================
@@ -33,91 +32,115 @@ function initializePost() {
 function setupImagePreview() {
 
     const input =
-        document.getElementById("productImage");
+        document.getElementById(
+            "productImage"
+        );
 
     const preview =
-        document.getElementById("uploadPreview");
+        document.getElementById(
+            "uploadPreview"
+        );
+
 
     if (!input || !preview) return;
 
 
-    input.addEventListener("change", () => {
+    input.addEventListener(
+        "change",
+        () => {
 
-        const file = input.files?.[0];
+            const file =
+                input.files?.[0];
 
-        if (!file) return;
+
+            if (!file) {
+
+                resetImagePreview();
+
+                return;
+
+            }
 
 
-        /* IMAGE TYPE */
+            if (
+                !file.type.startsWith(
+                    "image/"
+                )
+            ) {
 
-        if (!file.type.startsWith("image/")) {
+                showToast(
+                    "Please select a valid image."
+                );
 
-            showToast(
-                "Please select a valid image"
-            );
+                input.value = "";
 
-            input.value = "";
+                resetImagePreview();
 
-            resetImagePreview();
+                return;
 
-            return;
+            }
+
+
+            const maxSize =
+                10 * 1024 * 1024;
+
+
+            if (file.size > maxSize) {
+
+                showToast(
+                    "Image must be smaller than 10MB."
+                );
+
+                input.value = "";
+
+                resetImagePreview();
+
+                return;
+
+            }
+
+
+            const reader =
+                new FileReader();
+
+
+            reader.onload =
+                event => {
+
+                    preview.classList.add(
+                        "has-image"
+                    );
+
+
+                    preview.innerHTML = `
+
+                        <img
+                            src="${event.target.result}"
+                            alt="Product preview"
+                        >
+
+                        <div class="upload-overlay">
+                            CHANGE IMAGE
+                        </div>
+
+                    `;
+
+                };
+
+
+            reader.onerror = () => {
+
+                showToast(
+                    "Unable to preview image."
+                );
+
+            };
+
+
+            reader.readAsDataURL(file);
 
         }
-
-
-        /* IMAGE SIZE */
-
-        const maxSize =
-            10 * 1024 * 1024;
-
-
-        if (file.size > maxSize) {
-
-            showToast(
-                "Image must be smaller than 10MB"
-            );
-
-            input.value = "";
-
-            resetImagePreview();
-
-            return;
-
-        }
-
-
-        /* PREVIEW */
-
-        const reader =
-            new FileReader();
-
-
-        reader.onload = event => {
-
-            preview.classList.add(
-                "has-image"
-            );
-
-
-            preview.innerHTML = `
-
-                <img
-                    src="${event.target.result}"
-                    alt="Product preview"
-                >
-
-                <div class="preview-overlay">
-                    <span>Change Image</span>
-                </div>
-
-            `;
-
-        };
-
-
-        reader.readAsDataURL(file);
-
-    });
+    );
 
 }
 
@@ -132,6 +155,7 @@ function resetImagePreview() {
         document.getElementById(
             "uploadPreview"
         );
+
 
     if (!preview) return;
 
@@ -171,6 +195,7 @@ function setupProductForm() {
             "productForm"
         );
 
+
     if (!form) return;
 
 
@@ -183,10 +208,12 @@ function setupProductForm() {
 
 
 /* =========================================
-   SUBMIT PRODUCT
+   SUBMIT
 ========================================= */
 
-async function handleProductSubmit(event) {
+async function handleProductSubmit(
+    event
+) {
 
     event.preventDefault();
 
@@ -228,18 +255,13 @@ async function handleProductSubmit(event) {
         );
 
 
-        /*
-         * createProduct()
-         * comes from api.js
-         */
-
         if (
             typeof createProduct !==
             "function"
         ) {
 
             throw new Error(
-                "Backend API is not connected."
+                "API connection is not loaded."
             );
 
         }
@@ -252,9 +274,32 @@ async function handleProductSubmit(event) {
 
 
         console.log(
-            "Product published successfully:",
+            "Product published:",
             result
         );
+
+
+        /*
+         * Clear possible cached product
+         * state if app.js provides it.
+         */
+
+        if (
+            typeof AppState !==
+            "undefined"
+        ) {
+
+            if (
+                Array.isArray(
+                    AppState.products
+                )
+            ) {
+
+                AppState.products = [];
+
+            }
+
+        }
 
 
         showPublishSuccess(
@@ -271,7 +316,8 @@ async function handleProductSubmit(event) {
 
 
         showToast(
-            getErrorMessage(error)
+            error?.message ||
+            "Could not publish product."
         );
 
 
@@ -288,10 +334,12 @@ async function handleProductSubmit(event) {
 
 
 /* =========================================
-   COLLECT PRODUCT DATA
+   COLLECT FORM DATA
 ========================================= */
 
-function collectProductData(form) {
+function collectProductData(
+    form
+) {
 
     const formData =
         new FormData(form);
@@ -310,55 +358,50 @@ function collectProductData(form) {
 
     return {
 
-        /*
-         * HTML name:
-         * name
-         *
-         * Backend field:
-         * title
-         */
-
         name:
-            formData.get("name")?.trim() ||
-            "",
+            String(
+                formData.get("name") ||
+                ""
+            ).trim(),
 
 
         description:
-            formData.get("description")?.trim() ||
-            "",
+            String(
+                formData.get("description") ||
+                ""
+            ).trim(),
 
 
         price:
-            formData.get("price") ||
-            "",
+            String(
+                formData.get("price") ||
+                ""
+            ).trim(),
 
 
         category:
-            formData.get("category") ||
-            "",
+            String(
+                formData.get("category") ||
+                ""
+            ).trim(),
 
 
         sizes,
 
 
-        /*
-         * These are currently collected
-         * for future backend support.
-         */
-
         color:
-            formData.get("color")?.trim() ||
-            "",
+            String(
+                formData.get("color") ||
+                ""
+            ).trim(),
 
 
         stock:
-            formData.get("stock") ||
-            "",
+            String(
+                formData.get("stock") ||
+                ""
+            ).trim(),
 
-
-        /*
-         * REAL FILE
-         */
 
         image:
             formData.get("image") ||
@@ -373,17 +416,16 @@ function collectProductData(form) {
    VALIDATION
 ========================================= */
 
-function validateProductData(data) {
+function validateProductData(
+    data
+) {
 
     if (!data.image) {
 
         return {
-
             valid: false,
-
             message:
-                "Please add a product image"
-
+                "Please add a product image."
         };
 
     }
@@ -391,16 +433,15 @@ function validateProductData(data) {
 
     if (
         !data.image.type ||
-        !data.image.type.startsWith("image/")
+        !data.image.type.startsWith(
+            "image/"
+        )
     ) {
 
         return {
-
             valid: false,
-
             message:
-                "Please select a valid image"
-
+                "Please select a valid image."
         };
 
     }
@@ -409,12 +450,20 @@ function validateProductData(data) {
     if (!data.name) {
 
         return {
-
             valid: false,
-
             message:
-                "Please enter a product name"
+                "Please enter a product name."
+        };
 
+    }
+
+
+    if (data.name.length < 2) {
+
+        return {
+            valid: false,
+            message:
+                "Product name is too short."
         };
 
     }
@@ -423,30 +472,28 @@ function validateProductData(data) {
     if (!data.description) {
 
         return {
-
             valid: false,
-
             message:
-                "Please enter a product description"
-
+                "Please enter a product description."
         };
 
     }
 
 
+    const price =
+        Number(data.price);
+
+
     if (
         data.price === "" ||
-        Number.isNaN(Number(data.price)) ||
-        Number(data.price) < 0
+        !Number.isFinite(price) ||
+        price < 0
     ) {
 
         return {
-
             valid: false,
-
             message:
-                "Please enter a valid price"
-
+                "Please enter a valid price."
         };
 
     }
@@ -455,30 +502,46 @@ function validateProductData(data) {
     if (!data.category) {
 
         return {
-
             valid: false,
-
             message:
-                "Please select a category"
-
+                "Please select a category."
         };
 
     }
 
 
+    if (data.stock !== "") {
+
+        const stock =
+            Number(data.stock);
+
+
+        if (
+            !Number.isInteger(stock) ||
+            stock < 0
+        ) {
+
+            return {
+                valid: false,
+                message:
+                    "Please enter a valid stock quantity."
+            };
+
+        }
+
+    }
+
+
     return {
-
         valid: true,
-
         message: ""
-
     };
 
 }
 
 
 /* =========================================
-   PUBLISH LOADING
+   LOADING
 ========================================= */
 
 function setPublishLoading(
@@ -495,12 +558,8 @@ function setPublishLoading(
 
     if (loading) {
 
-        if (!button.dataset.originalText) {
-
-            button.dataset.originalText =
-                button.innerHTML;
-
-        }
+        button.dataset.originalText =
+            button.innerHTML;
 
 
         button.innerHTML = `
@@ -540,7 +599,9 @@ function setPublishLoading(
    SUCCESS
 ========================================= */
 
-function showPublishSuccess(form) {
+function showPublishSuccess(
+    form
+) {
 
     form.innerHTML = `
 
@@ -567,36 +628,49 @@ function showPublishSuccess(form) {
             </p>
 
 
-            <button
-                type="button"
-                class="publish-button"
-                id="viewShopButton"
-            >
+            <div class="success-actions">
 
-                <span>
-                    VIEW SHOP
-                </span>
+                <button
+                    type="button"
+                    class="publish-button"
+                    id="viewShopButton"
+                >
 
-                <span>
-                    →
-                </span>
+                    <span>
+                        VIEW SHOP
+                    </span>
 
-            </button>
+                    <span>
+                        →
+                    </span>
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="secondary-button"
+                    id="addAnotherButton"
+                >
+                    ADD ANOTHER
+                </button>
+
+            </div>
 
         </section>
 
     `;
 
 
-    const button =
+    const shopButton =
         document.getElementById(
             "viewShopButton"
         );
 
 
-    if (button) {
+    if (shopButton) {
 
-        button.addEventListener(
+        shopButton.addEventListener(
             "click",
             () => {
 
@@ -608,26 +682,25 @@ function showPublishSuccess(form) {
 
     }
 
-}
+
+    const anotherButton =
+        document.getElementById(
+            "addAnotherButton"
+        );
 
 
-/* =========================================
-   ERROR MESSAGE
-========================================= */
+    if (anotherButton) {
 
-function getErrorMessage(error) {
+        anotherButton.addEventListener(
+            "click",
+            () => {
 
-    if (!error) {
+                window.location.reload();
 
-        return "Could not publish product";
+            }
+        );
 
     }
-
-
-    return (
-        error.message ||
-        "Could not publish product"
-    );
 
 }
 
