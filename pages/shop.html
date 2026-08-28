@@ -10,10 +10,22 @@
         content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
     >
 
+    <meta
+        name="theme-color"
+        content="#0f0d0b"
+    >
+
+    <meta
+        name="description"
+        content="Explore the latest collection from SANA Boutique."
+    >
+
     <title>Shop | SANA Boutique</title>
 
 
-    <!-- Fonts -->
+    <!-- =====================================
+         GOOGLE FONTS
+    ====================================== -->
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
 
@@ -29,7 +41,9 @@
     >
 
 
-    <!-- CSS -->
+    <!-- =====================================
+         GLOBAL CSS
+    ====================================== -->
 
     <link
         rel="stylesheet"
@@ -56,6 +70,7 @@
 
 <body>
 
+
 <div id="app">
 
 
@@ -65,7 +80,11 @@
 
     <header class="app-header">
 
+
+        <!-- BACK -->
+
         <button
+            type="button"
             class="header-button"
             onclick="history.back()"
             aria-label="Go back"
@@ -74,7 +93,12 @@
         </button>
 
 
-        <div class="brand">
+        <!-- BRAND -->
+
+        <div
+            class="brand"
+            aria-label="SANA Boutique Shop"
+        >
 
             <div class="brand-name">
                 SANA
@@ -87,10 +111,13 @@
         </div>
 
 
+        <!-- SEARCH -->
+
         <button
+            type="button"
             class="header-button"
             id="shopSearchButton"
-            aria-label="Search"
+            aria-label="Open product search"
         >
             ⌕
         </button>
@@ -100,23 +127,30 @@
 
 
     <!-- =====================================
-         SHOP CONTENT
+         SHOP PAGE
     ====================================== -->
 
     <main class="shop-page">
 
 
-        <!-- PAGE INTRO -->
+        <!-- =====================================
+             SHOP INTRO
+        ====================================== -->
 
-        <section class="shop-intro">
+        <section
+            class="shop-intro"
+            aria-labelledby="shopTitle"
+        >
 
             <span class="shop-eyebrow">
                 DISCOVER
             </span>
 
-            <h1>
+
+            <h1 id="shopTitle">
                 Our Collection
             </h1>
+
 
             <p>
                 Explore elegant pieces
@@ -134,30 +168,45 @@
         <section
             class="shop-search"
             id="shopSearch"
+            aria-label="Product search"
         >
 
             <div class="search-box">
 
-                <span class="search-icon">
+
+                <!-- SEARCH ICON -->
+
+                <span
+                    class="search-icon"
+                    aria-hidden="true"
+                >
                     ⌕
                 </span>
 
 
+                <!-- SEARCH INPUT -->
+
                 <input
                     type="search"
                     id="productSearch"
+                    name="productSearch"
                     placeholder="Search products..."
                     autocomplete="off"
+                    aria-label="Search products"
                 >
 
 
+                <!-- CLEAR -->
+
                 <button
+                    type="button"
                     id="clearSearch"
                     class="clear-search"
                     aria-label="Clear search"
                 >
                     ×
                 </button>
+
 
             </div>
 
@@ -169,56 +218,88 @@
              CATEGORIES
         ====================================== -->
 
-        <section class="shop-categories">
+        <section
+            class="shop-categories"
+            aria-label="Product categories"
+        >
 
             <div
                 class="category-scroll"
                 id="categoryFilters"
             >
 
+
+                <!-- ALL -->
+
                 <button
                     type="button"
                     class="category-filter active"
                     data-category="all"
+                    aria-pressed="true"
                 >
                     All
                 </button>
 
 
+                <!-- UNSTITCHED -->
+
                 <button
                     type="button"
                     class="category-filter"
                     data-category="unstitched"
+                    aria-pressed="false"
                 >
                     Unstitched
                 </button>
 
 
+                <!-- KURTIS -->
+
                 <button
                     type="button"
                     class="category-filter"
                     data-category="kurtis"
+                    aria-pressed="false"
                 >
                     Kurtis
                 </button>
 
 
+                <!-- ABAYAS -->
+
                 <button
                     type="button"
                     class="category-filter"
                     data-category="abayas"
+                    aria-pressed="false"
                 >
                     Abayas
                 </button>
 
 
+                <!-- SHAWLS -->
+
                 <button
                     type="button"
                     class="category-filter"
                     data-category="shawls"
+                    aria-pressed="false"
                 >
                     Shawls
                 </button>
+
+
+                <!-- OTHER -->
+
+                <button
+                    type="button"
+                    class="category-filter"
+                    data-category="other"
+                    aria-pressed="false"
+                >
+                    Other
+                </button>
+
 
             </div>
 
@@ -232,11 +313,13 @@
 
         <section class="results-header">
 
+
             <div>
 
                 <span class="results-label">
                     COLLECTION
                 </span>
+
 
                 <h2 id="resultsTitle">
                     All Products
@@ -245,36 +328,48 @@
             </div>
 
 
+            <!-- FILTER -->
+
             <button
                 type="button"
                 class="filter-button"
                 id="filterButton"
+                aria-label="Filter products"
             >
                 ☷ Filter
             </button>
+
 
         </section>
 
 
 
         <!-- =====================================
-             PRODUCT GRID
+             PRODUCTS
         ====================================== -->
 
-        <section class="shop-products">
+        <section
+            class="shop-products"
+            aria-label="Products"
+        >
 
             <div
                 class="products-grid"
                 id="shopProducts"
             >
 
+                <!-- JS loads products here -->
+
                 <div class="loading">
-                    Loading products...
+
+                    Loading collection...
+
                 </div>
 
             </div>
 
         </section>
+
 
 
     </main>
@@ -285,15 +380,24 @@
          BOTTOM NAVIGATION
     ====================================== -->
 
-    <nav class="bottom-navigation">
+    <nav
+        class="bottom-navigation"
+        aria-label="Main navigation"
+    >
 
+
+        <!-- HOME -->
 
         <a
             href="../index.html"
             class="nav-item"
+            aria-label="Home"
         >
 
-            <span class="nav-icon">
+            <span
+                class="nav-icon"
+                aria-hidden="true"
+            >
                 ⌂
             </span>
 
@@ -305,12 +409,19 @@
 
 
 
+        <!-- SHOP -->
+
         <a
             href="shop.html"
             class="nav-item active"
+            aria-current="page"
+            aria-label="Shop"
         >
 
-            <span class="nav-icon">
+            <span
+                class="nav-icon"
+                aria-hidden="true"
+            >
                 ♧
             </span>
 
@@ -322,25 +433,31 @@
 
 
 
-        <!-- CENTER POST BUTTON -->
+        <!-- CREATE PRODUCT -->
 
         <a
             href="post.html"
             class="post-button"
             id="postButton"
-            aria-label="Create post"
+            aria-label="Create new product"
         >
             +
         </a>
 
 
 
+        <!-- ABOUT -->
+
         <a
             href="about.html"
             class="nav-item"
+            aria-label="About"
         >
 
-            <span class="nav-icon">
+            <span
+                class="nav-icon"
+                aria-hidden="true"
+            >
                 ♙
             </span>
 
@@ -352,12 +469,18 @@
 
 
 
+        <!-- CONTACT -->
+
         <a
             href="contact.html"
             class="nav-item"
+            aria-label="Contact"
         >
 
-            <span class="nav-icon">
+            <span
+                class="nav-icon"
+                aria-hidden="true"
+            >
                 ⌕
             </span>
 
@@ -379,17 +502,32 @@
      JAVASCRIPT
 ====================================== -->
 
-<script src="../js/app.js"></script>
+<!-- Global application -->
 
-<script src="../js/navigation.js"></script>
+<script
+    src="../js/app.js"
+></script>
+
+
+<!-- Navigation -->
+
+<script
+    src="../js/navigation.js"
+></script>
+
 
 <!-- REAL BACKEND API -->
 
-<script src="../js/api.js"></script>
+<script
+    src="../js/api.js"
+></script>
 
-<!-- SHOP CONTROLLER -->
 
-<script src="../js/shop.js"></script>
+<!-- Shop controller -->
+
+<script
+    src="../js/shop.js"
+></script>
 
 
 </body>
