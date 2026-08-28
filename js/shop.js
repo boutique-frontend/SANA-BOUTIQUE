@@ -5,19 +5,21 @@
 
 "use strict";
 
+
 let shopProducts = [];
 let activeCategory = "all";
 let searchTerm = "";
 
 
-document.addEventListener("DOMContentLoaded", () => {
-    initializeShop();
-});
-
-
 /* =========================================
    INITIALIZE
 ========================================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    initializeShop
+);
+
 
 async function initializeShop() {
 
@@ -30,48 +32,69 @@ async function initializeShop() {
     readCategoryFromURL();
 
     await loadShopProducts();
+
 }
 
 
 /* =========================================
-   LOAD PRODUCTS
+   LOAD PRODUCTS FROM BACKEND
 ========================================= */
 
 async function loadShopProducts() {
 
     const container =
-        document.getElementById("shopProducts");
+        document.getElementById(
+            "shopProducts"
+        );
+
 
     if (!container) return;
+
 
     try {
 
         setShopLoading(container);
 
-        /*
-         * We will connect this to your
-         * existing backend through api.js.
-         */
 
-        let products = [];
-
-        if (typeof getProducts === "function") {
-            products = await getProducts();
-        }
-        else if (
-            typeof getFeaturedProducts === "function"
+        if (
+            typeof getProducts !==
+            "function"
         ) {
-            products = await getFeaturedProducts();
+
+            throw new Error(
+                "API connection is not available."
+            );
+
         }
+
+
+        const products =
+            await getProducts();
+
 
         shopProducts =
             Array.isArray(products)
                 ? products
                 : [];
 
-        AppState.products = shopProducts;
+
+        /*
+         * Save globally only if AppState exists.
+         */
+
+        if (
+            typeof AppState !==
+            "undefined"
+        ) {
+
+            AppState.products =
+                shopProducts;
+
+        }
+
 
         renderShopProducts();
+
 
     } catch (error) {
 
@@ -80,8 +103,13 @@ async function loadShopProducts() {
             error
         );
 
-        showShopError(container);
+
+        showShopError(
+            container
+        );
+
     }
+
 }
 
 
@@ -92,34 +120,58 @@ async function loadShopProducts() {
 function renderShopProducts() {
 
     const container =
-        document.getElementById("shopProducts");
+        document.getElementById(
+            "shopProducts"
+        );
+
 
     if (!container) return;
 
+
     const filtered =
-        filterProducts(shopProducts);
+        filterProducts(
+            shopProducts
+        );
+
 
     container.innerHTML = "";
 
+
     if (!filtered.length) {
 
-        showNoProducts(container);
+        showNoProducts(
+            container
+        );
+
 
         updateResultsTitle(0);
 
         return;
+
     }
 
-    filtered.forEach(product => {
 
-        const card =
-            createShopProductCard(product);
+    filtered.forEach(
+        product => {
 
-        container.appendChild(card);
+            const card =
+                createShopProductCard(
+                    product
+                );
 
-    });
 
-    updateResultsTitle(filtered.length);
+            container.appendChild(
+                card
+            );
+
+        }
+    );
+
+
+    updateResultsTitle(
+        filtered.length
+    );
+
 }
 
 
@@ -127,48 +179,66 @@ function renderShopProducts() {
    FILTER PRODUCTS
 ========================================= */
 
-function filterProducts(products) {
+function filterProducts(
+    products
+) {
 
-    return products.filter(product => {
+    return products.filter(
+        product => {
 
-        const name =
-            String(
-                product.name ??
-                product.title ??
-                ""
-            ).toLowerCase();
+            const name =
+                String(
+                    product?.name ??
+                    product?.title ??
+                    ""
+                )
+                .toLowerCase();
 
-        const description =
-            String(
-                product.description ??
-                ""
-            ).toLowerCase();
 
-        const category =
-            String(
-                product.category ??
-                product.categories ??
-                ""
-            ).toLowerCase();
+            const description =
+                String(
+                    product?.description ??
+                    ""
+                )
+                .toLowerCase();
 
-        const matchesSearch =
-            !searchTerm ||
-            name.includes(searchTerm) ||
-            description.includes(searchTerm) ||
-            category.includes(searchTerm);
 
-        const matchesCategory =
-            activeCategory === "all" ||
-            category.includes(
-                activeCategory.toLowerCase()
+            const category =
+                normalizeCategory(
+                    product?.category ??
+                    ""
+                );
+
+
+            const matchesSearch =
+                !searchTerm ||
+                name.includes(
+                    searchTerm
+                ) ||
+                description.includes(
+                    searchTerm
+                ) ||
+                category.includes(
+                    searchTerm
+                );
+
+
+            const matchesCategory =
+                activeCategory === "all" ||
+                category ===
+                normalizeCategory(
+                    activeCategory
+                );
+
+
+            return (
+                matchesSearch &&
+                matchesCategory
             );
 
-        return (
-            matchesSearch &&
-            matchesCategory
-        );
+        }
+    );
 
-    });
 }
 
 
@@ -176,54 +246,68 @@ function filterProducts(products) {
    PRODUCT CARD
 ========================================= */
 
-function createShopProductCard(product) {
+function createShopProductCard(
+    product
+) {
 
     const card =
-        document.createElement("article");
+        document.createElement(
+            "article"
+        );
 
-    card.className = "product-card";
+
+    card.className =
+        "product-card";
+
 
     const id =
-        product.id ??
-        product._id ??
-        product.product_id;
+        product?.id ??
+        product?._id ??
+        product?.product_id;
+
 
     const name =
-        product.name ??
-        product.title ??
+        product?.title ??
+        product?.name ??
         "SANA Boutique Item";
 
+
     const price =
-        product.price ??
-        product.amount ??
+        product?.price ??
         "";
+
 
     const image =
-        product.image_url ??
-        product.image ??
-        product.photo ??
+        product?.image_url ??
+        product?.image ??
+        product?.photo ??
         "";
 
+
     const category =
-        product.category ??
-        product.categories ??
+        product?.category ??
         "";
+
 
     card.innerHTML = `
 
         ${
             category
                 ? `
-                    <span class="product-badge">
+                    <span
+                        class="product-badge"
+                    >
                         ${escapeHTML(category)}
                     </span>
                   `
                 : ""
         }
 
+
         <button
+            type="button"
             class="product-favorite"
-            data-favorite="${escapeHTML(id)}"
+            data-favorite="${escapeHTML(id ?? "")}"
             aria-label="Favorite"
         >
             ♡
@@ -242,9 +326,15 @@ function createShopProductCard(product) {
                   `
                 : `
                     <div
-                        class="product-card-image
-                               image-placeholder"
-                    ></div>
+                        class="
+                            product-card-image
+                            image-placeholder
+                        "
+                    >
+                        <span>
+                            SANA
+                        </span>
+                    </div>
                   `
         }
 
@@ -255,39 +345,66 @@ function createShopProductCard(product) {
                 ${escapeHTML(name)}
             </h3>
 
+
             <div class="product-price">
+
                 ${formatShopPrice(price)}
+
             </div>
 
         </div>
+
     `;
 
 
-    /* Open product */
+    /* =====================================
+       OPEN PRODUCT
+    ===================================== */
 
-    card.addEventListener("click", event => {
+    card.addEventListener(
+        "click",
+        event => {
 
-        if (
-            event.target.closest(
-                ".product-favorite"
-            )
-        ) {
-            return;
+            if (
+                event.target.closest(
+                    ".product-favorite"
+                )
+            ) {
+
+                return;
+
+            }
+
+
+            if (!id) {
+
+                console.warn(
+                    "Product has no ID:",
+                    product
+                );
+
+                return;
+
+            }
+
+
+            openProduct(
+                id
+            );
+
         }
-
-        if (id) {
-            openProduct(id);
-        }
-
-    });
+    );
 
 
-    /* Favorite */
+    /* =====================================
+       FAVORITE
+    ===================================== */
 
     const favorite =
         card.querySelector(
             ".product-favorite"
         );
+
 
     if (favorite) {
 
@@ -296,13 +413,25 @@ function createShopProductCard(product) {
             id
         );
 
+
         favorite.addEventListener(
             "click",
             event => {
 
                 event.stopPropagation();
 
-                toggleFavorite(id);
+
+                if (
+                    typeof toggleFavorite ===
+                    "function"
+                ) {
+
+                    toggleFavorite(
+                        id
+                    );
+
+                }
+
 
                 updateShopFavorite(
                     favorite,
@@ -311,10 +440,29 @@ function createShopProductCard(product) {
 
             }
         );
+
     }
 
 
     return card;
+
+}
+
+
+/* =========================================
+   OPEN PRODUCT PAGE
+========================================= */
+
+function openProduct(
+    productId
+) {
+
+    if (!productId) return;
+
+
+    window.location.href =
+        `product.html?id=${encodeURIComponent(productId)}`;
+
 }
 
 
@@ -327,18 +475,43 @@ function updateShopFavorite(
     productId
 ) {
 
-    if (!button || !productId) return;
+    if (
+        !button ||
+        !productId
+    ) {
+
+        return;
+
+    }
+
+
+    if (
+        typeof isFavorite !==
+        "function"
+    ) {
+
+        return;
+
+    }
+
 
     const active =
-        isFavorite(productId);
+        isFavorite(
+            productId
+        );
+
 
     button.classList.toggle(
         "active",
         active
     );
 
+
     button.textContent =
-        active ? "♥" : "♡";
+        active
+            ? "♥"
+            : "♡";
+
 }
 
 
@@ -353,10 +526,12 @@ function setupSearch() {
             "productSearch"
         );
 
+
     const clearButton =
         document.getElementById(
             "clearSearch"
         );
+
 
     if (!input) return;
 
@@ -370,9 +545,11 @@ function setupSearch() {
                     .trim()
                     .toLowerCase();
 
+
             updateClearButton(
                 clearButton
             );
+
 
             renderShopProducts();
 
@@ -390,32 +567,41 @@ function setupSearch() {
 
                 searchTerm = "";
 
+
                 updateClearButton(
                     clearButton
                 );
 
+
                 renderShopProducts();
+
 
                 input.focus();
 
             }
         );
+
     }
+
 }
 
 
 /* =========================================
-   CLEAR SEARCH BUTTON
+   CLEAR SEARCH
 ========================================= */
 
-function updateClearButton(button) {
+function updateClearButton(
+    button
+) {
 
     if (!button) return;
+
 
     button.classList.toggle(
         "show",
         searchTerm.length > 0
     );
+
 }
 
 
@@ -430,41 +616,47 @@ function setupCategoryFilters() {
             ".category-filter"
         );
 
-    buttons.forEach(button => {
 
-        button.addEventListener(
-            "click",
-            () => {
+    buttons.forEach(
+        button => {
 
-                activeCategory =
-                    (
-                        button.dataset.category ||
-                        "all"
-                    ).toLowerCase();
+            button.addEventListener(
+                "click",
+                () => {
+
+                    activeCategory =
+                        normalizeCategory(
+                            button.dataset.category ||
+                            "all"
+                        );
 
 
-                buttons.forEach(item => {
+                    buttons.forEach(
+                        item => {
 
-                    item.classList.remove(
+                            item.classList.remove(
+                                "active"
+                            );
+
+                        }
+                    );
+
+
+                    button.classList.add(
                         "active"
                     );
 
-                });
 
+                    updateCategoryTitle();
 
-                button.classList.add(
-                    "active"
-                );
+                    renderShopProducts();
 
+                }
+            );
 
-                updateCategoryTitle();
+        }
+    );
 
-                renderShopProducts();
-
-            }
-        );
-
-    });
 }
 
 
@@ -479,15 +671,21 @@ function readCategoryFromURL() {
             window.location.search
         );
 
+
     const category =
-        params.get("category");
+        params.get(
+            "category"
+        );
+
 
     if (!category) return;
 
+
     const normalized =
-        category
-            .toLowerCase()
-            .replace(/\s+/g, "");
+        normalizeCategory(
+            category
+        );
+
 
     activeCategory =
         normalized;
@@ -499,26 +697,49 @@ function readCategoryFromURL() {
         );
 
 
-    buttons.forEach(button => {
+    buttons.forEach(
+        button => {
 
-        const buttonCategory =
-            (
-                button.dataset.category ||
-                ""
-            )
-            .toLowerCase()
-            .replace(/\s+/g, "");
+            const buttonCategory =
+                normalizeCategory(
+                    button.dataset.category ||
+                    ""
+                );
 
 
-        button.classList.toggle(
-            "active",
-            buttonCategory === normalized
-        );
+            button.classList.toggle(
+                "active",
+                buttonCategory ===
+                normalized
+            );
 
-    });
+        }
+    );
 
 
     updateCategoryTitle();
+
+}
+
+
+/* =========================================
+   NORMALIZE CATEGORY
+========================================= */
+
+function normalizeCategory(
+    value
+) {
+
+    return String(
+        value ?? ""
+    )
+    .toLowerCase()
+    .trim()
+    .replace(
+        /[\s_-]+/g,
+        ""
+    );
+
 }
 
 
@@ -533,15 +754,20 @@ function updateCategoryTitle() {
             "resultsTitle"
         );
 
+
     if (!title) return;
 
 
-    if (activeCategory === "all") {
+    if (
+        activeCategory ===
+        "all"
+    ) {
 
         title.textContent =
             "All Products";
 
         return;
+
     }
 
 
@@ -549,6 +775,7 @@ function updateCategoryTitle() {
         capitalizeWords(
             activeCategory
         );
+
 }
 
 
@@ -556,19 +783,18 @@ function updateCategoryTitle() {
    RESULTS COUNT
 ========================================= */
 
-function updateResultsTitle(count) {
+function updateResultsTitle(
+    count
+) {
 
     const title =
         document.getElementById(
             "resultsTitle"
         );
 
+
     if (!title) return;
 
-    /*
-     * Keep the category name while
-     * showing the number of results.
-     */
 
     const categoryName =
         activeCategory === "all"
@@ -577,8 +803,10 @@ function updateResultsTitle(count) {
                 activeCategory
             );
 
+
     title.textContent =
         `${categoryName} (${count})`;
+
 }
 
 
@@ -593,7 +821,9 @@ function setupFilterButton() {
             "filterButton"
         );
 
+
     if (!button) return;
+
 
     button.addEventListener(
         "click",
@@ -605,6 +835,7 @@ function setupFilterButton() {
 
         }
     );
+
 }
 
 
@@ -612,7 +843,9 @@ function setupFilterButton() {
    LOADING
 ========================================= */
 
-function setShopLoading(container) {
+function setShopLoading(
+    container
+) {
 
     container.innerHTML = `
 
@@ -623,6 +856,7 @@ function setShopLoading(container) {
         </div>
 
     `;
+
 }
 
 
@@ -630,7 +864,9 @@ function setShopLoading(container) {
    NO PRODUCTS
 ========================================= */
 
-function showNoProducts(container) {
+function showNoProducts(
+    container
+) {
 
     container.innerHTML = `
 
@@ -640,9 +876,11 @@ function showNoProducts(container) {
                 ♢
             </div>
 
+
             <h3>
                 No Products Found
             </h3>
+
 
             <p>
                 Try another search or category.
@@ -651,6 +889,7 @@ function showNoProducts(container) {
         </div>
 
     `;
+
 }
 
 
@@ -658,7 +897,9 @@ function showNoProducts(container) {
    ERROR
 ========================================= */
 
-function showShopError(container) {
+function showShopError(
+    container
+) {
 
     container.innerHTML = `
 
@@ -668,18 +909,21 @@ function showShopError(container) {
                 !
             </div>
 
+
             <h3>
                 Something went wrong
             </h3>
+
 
             <p>
                 We couldn't load the collection.
             </p>
 
+
             <button
+                type="button"
                 class="gold-button"
                 id="retryShop"
-                style="margin-top:18px;"
             >
                 TRY AGAIN
             </button>
@@ -694,6 +938,7 @@ function showShopError(container) {
             "retryShop"
         );
 
+
     if (retry) {
 
         retry.addEventListener(
@@ -702,6 +947,7 @@ function showShopError(container) {
         );
 
     }
+
 }
 
 
@@ -709,29 +955,46 @@ function showShopError(container) {
    PRICE
 ========================================= */
 
-function formatShopPrice(price) {
+function formatShopPrice(
+    price
+) {
 
     if (
         price === null ||
         price === undefined ||
         price === ""
     ) {
+
         return "Price unavailable";
+
     }
+
 
     const numeric =
         Number(
             String(price)
-                .replace(/[^0-9.]/g, "")
+                .replace(
+                    /[^0-9.]/g,
+                    ""
+                )
         );
 
-    if (Number.isNaN(numeric)) {
 
-        return String(price);
+    if (
+        Number.isNaN(
+            numeric
+        )
+    ) {
+
+        return escapeHTML(
+            price
+        );
 
     }
 
+
     return `Rs. ${numeric.toLocaleString()}`;
+
 }
 
 
@@ -739,13 +1002,21 @@ function formatShopPrice(price) {
    CAPITALIZE
 ========================================= */
 
-function capitalizeWords(value) {
+function capitalizeWords(
+    value
+) {
 
     return String(value)
-        .replace(/[-_]/g, " ")
-        .replace(/\b\w/g, char =>
-            char.toUpperCase()
+        .replace(
+            /[-_]/g,
+            " "
+        )
+        .replace(
+            /\b\w/g,
+            char =>
+                char.toUpperCase()
         );
+
 }
 
 
@@ -753,23 +1024,48 @@ function capitalizeWords(value) {
    ESCAPE HTML
 ========================================= */
 
-function escapeHTML(value) {
+function escapeHTML(
+    value
+) {
 
-    return String(value ?? "")
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
+    return String(
+        value ?? ""
+    )
+    .replace(
+        /&/g,
+        "&amp;"
+    )
+    .replace(
+        /</g,
+        "&lt;"
+    )
+    .replace(
+        />/g,
+        "&gt;"
+    )
+    .replace(
+        /"/g,
+        "&quot;"
+    )
+    .replace(
+        /'/g,
+        "&#039;"
+    );
+
 }
 
 
 /* =========================================
-   EXPOSE FUNCTIONS
+   EXPOSE
 ========================================= */
 
 window.loadShopProducts =
     loadShopProducts;
 
+
 window.renderShopProducts =
-    renderShopProducts; 
+    renderShopProducts;
+
+
+window.openProduct =
+    openProduct;
