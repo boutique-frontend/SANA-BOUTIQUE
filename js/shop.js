@@ -1,28 +1,19 @@
 /* =========================================
    SANA BOUTIQUE
    SHOP CONTROLLER
-   FULL VERSION
-   - Product click system
-   - Smooth tap animation
-   - Search
-   - Categories
-   - Favorites
-   - Image fallback
-   - Product navigation
+   PREMIUM PRODUCT TAP SYSTEM
 ========================================= */
 
 "use strict";
 
-
-/* =========================================
-   STATE
-========================================= */
 
 let shopProducts = [];
 
 let activeCategory = "all";
 
 let searchTerm = "";
+
+let tapTimer = null;
 
 
 /* =========================================
@@ -69,7 +60,9 @@ async function loadShopProducts() {
 
     try {
 
-        setShopLoading(container);
+        setShopLoading(
+            container
+        );
 
 
         if (
@@ -155,9 +148,9 @@ function renderShopProducts() {
             container
         );
 
-
-        updateResultsTitle(0);
-
+        updateResultsTitle(
+            0
+        );
 
         return;
 
@@ -165,11 +158,12 @@ function renderShopProducts() {
 
 
     filtered.forEach(
-        product => {
+        (product, index) => {
 
             const card =
                 createShopProductCard(
-                    product
+                    product,
+                    index
                 );
 
 
@@ -238,7 +232,7 @@ function filterProducts(
             const matchesCategory =
                 activeCategory === "all" ||
                 category.includes(
-                    activeCategory.toLowerCase()
+                    activeCategory
                 );
 
 
@@ -258,7 +252,8 @@ function filterProducts(
 ========================================= */
 
 function createShopProductCard(
-    product
+    product,
+    index
 ) {
 
     const card =
@@ -308,18 +303,31 @@ function createShopProductCard(
 
 
     /* =====================================
-       PRODUCT ID
+       IMPORTANT PRODUCT ID
     ===================================== */
 
     if (
         id !== undefined &&
-        id !== null
+        id !== null &&
+        id !== ""
     ) {
 
         card.dataset.productId =
             String(id);
 
     }
+
+
+    /*
+     * Store the position too.
+     *
+     * This helps us debug cards if the
+     * backend accidentally returns duplicate
+     * IDs.
+     */
+
+    card.dataset.productIndex =
+        String(index);
 
 
     /* =====================================
@@ -341,19 +349,14 @@ function createShopProductCard(
         }
 
 
-        <!-- FAVORITE -->
-
         <button
             type="button"
             class="product-favorite"
-            data-favorite="${escapeHTML(id)}"
             aria-label="Favorite ${escapeHTML(name)}"
         >
             ♡
         </button>
 
-
-        <!-- IMAGE -->
 
         <div
             class="product-image-wrapper"
@@ -371,6 +374,7 @@ function createShopProductCard(
                             src="${escapeHTML(image)}"
                             alt="${escapeHTML(name)}"
                             loading="lazy"
+                            draggable="false"
                         >
 
                         <div
@@ -386,8 +390,6 @@ function createShopProductCard(
             }
 
 
-            <!-- VIEW OVERLAY -->
-
             <div
                 class="product-view-overlay"
             >
@@ -398,18 +400,14 @@ function createShopProductCard(
 
             </div>
 
-
         </div>
 
-
-        <!-- PRODUCT INFO -->
 
         <div class="product-info">
 
             <h3>
                 ${escapeHTML(name)}
             </h3>
-
 
             <div class="product-price">
                 ${formatShopPrice(price)}
@@ -460,71 +458,105 @@ function createShopProductCard(
 
 
     /* =====================================
-       TAP ANIMATION
+       GET PRODUCT ID
     ===================================== */
 
-    function playTapAnimation() {
+    function getCardProductId() {
 
-        card.classList.remove(
-            "product-card-tap"
-        );
-
-
-        /*
-         * Force browser reflow so
-         * animation can restart.
-         */
-
-        void card.offsetWidth;
-
-
-        card.classList.add(
-            "product-card-tap"
-        );
-
-
-        setTimeout(
-            () => {
-
-                card.classList.remove(
-                    "product-card-tap"
-                );
-
-            },
-            220
+        return (
+            product?.id ??
+            product?._id ??
+            product?.product_id ??
+            product?.post_id ??
+            null
         );
 
     }
 
 
     /* =====================================
-       OPEN PRODUCT
+       TAP ANIMATION
+    ===================================== */
+
+    function playTapAnimation() {
+
+        /*
+         * Remove previous animation first.
+         */
+
+        card.classList.remove(
+            "tap-animation"
+        );
+
+
+        /*
+         * Force browser reflow so the
+         * animation can restart every tap.
+         */
+
+        void card.offsetWidth;
+
+
+        card.classList.add(
+            "tap-animation"
+        );
+
+
+        clearTimeout(
+            tapTimer
+        );
+
+
+        tapTimer =
+            setTimeout(
+                () => {
+
+                    card.classList.remove(
+                        "tap-animation"
+                    );
+
+                },
+                600
+            );
+
+    }
+
+
+    /* =====================================
+       OPEN THIS EXACT PRODUCT
     ===================================== */
 
     function handleProductOpen() {
 
+        const productId =
+            getCardProductId();
+
+
+        console.log(
+            "Opening product:",
+            {
+                index,
+                id: productId,
+                product
+            }
+        );
+
+
         if (
-            id === undefined ||
-            id === null ||
-            id === ""
+            productId === null ||
+            productId === undefined ||
+            productId === ""
         ) {
 
             console.error(
-                "Cannot open product: missing ID",
+                "Product has no ID:",
                 product
             );
 
 
-            if (
-                typeof showToast ===
-                "function"
-            ) {
-
-                showToast(
-                    "Product unavailable"
-                );
-
-            }
+            showToast(
+                "Product unavailable"
+            );
 
 
             return;
@@ -536,17 +568,19 @@ function createShopProductCard(
 
 
         /*
-         * Small delay gives the
-         * tap animation time to appear.
+         * Small delay allows the tap
+         * animation to be visible.
          */
 
         setTimeout(
             () => {
 
-                openProduct(id);
+                openProduct(
+                    productId
+                );
 
             },
-            130
+            120
         );
 
     }
@@ -561,8 +595,8 @@ function createShopProductCard(
         event => {
 
             /*
-             * Favorite button must
-             * not open product.
+             * Favorite button has its own
+             * action.
              */
 
             if (
@@ -577,8 +611,8 @@ function createShopProductCard(
 
 
             /*
-             * Prevent duplicate opening
-             * when clicking image wrapper.
+             * Image wrapper has its own
+             * handler.
              */
 
             if (
@@ -640,6 +674,7 @@ function createShopProductCard(
 
                     event.preventDefault();
 
+
                     handleProductOpen();
 
                 }
@@ -677,23 +712,6 @@ function createShopProductCard(
                 event.stopPropagation();
 
 
-                /*
-                 * Favorite tap animation
-                 */
-
-                favorite.classList.remove(
-                    "favorite-tap"
-                );
-
-
-                void favorite.offsetWidth;
-
-
-                favorite.classList.add(
-                    "favorite-tap"
-                );
-
-
                 if (
                     typeof toggleFavorite ===
                     "function"
@@ -709,18 +727,6 @@ function createShopProductCard(
                 updateShopFavorite(
                     favorite,
                     id
-                );
-
-
-                setTimeout(
-                    () => {
-
-                        favorite.classList.remove(
-                            "favorite-tap"
-                        );
-
-                    },
-                    250
                 );
 
             }
@@ -748,17 +754,9 @@ function openProduct(
         productId === ""
     ) {
 
-        if (
-            typeof showToast ===
-            "function"
-        ) {
-
-            showToast(
-                "Product ID is missing"
-            );
-
-        }
-
+        showToast(
+            "Product ID is missing"
+        );
 
         return;
 
@@ -772,13 +770,19 @@ function openProduct(
 
 
     /*
-     * shop.html and product.html
-     * are both inside /pages/
+     * product.html is inside /pages/
+     * together with shop.html.
      */
 
     const productPage =
-        "product.html?id=" +
+        "./product.html?id=" +
         encodedId;
+
+
+    console.log(
+        "Product URL:",
+        productPage
+    );
 
 
     window.location.href =
@@ -788,7 +792,7 @@ function openProduct(
 
 
 /* =========================================
-   FAVORITE STATE
+   FAVORITE
 ========================================= */
 
 function updateShopFavorite(
@@ -799,7 +803,8 @@ function updateShopFavorite(
     if (
         !button ||
         productId === undefined ||
-        productId === null
+        productId === null ||
+        productId === ""
     ) {
 
         return;
@@ -833,14 +838,6 @@ function updateShopFavorite(
         active
             ? "♥"
             : "♡";
-
-
-    button.setAttribute(
-        "aria-pressed",
-        active
-            ? "true"
-            : "false"
-    );
 
 }
 
@@ -895,9 +892,10 @@ function setupSearch() {
 
                 event.preventDefault();
 
+                event.stopPropagation();
+
 
                 input.value = "";
-
 
                 searchTerm = "";
 
@@ -944,41 +942,27 @@ function setupSearchButton() {
         );
 
 
-    if (
-        !button ||
-        !search
-    ) {
-
-        return;
-
-    }
+    if (!button || !search) return;
 
 
     button.addEventListener(
         "click",
-        () => {
+        event => {
+
+            event.preventDefault();
+
+            event.stopPropagation();
+
 
             search.classList.toggle(
                 "visible"
             );
 
 
-            const visible =
+            if (
                 search.classList.contains(
                     "visible"
-                );
-
-
-            button.setAttribute(
-                "aria-expanded",
-                visible
-                    ? "true"
-                    : "false"
-            );
-
-
-            if (
-                visible &&
+                ) &&
                 input
             ) {
 
@@ -1035,13 +1019,23 @@ function setupCategoryFilters() {
 
             button.addEventListener(
                 "click",
-                () => {
+                event => {
+
+                    event.preventDefault();
+
+                    event.stopPropagation();
+
 
                     activeCategory =
                         (
                             button.dataset.category ||
                             "all"
-                        ).toLowerCase();
+                        )
+                            .toLowerCase()
+                            .replace(
+                                /\s+/g,
+                                ""
+                            );
 
 
                     buttons.forEach(
@@ -1247,18 +1241,16 @@ function setupFilterButton() {
 
     button.addEventListener(
         "click",
-        () => {
+        event => {
 
-            if (
-                typeof showToast ===
-                "function"
-            ) {
+            event.preventDefault();
 
-                showToast(
-                    "More filters coming soon."
-                );
+            event.stopPropagation();
 
-            }
+
+            showToast(
+                "More filters coming soon."
+            );
 
         }
     );
@@ -1277,9 +1269,7 @@ function setShopLoading(
     container.innerHTML = `
 
         <div class="loading">
-
             Loading collection...
-
         </div>
 
     `;
@@ -1303,11 +1293,9 @@ function showNoProducts(
                 ♢
             </div>
 
-
             <h3>
                 No Products Found
             </h3>
-
 
             <p>
                 Try another search or category.
@@ -1336,17 +1324,14 @@ function showShopError(
                 !
             </div>
 
-
             <h3>
                 Couldn't Load Collection
             </h3>
-
 
             <p>
                 Please check your connection
                 and try again.
             </p>
-
 
             <button
                 type="button"
@@ -1381,7 +1366,7 @@ function showShopError(
 
 
 /* =========================================
-   PRICE FORMAT
+   PRICE
 ========================================= */
 
 function formatShopPrice(
@@ -1428,7 +1413,7 @@ function formatShopPrice(
 
 
 /* =========================================
-   CAPITALIZE WORDS
+   CAPITALIZE
 ========================================= */
 
 function capitalizeWords(
@@ -1485,7 +1470,7 @@ function escapeHTML(
 
 
 /* =========================================
-   EXPOSE FUNCTIONS
+   EXPOSE
 ========================================= */
 
 window.loadShopProducts =
