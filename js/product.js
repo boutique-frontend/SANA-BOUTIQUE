@@ -9,27 +9,37 @@ let currentProduct = null;
 let selectedSize = "";
 
 
-document.addEventListener("DOMContentLoaded", () => {
-    initializeProduct();
-});
-
-
 /* =========================================
    INITIALIZE
 ========================================= */
 
+document.addEventListener(
+    "DOMContentLoaded",
+    initializeProduct
+);
+
+
 async function initializeProduct() {
 
-    const productId = getProductId();
+    const productId =
+        getProductId();
+
 
     if (!productId) {
+
         showProductNotFound();
+
         return;
+
     }
+
 
     setupFavoriteButton();
 
-    await loadProduct(productId);
+    await loadProduct(
+        productId
+    );
+
 }
 
 
@@ -44,7 +54,9 @@ function getProductId() {
             window.location.search
         );
 
+
     return params.get("id");
+
 }
 
 
@@ -52,56 +64,42 @@ function getProductId() {
    LOAD PRODUCT
 ========================================= */
 
-async function loadProduct(productId) {
+async function loadProduct(
+    productId
+) {
 
     const container =
         document.getElementById(
             "productDetails"
         );
 
+
     if (!container) return;
+
 
     try {
 
-        setProductLoading(container);
+        setProductLoading(
+            container
+        );
 
-        let product = null;
-
-
-        /*
-         * This connects to the API layer
-         * that we will build next.
-         */
 
         if (
-            typeof getProductById ===
+            typeof getProductById !==
             "function"
         ) {
 
-            product =
-                await getProductById(
-                    productId
-                );
+            throw new Error(
+                "Product API is not connected."
+            );
 
         }
-        else if (
-            typeof getProducts ===
-            "function"
-        ) {
 
-            const products =
-                await getProducts();
 
-            product =
-                products.find(item =>
-                    String(
-                        item.id ??
-                        item._id ??
-                        item.product_id
-                    ) === String(productId)
-                );
-
-        }
+        const product =
+            await getProductById(
+                productId
+            );
 
 
         if (!product) {
@@ -113,10 +111,24 @@ async function loadProduct(productId) {
         }
 
 
-        currentProduct = product;
-
-        AppState.selectedProduct =
+        currentProduct =
             product;
+
+
+        /*
+         * Only update AppState
+         * if it exists.
+         */
+
+        if (
+            typeof AppState !==
+            "undefined"
+        ) {
+
+            AppState.selectedProduct =
+                product;
+
+        }
 
 
         renderProduct(
@@ -137,11 +149,13 @@ async function loadProduct(productId) {
             error
         );
 
+
         showProductError(
             container
         );
 
     }
+
 }
 
 
@@ -154,38 +168,26 @@ function renderProduct(
     container
 ) {
 
-    const id =
-        product.id ??
-        product._id ??
-        product.product_id;
-
     const name =
-        product.name ??
         product.title ??
+        product.name ??
         "SANA Boutique Item";
+
 
     const description =
         product.description ??
         "No description available.";
 
+
     const price =
         product.price ??
-        product.amount ??
         "";
+
 
     const category =
         product.category ??
-        product.categories ??
         "Collection";
 
-    const color =
-        product.color ??
-        "Not specified";
-
-    const stock =
-        product.stock ??
-        product.quantity ??
-        "Available";
 
     const image =
         product.image_url ??
@@ -202,7 +204,9 @@ function renderProduct(
 
     container.innerHTML = `
 
-        <!-- PRODUCT IMAGE -->
+        <!-- =================================
+             MAIN PRODUCT IMAGE
+        ================================== -->
 
         <div class="product-main-image">
 
@@ -212,19 +216,28 @@ function renderProduct(
                         <img
                             src="${escapeHTML(image)}"
                             alt="${escapeHTML(name)}"
+                            class="product-large-image"
                         >
                       `
                     : `
                         <div
-                            class="image-placeholder"
-                        ></div>
+                            class="
+                                image-placeholder
+                            "
+                        >
+                            <span>
+                                SANA
+                            </span>
+                        </div>
                       `
             }
 
         </div>
 
 
-        <!-- PRODUCT INFORMATION -->
+        <!-- =================================
+             PRODUCT INFORMATION
+        ================================== -->
 
         <section class="product-information">
 
@@ -236,8 +249,10 @@ function renderProduct(
             </span>
 
 
-            <h1>
+            <h1 class="product-title">
+
                 ${escapeHTML(name)}
+
             </h1>
 
 
@@ -256,6 +271,7 @@ function renderProduct(
                     Description
                 </h2>
 
+
                 <p>
                     ${escapeHTML(description)}
                 </p>
@@ -263,57 +279,27 @@ function renderProduct(
             </div>
 
 
-            <!-- EXTRA DETAILS -->
-
-            <div class="product-extra">
-
-
-                <div class="detail-item">
-
-                    <span class="detail-label">
-                        Color
-                    </span>
-
-                    <span class="detail-value">
-                        ${escapeHTML(color)}
-                    </span>
-
-                </div>
-
-
-                <div class="detail-item">
-
-                    <span class="detail-label">
-                        Stock
-                    </span>
-
-                    <span class="detail-value">
-                        ${escapeHTML(stock)}
-                    </span>
-
-                </div>
-
-
-            </div>
-
+            <!-- SIZES -->
 
             ${
                 sizes.length
                     ? `
 
-                        <!-- SIZES -->
-
-                        <div class="product-sizes">
+                        <div
+                            class="product-sizes"
+                        >
 
                             <h2>
                                 Available Sizes
                             </h2>
 
+
                             <div
                                 class="product-size-list"
                             >
 
-                                ${sizes.map(size => `
+                                ${sizes.map(
+                                    size => `
 
                                     <button
                                         type="button"
@@ -323,20 +309,29 @@ function renderProduct(
                                         ${escapeHTML(size)}
                                     </button>
 
-                                `).join("")}
+                                `
+                                ).join("")}
 
                             </div>
 
                         </div>
 
                       `
-                    : ""
+                    : `
+                        <div
+                            class="product-no-size"
+                        >
+                            Size information
+                            not available.
+                        </div>
+                      `
             }
 
 
             <!-- ACTIONS -->
 
             <div class="product-actions">
+
 
                 <button
                     type="button"
@@ -360,6 +355,7 @@ function renderProduct(
 
                 </button>
 
+
             </div>
 
 
@@ -379,40 +375,43 @@ function renderProduct(
 
 function setupSizeSelection() {
 
-    const sizeButtons =
+    const buttons =
         document.querySelectorAll(
             ".product-size"
         );
 
 
-    sizeButtons.forEach(button => {
+    buttons.forEach(
+        button => {
 
-        button.addEventListener(
-            "click",
-            () => {
+            button.addEventListener(
+                "click",
+                () => {
 
-                sizeButtons.forEach(item => {
+                    buttons.forEach(
+                        item => {
 
-                    item.classList.remove(
+                            item.classList.remove(
+                                "selected"
+                            );
+
+                        }
+                    );
+
+
+                    button.classList.add(
                         "selected"
                     );
 
-                });
 
+                    selectedSize =
+                        button.dataset.size;
 
-                button.classList.add(
-                    "selected"
-                );
+                }
+            );
 
-
-                selectedSize =
-                    button.dataset.size;
-
-
-            }
-        );
-
-    });
+        }
+    );
 
 }
 
@@ -462,17 +461,32 @@ function setupProductActions(
                     ...product,
 
                     selectedSize:
-                        selectedSize || null
+                        selectedSize ||
+                        null
 
                 };
 
 
-                addToCart(item);
+                if (
+                    typeof addToCart ===
+                    "function"
+                ) {
 
+                    addToCart(
+                        item
+                    );
 
-                showToast(
-                    "Added to bag"
-                );
+                    showToast(
+                        "Added to bag"
+                    );
+
+                } else {
+
+                    showToast(
+                        "Cart is not connected yet."
+                    );
+
+                }
 
             }
         );
@@ -504,7 +518,7 @@ function setupProductActions(
 
 
 /* =========================================
-   FAVORITE
+   FAVORITE BUTTON
 ========================================= */
 
 function setupFavoriteButton() {
@@ -514,7 +528,9 @@ function setupFavoriteButton() {
             "productFavorite"
         );
 
+
     if (!button) return;
+
 
     button.addEventListener(
         "click",
@@ -522,12 +538,28 @@ function setupFavoriteButton() {
 
             if (!currentProduct) return;
 
-            const id =
-                currentProduct.id ??
-                currentProduct._id ??
-                currentProduct.product_id;
 
-            toggleFavorite(id);
+            const id =
+                getProductIdValue(
+                    currentProduct
+                );
+
+
+            if (
+                !id ||
+                typeof toggleFavorite !==
+                "function"
+            ) {
+
+                return;
+
+            }
+
+
+            toggleFavorite(
+                id
+            );
+
 
             updateProductFavoriteButton(
                 button,
@@ -553,17 +585,37 @@ function setupHeaderFavorite(
             "productFavorite"
         );
 
+
     if (!button) return;
 
+
     const id =
-        product.id ??
-        product._id ??
-        product.product_id;
+        getProductIdValue(
+            product
+        );
 
 
     updateProductFavoriteButton(
         button,
         id
+    );
+
+}
+
+
+/* =========================================
+   GET PRODUCT ID
+========================================= */
+
+function getProductIdValue(
+    product
+) {
+
+    return (
+        product?.id ??
+        product?._id ??
+        product?.product_id ??
+        null
     );
 
 }
@@ -578,26 +630,48 @@ function updateProductFavoriteButton(
     productId
 ) {
 
-    if (!button || !productId) return;
+    if (
+        !button ||
+        !productId
+    ) {
 
-    const favorite =
-        isFavorite(productId);
+        return;
+
+    }
+
+
+    if (
+        typeof isFavorite !==
+        "function"
+    ) {
+
+        return;
+
+    }
+
+
+    const active =
+        isFavorite(
+            productId
+        );
 
 
     button.classList.toggle(
         "active",
-        favorite
+        active
     );
 
 
     button.textContent =
-        favorite ? "♥" : "♡";
+        active
+            ? "♥"
+            : "♡";
 
 }
 
 
 /* =========================================
-   SHARE
+   SHARE PRODUCT
 ========================================= */
 
 async function shareProduct() {
@@ -606,8 +680,8 @@ async function shareProduct() {
 
 
     const name =
-        currentProduct.name ??
         currentProduct.title ??
+        currentProduct.name ??
         "SANA Boutique Product";
 
 
@@ -623,17 +697,16 @@ async function shareProduct() {
 
             await navigator.share({
 
-                title:
-                    name,
+                title: name,
 
                 text:
                     `Check out ${name} on SANA Boutique.`,
 
-                url
+                url: url
 
             });
 
-        } catch (error) {
+        } catch {
 
             /*
              * User cancelled sharing.
@@ -641,7 +714,9 @@ async function shareProduct() {
 
         }
 
+
         return;
+
     }
 
 
@@ -651,9 +726,11 @@ async function shareProduct() {
             url
         );
 
+
         showToast(
             "Product link copied"
         );
+
 
     } catch {
 
@@ -674,21 +751,34 @@ function normalizeSizes(
     sizes
 ) {
 
-    if (Array.isArray(sizes)) {
+    if (
+        Array.isArray(
+            sizes
+        )
+    ) {
 
-        return sizes;
+        return sizes
+            .map(
+                size =>
+                    String(size).trim()
+            )
+            .filter(Boolean);
 
     }
 
 
     if (
-        typeof sizes === "string" &&
+        typeof sizes ===
+        "string" &&
         sizes.trim()
     ) {
 
         return sizes
             .split(",")
-            .map(size => size.trim())
+            .map(
+                size =>
+                    size.trim()
+            )
             .filter(Boolean);
 
     }
@@ -700,7 +790,7 @@ function normalizeSizes(
 
 
 /* =========================================
-   PRICE
+   FORMAT PRICE
 ========================================= */
 
 function formatProductPrice(
@@ -721,13 +811,22 @@ function formatProductPrice(
     const numeric =
         Number(
             String(price)
-                .replace(/[^0-9.]/g, "")
+                .replace(
+                    /[^0-9.]/g,
+                    ""
+                )
         );
 
 
-    if (Number.isNaN(numeric)) {
+    if (
+        Number.isNaN(
+            numeric
+        )
+    ) {
 
-        return String(price);
+        return escapeHTML(
+            price
+        );
 
     }
 
@@ -769,12 +868,15 @@ function showProductNotFound() {
             "productDetails"
         );
 
+
     if (!container) return;
 
 
     container.innerHTML = `
 
-        <div class="product-not-found">
+        <div
+            class="product-not-found"
+        >
 
             <div
                 class="product-not-found-icon"
@@ -782,16 +884,20 @@ function showProductNotFound() {
                 ♢
             </div>
 
+
             <h2>
                 Product Not Found
             </h2>
+
 
             <p>
                 This product may have been
                 removed or is no longer available.
             </p>
 
+
             <button
+                type="button"
                 class="gold-button"
                 onclick="window.location.href='shop.html'"
             >
@@ -815,7 +921,9 @@ function showProductError(
 
     container.innerHTML = `
 
-        <div class="product-not-found">
+        <div
+            class="product-not-found"
+        >
 
             <div
                 class="product-not-found-icon"
@@ -823,15 +931,20 @@ function showProductError(
                 !
             </div>
 
+
             <h2>
                 Couldn't Load Product
             </h2>
 
+
             <p>
-                Please try again.
+                Please check your connection
+                and try again.
             </p>
 
+
             <button
+                type="button"
                 class="gold-button"
                 onclick="location.reload()"
             >
@@ -849,14 +962,33 @@ function showProductError(
    ESCAPE HTML
 ========================================= */
 
-function escapeHTML(value) {
+function escapeHTML(
+    value
+) {
 
-    return String(value ?? "")
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
+    return String(
+        value ?? ""
+    )
+    .replace(
+        /&/g,
+        "&amp;"
+    )
+    .replace(
+        /</g,
+        "&lt;"
+    )
+    .replace(
+        />/g,
+        "&gt;"
+    )
+    .replace(
+        /"/g,
+        "&quot;"
+    )
+    .replace(
+        /'/g,
+        "&#039;"
+    );
 
 }
 
@@ -867,6 +999,7 @@ function escapeHTML(value) {
 
 window.loadProduct =
     loadProduct;
+
 
 window.shareProduct =
     shareProduct;
