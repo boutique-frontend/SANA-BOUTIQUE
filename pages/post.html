@@ -1,944 +1,214 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="description" content="Create and publish a new product to SANA Boutique.">
+<meta name="theme-color" content="#0f0f0f">
+<title>Add Product | SANA Boutique</title>
 
-    <meta charset="UTF-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
-    >
+<link rel="stylesheet" href="../css/base.css">
+<link rel="stylesheet" href="../css/navigation.css">
+<link rel="stylesheet" href="../css/post.css">
+<link rel="stylesheet" href="../css/responsive.css">
 
-    <meta
-        name="description"
-        content="Create and publish a new product to SANA Boutique."
-    >
-
-    <meta
-        name="theme-color"
-        content="#0f0f0f"
-    >
-
-    <title>Add Product | SANA Boutique</title>
-
-
-    <!-- =====================================
-         FONTS
-    ====================================== -->
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-
-    <link
-        rel="preconnect"
-        href="https://fonts.gstatic.com"
-        crossorigin
-    >
-
-    <link
-        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap"
-        rel="stylesheet"
-    >
-
-
-    <!-- =====================================
-         CSS
-    ====================================== -->
-
-    <link
-        rel="stylesheet"
-        href="../css/base.css"
-    >
-
-    <link
-        rel="stylesheet"
-        href="../css/navigation.css"
-    >
-
-    <link
-        rel="stylesheet"
-        href="../css/post.css"
-    >
-
-    <link
-        rel="stylesheet"
-        href="../css/responsive.css"
-    >
-
+<style>
+.app-header{
+    position:sticky;top:0;z-index:900;width:100%;height:72px;
+    display:grid;grid-template-columns:48px 1fr 48px;align-items:center;
+    padding:8px 14px;background:rgba(5,5,5,.92);
+    border-bottom:1px solid rgba(217,169,40,.20);
+    backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+}
+.header-button{
+    width:42px;height:42px;display:flex;align-items:center;justify-content:center;
+    border:1px solid rgba(217,169,40,.25);border-radius:50%;
+    background:#111;color:#f4c95d;font-size:22px;line-height:1;
+    transition:transform .2s ease,box-shadow .2s ease;
+}
+.header-button:active{transform:scale(.92)}
+.header-button:hover{box-shadow:0 0 18px rgba(217,169,40,.18)}
+.brand{text-align:center;line-height:1;min-width:0}
+.brand-name{
+    color:#f5f1e8;font-family:"Cormorant Garamond",serif;
+    font-size:28px;font-weight:700;letter-spacing:4px;
+}
+.brand-subtitle{
+    margin-top:5px;color:#d9a928;font-family:"Inter",sans-serif;
+    font-size:8px;font-weight:700;letter-spacing:3px;
+}
+.header-spacer{width:42px;height:42px}
+@media(max-width:600px){
+    .app-header{height:68px;padding:7px 12px}
+    .brand-name{font-size:25px}.brand-subtitle{font-size:7px}
+}
+</style>
 </head>
 
-
 <body>
-
 <div id="app">
 
-
-    <!-- =====================================
-         HEADER
-    ====================================== -->
-
-    <header class="app-header">
-
-        <button
-            type="button"
-            class="header-button"
-            id="backButton"
-            aria-label="Go back"
-        >
-            ←
-        </button>
-
-
-        <div class="brand">
-
-            <div class="brand-name">
-                SANA
-            </div>
-
-            <div class="brand-subtitle">
-                NEW PRODUCT
-            </div>
-
-        </div>
-
-
-        <div class="header-spacer"></div>
-
-    </header>
-
-
-
-    <!-- =====================================
-         MAIN
-    ====================================== -->
-
-    <main class="post-page">
-
-
-        <!-- =====================================
-             INTRO
-        ====================================== -->
-
-        <section class="post-intro">
-
-            <span>
-                CREATE
-            </span>
-
-            <h1>
-                Add New Product
-            </h1>
-
-            <p>
-                Add your product details,
-                choose the available options,
-                and publish it to SANA Boutique.
-            </p>
-
-        </section>
-
-
-
-        <!-- =====================================
-             PRODUCT FORM
-        ====================================== -->
-
-        <form
-            id="productForm"
-            class="product-form"
-            enctype="multipart/form-data"
-            novalidate
-        >
-
-
-            <!-- =================================
-                 STEP 01 — IMAGE
-            ================================== -->
-
-            <section class="form-section">
-
-                <div class="form-section-title">
-
-                    <span class="step-number">
-                        01
-                    </span>
-
-                    <div>
-
-                        <h2>
-                            Product Image
-                        </h2>
-
-                        <p>
-                            Upload a clear photo of your product.
-                        </p>
-
-                    </div>
-
-                </div>
-
-
-                <label
-                    for="productImage"
-                    class="image-upload"
-                    id="imageUpload"
-                >
-
-                    <input
-                        type="file"
-                        id="productImage"
-                        name="image"
-                        accept="image/jpeg,image/png,image/webp"
-                        hidden
-                        required
-                    >
-
-
-                    <div
-                        class="upload-preview"
-                        id="uploadPreview"
-                    >
-
-                        <div class="upload-icon">
-                            +
-                        </div>
-
-                        <strong>
-                            Add Product Image
-                        </strong>
-
-                        <small>
-                            JPG, PNG or WEBP • Max 10MB
-                        </small>
-
-                    </div>
-
-                </label>
-
-
-                <p
-                    class="form-help"
-                    id="imageHelp"
-                    aria-live="polite"
-                ></p>
-
-            </section>
-
-
-
-            <!-- =================================
-                 STEP 02 — INFORMATION
-            ================================== -->
-
-            <section class="form-section">
-
-                <div class="form-section-title">
-
-                    <span class="step-number">
-                        02
-                    </span>
-
-                    <div>
-
-                        <h2>
-                            Product Information
-                        </h2>
-
-                        <p>
-                            Give customers the important details.
-                        </p>
-
-                    </div>
-
-                </div>
-
-
-                <!-- PRODUCT NAME -->
-
-                <div class="form-group">
-
-                    <label for="productName">
-                        Product Name
-                    </label>
-
-                    <input
-                        type="text"
-                        id="productName"
-                        name="name"
-                        placeholder="e.g. Royal Black Suit"
-                        maxlength="120"
-                        autocomplete="off"
-                        required
-                    >
-
-                </div>
-
-
-                <!-- DESCRIPTION -->
-
-                <div class="form-group">
-
-                    <label for="productDescription">
-                        Description
-                    </label>
-
-                    <textarea
-                        id="productDescription"
-                        name="description"
-                        placeholder="Describe the material, design, style and other important details..."
-                        maxlength="1000"
-                        rows="6"
-                        required
-                    ></textarea>
-
-
-                    <small
-                        class="character-count"
-                        id="descriptionCount"
-                    >
-                        0 / 1000
-                    </small>
-
-                </div>
-
-            </section>
-
-
-
-            <!-- =================================
-                 STEP 03 — PRICE & CATEGORY
-            ================================== -->
-
-            <section class="form-section">
-
-                <div class="form-section-title">
-
-                    <span class="step-number">
-                        03
-                    </span>
-
-                    <div>
-
-                        <h2>
-                            Pricing & Category
-                        </h2>
-
-                        <p>
-                            Set how the product will be displayed.
-                        </p>
-
-                    </div>
-
-                </div>
-
-
-                <div class="form-row">
-
-
-                    <!-- PRICE -->
-
-                    <div class="form-group">
-
-                        <label for="productPrice">
-                            Price
-                        </label>
-
-                        <input
-                            type="number"
-                            id="productPrice"
-                            name="price"
-                            placeholder="0"
-                            min="0"
-                            step="0.01"
-                            inputmode="decimal"
-                            required
-                        >
-
-                        <small class="input-hint">
-                            Price will be displayed in Rs.
-                        </small>
-
-                    </div>
-
-
-
-                    <!-- CATEGORY -->
-
-                    <div class="form-group">
-
-                        <label for="productCategory">
-                            Category
-                        </label>
-
-                        <select
-                            id="productCategory"
-                            name="category"
-                            required
-                        >
-
-                            <option
-                                value=""
-                                selected
-                                disabled
-                            >
-                                Select category
-                            </option>
-
-                            <option value="Unstitched">
-                                Unstitched
-                            </option>
-
-                            <option value="Kurtis">
-                                Kurtis
-                            </option>
-
-                            <option value="Abayas">
-                                Abayas
-                            </option>
-
-                            <option value="Shawls">
-                                Shawls
-                            </option>
-
-                            <option value="Other">
-                                Other
-                            </option>
-
-                        </select>
-
-                    </div>
-
-                </div>
-
-            </section>
-
-
-
-            <!-- =================================
-                 STEP 04 — SIZES
-            ================================== -->
-
-            <section class="form-section">
-
-                <div class="form-section-title">
-
-                    <span class="step-number">
-                        04
-                    </span>
-
-                    <div>
-
-                        <h2>
-                            Available Sizes
-                        </h2>
-
-                        <p>
-                            Select every size currently available.
-                        </p>
-
-                    </div>
-
-                </div>
-
-
-                <div
-                    class="size-options"
-                    id="sizeOptions"
-                >
-
-
-                    <label class="size-option">
-
-                        <input
-                            type="checkbox"
-                            name="sizes"
-                            value="XS"
-                        >
-
-                        <span>
-                            XS
-                        </span>
-
-                    </label>
-
-
-
-                    <label class="size-option">
-
-                        <input
-                            type="checkbox"
-                            name="sizes"
-                            value="S"
-                        >
-
-                        <span>
-                            S
-                        </span>
-
-                    </label>
-
-
-
-                    <label class="size-option">
-
-                        <input
-                            type="checkbox"
-                            name="sizes"
-                            value="M"
-                        >
-
-                        <span>
-                            M
-                        </span>
-
-                    </label>
-
-
-
-                    <label class="size-option">
-
-                        <input
-                            type="checkbox"
-                            name="sizes"
-                            value="L"
-                        >
-
-                        <span>
-                            L
-                        </span>
-
-                    </label>
-
-
-
-                    <label class="size-option">
-
-                        <input
-                            type="checkbox"
-                            name="sizes"
-                            value="XL"
-                        >
-
-                        <span>
-                            XL
-                        </span>
-
-                    </label>
-
-
-
-                    <label class="size-option">
-
-                        <input
-                            type="checkbox"
-                            name="sizes"
-                            value="XXL"
-                        >
-
-                        <span>
-                            XXL
-                        </span>
-
-                    </label>
-
-                </div>
-
-            </section>
-
-
-
-            <!-- =================================
-                 STEP 05 — EXTRA INFORMATION
-            ================================== -->
-
-            <section class="form-section">
-
-                <div class="form-section-title">
-
-                    <span class="step-number">
-                        05
-                    </span>
-
-                    <div>
-
-                        <h2>
-                            Extra Information
-                        </h2>
-
-                        <p>
-                            Add optional information about the item.
-                        </p>
-
-                    </div>
-
-                </div>
-
-
-                <!-- COLOR -->
-
-                <div class="form-group">
-
-                    <label for="productColor">
-                        Color
-                    </label>
-
-                    <input
-                        type="text"
-                        id="productColor"
-                        name="color"
-                        placeholder="e.g. Black"
-                        maxlength="50"
-                        autocomplete="off"
-                    >
-
-                </div>
-
-
-                <!-- STOCK -->
-
-                <div class="form-group">
-
-                    <label for="productStock">
-                        Stock
-                    </label>
-
-                    <input
-                        type="number"
-                        id="productStock"
-                        name="stock"
-                        placeholder="Available quantity"
-                        min="0"
-                        step="1"
-                        inputmode="numeric"
-                    >
-
-                    <small class="input-hint">
-                        Leave empty if stock is managed separately.
-                    </small>
-
-                </div>
-
-            </section>
-
-
-
-            <!-- =================================
-                 PUBLISH SECTION
-            ================================== -->
-
-            <section class="publish-section">
-
-
-                <div class="publish-message">
-
-                    <span>
-                        ✦
-                    </span>
-
-                    <p>
-                        Once published, your product can appear
-                        automatically in the
-                        <strong>Home</strong>
-                        and
-                        <strong>Shop</strong>
-                        sections.
-                    </p>
-
-                </div>
-
-
-
-                <!-- STATUS -->
-
-                <div
-                    class="publish-status"
-                    id="publishStatus"
-                    aria-live="polite"
-                ></div>
-
-
-
-                <!-- BUTTON -->
-
-                <button
-                    type="submit"
-                    class="publish-button"
-                    id="publishButton"
-                >
-
-                    <span>
-                        PUBLISH PRODUCT
-                    </span>
-
-                    <span>
-                        →
-                    </span>
-
-                </button>
-
-            </section>
-
-
-        </form>
-
-    </main>
-
-
-
-    <!-- =====================================
-         BOTTOM NAVIGATION
-    ====================================== -->
-
-    <nav
-        class="bottom-navigation"
-        aria-label="Main navigation"
-    >
-
-
-        <a
-            href="../index.html"
-            class="nav-item"
-        >
-
-            <span class="nav-icon">
-                ⌂
-            </span>
-
-            <span>
-                Home
-            </span>
-
-        </a>
-
-
-
-        <a
-            href="shop.html"
-            class="nav-item"
-        >
-
-            <span class="nav-icon">
-                ♧
-            </span>
-
-            <span>
-                Shop
-            </span>
-
-        </a>
-
-
-
-        <!-- CENTER POST -->
-
-        <a
-            href="post.html"
-            class="post-button active"
-            id="postButton"
-            aria-label="Create product"
-            aria-current="page"
-        >
-            +
-        </a>
-
-
-
-        <a
-            href="about.html"
-            class="nav-item"
-        >
-
-            <span class="nav-icon">
-                ♙
-            </span>
-
-            <span>
-                About
-            </span>
-
-        </a>
-
-
-
-        <a
-            href="contact.html"
-            class="nav-item"
-        >
-
-            <span class="nav-icon">
-                ⌕
-            </span>
-
-            <span>
-                Contact
-            </span>
-
-        </a>
-
-
-    </nav>
-
+<header class="app-header">
+    <button type="button" class="header-button" id="backButton" aria-label="Go back">←</button>
+    <div class="brand" aria-label="SANA Boutique New Product">
+        <div class="brand-name">SANA</div>
+        <div class="brand-subtitle">NEW PRODUCT</div>
+    </div>
+    <div class="header-spacer" aria-hidden="true"></div>
+</header>
+
+<main class="post-page">
+<section class="post-intro">
+    <span>CREATE</span>
+    <h1>Add New Product</h1>
+    <p>Add your product details, choose the available options, and publish it to SANA Boutique.</p>
+</section>
+
+<form id="productForm" class="product-form" enctype="multipart/form-data" novalidate>
+
+<section class="form-section">
+<div class="form-section-title"><span class="step-number">01</span><div>
+<h2>Product Image</h2><p>Upload a clear photo of your product.</p>
+</div></div>
+<label for="productImage" class="image-upload" id="imageUpload">
+<input type="file" id="productImage" name="image" accept="image/jpeg,image/png,image/webp" hidden required>
+<div class="upload-preview" id="uploadPreview">
+<div class="upload-icon">+</div><strong>Add Product Image</strong>
+<small>JPG, PNG or WEBP • Max 10MB</small>
+</div>
+</label>
+<p class="form-help" id="imageHelp" aria-live="polite"></p>
+</section>
+
+<section class="form-section">
+<div class="form-section-title"><span class="step-number">02</span><div>
+<h2>Product Information</h2><p>Give customers the important details.</p>
+</div></div>
+<div class="form-group">
+<label for="productName">Product Name</label>
+<input type="text" id="productName" name="name" placeholder="e.g. Royal Black Suit" maxlength="120" autocomplete="off" required>
+</div>
+<div class="form-group">
+<label for="productDescription">Description</label>
+<textarea id="productDescription" name="description" placeholder="Describe the material, design, style and other important details..." maxlength="1000" rows="6" required></textarea>
+<small class="character-count" id="descriptionCount">0 / 1000</small>
+</div>
+</section>
+
+<section class="form-section">
+<div class="form-section-title"><span class="step-number">03</span><div>
+<h2>Pricing &amp; Category</h2><p>Set how the product will be displayed.</p>
+</div></div>
+<div class="form-row">
+<div class="form-group">
+<label for="productPrice">Price</label>
+<input type="number" id="productPrice" name="price" placeholder="0" min="0" step="0.01" inputmode="decimal" required>
+<small class="input-hint">Price will be displayed in Rs.</small>
+</div>
+<div class="form-group">
+<label for="productCategory">Category</label>
+<select id="productCategory" name="category" required>
+<option value="" selected disabled>Select category</option>
+<option value="Unstitched">Unstitched</option>
+<option value="Kurtis">Kurtis</option>
+<option value="Abayas">Abayas</option>
+<option value="Shawls">Shawls</option>
+<option value="Other">Other</option>
+</select>
+</div>
+</div>
+</section>
+
+<section class="form-section">
+<div class="form-section-title"><span class="step-number">04</span><div>
+<h2>Available Sizes</h2><p>Select every size currently available.</p>
+</div></div>
+<div class="size-options" id="sizeOptions">
+<label class="size-option"><input type="checkbox" name="sizes" value="XS"><span>XS</span></label>
+<label class="size-option"><input type="checkbox" name="sizes" value="S"><span>S</span></label>
+<label class="size-option"><input type="checkbox" name="sizes" value="M"><span>M</span></label>
+<label class="size-option"><input type="checkbox" name="sizes" value="L"><span>L</span></label>
+<label class="size-option"><input type="checkbox" name="sizes" value="XL"><span>XL</span></label>
+<label class="size-option"><input type="checkbox" name="sizes" value="XXL"><span>XXL</span></label>
+</div>
+</section>
+
+<section class="form-section">
+<div class="form-section-title"><span class="step-number">05</span><div>
+<h2>Extra Information</h2><p>Add optional information about the item.</p>
+</div></div>
+<div class="form-group">
+<label for="productColor">Color</label>
+<input type="text" id="productColor" name="color" placeholder="e.g. Black" maxlength="50" autocomplete="off">
+</div>
+<div class="form-group">
+<label for="productStock">Stock</label>
+<input type="number" id="productStock" name="stock" placeholder="Available quantity" min="0" step="1" inputmode="numeric">
+<small class="input-hint">Leave empty if stock is managed separately.</small>
+</div>
+</section>
+
+<section class="publish-section">
+<div class="publish-message"><span>✦</span>
+<p>Once published, your product can appear automatically in the <strong>Home</strong> and <strong>Shop</strong> sections.</p>
+</div>
+<div class="publish-status" id="publishStatus" aria-live="polite"></div>
+<button type="submit" class="publish-button" id="publishButton">
+<span>PUBLISH PRODUCT</span><span>→</span>
+</button>
+</section>
+
+</form>
+</main>
+
+<nav class="bottom-navigation" aria-label="Main navigation">
+<a href="../index.html" class="nav-item"><span class="nav-icon">⌂</span><span>Home</span></a>
+<a href="shop.html" class="nav-item"><span class="nav-icon">♧</span><span>Shop</span></a>
+<a href="post.html" class="post-button active" id="postButton" aria-label="Create product" aria-current="page">+</a>
+<a href="about.html" class="nav-item"><span class="nav-icon">♙</span><span>About</span></a>
+<a href="contact.html" class="nav-item"><span class="nav-icon">⌕</span><span>Contact</span></a>
+</nav>
 
 </div>
 
-
-
-<!-- =====================================
-     JAVASCRIPT
-====================================== -->
-
 <script src="../js/app.js"></script>
-
 <script src="../js/navigation.js"></script>
-
-<!-- BACKEND API -->
-
 <script src="../js/api.js"></script>
-
-<!-- POST CONTROLLER -->
-
 <script src="../js/post.js"></script>
 
-
-<!-- =====================================
-     SMALL PAGE ENHANCEMENTS
-====================================== -->
-
 <script>
-
 "use strict";
 
-
-/*
- * BACK BUTTON
- */
-
-const backButton =
-    document.getElementById("backButton");
-
-if (backButton) {
-
-    backButton.addEventListener(
-        "click",
-        () => {
-
-            if (
-                window.history.length > 1
-            ) {
-
-                window.history.back();
-
-            } else {
-
-                window.location.href =
-                    "shop.html";
-
-            }
-
-        }
-    );
-
+const backButton=document.getElementById("backButton");
+if(backButton){
+    backButton.addEventListener("click",()=>{
+        if(window.history.length>1) window.history.back();
+        else window.location.href="shop.html";
+    });
 }
 
-
-/*
- * DESCRIPTION COUNTER
- */
-
-const description =
-    document.getElementById(
-        "productDescription"
-    );
-
-const descriptionCount =
-    document.getElementById(
-        "descriptionCount"
-    );
-
-
-if (
-    description &&
-    descriptionCount
-) {
-
-    const updateCount = () => {
-
-        descriptionCount.textContent =
-            `${description.value.length} / 1000`;
-
-    };
-
-
-    description.addEventListener(
-        "input",
-        updateCount
-    );
-
-
+const description=document.getElementById("productDescription");
+const descriptionCount=document.getElementById("descriptionCount");
+if(description&&descriptionCount){
+    const updateCount=()=>descriptionCount.textContent=`${description.value.length} / 1000`;
+    description.addEventListener("input",updateCount);
     updateCount();
-
 }
 
-
-/*
- * IMAGE INPUT FEEDBACK
- *
- * post.js still handles the
- * actual image preview and
- * validation.
- */
-
-const imageInput =
-    document.getElementById(
-        "productImage"
-    );
-
-const imageHelp =
-    document.getElementById(
-        "imageHelp"
-    );
-
-
-if (
-    imageInput &&
-    imageHelp
-) {
-
-    imageInput.addEventListener(
-        "change",
-        () => {
-
-            const file =
-                imageInput.files?.[0];
-
-            if (!file) {
-
-                imageHelp.textContent =
-                    "";
-
-                return;
-
-            }
-
-
-            const sizeMB =
-                (
-                    file.size /
-                    (1024 * 1024)
-                ).toFixed(2);
-
-
-            imageHelp.textContent =
-                `${file.name} • ${sizeMB} MB`;
-
-        }
-    );
-
+const imageInput=document.getElementById("productImage");
+const imageHelp=document.getElementById("imageHelp");
+if(imageInput&&imageHelp){
+    imageInput.addEventListener("change",()=>{
+        const file=imageInput.files?.[0];
+        if(!file){imageHelp.textContent="";return;}
+        const sizeMB=(file.size/(1024*1024)).toFixed(2);
+        imageHelp.textContent=`${file.name} • ${sizeMB} MB`;
+    });
 }
-
 </script>
-
-
 </body>
-
 </html>
