@@ -17,37 +17,35 @@
 }
 
 
-/* Hero image area */
+/* =========================================
+   REAL HERO IMAGE
+========================================= */
 
 .hero-image {
     position: absolute;
     inset: 0;
 
-    background:
+    background-image:
         linear-gradient(
             to bottom,
-            rgba(0, 0, 0, 0.05) 0%,
-            rgba(0, 0, 0, 0.35) 45%,
+            rgba(0, 0, 0, 0.08) 0%,
+            rgba(0, 0, 0, 0.12) 25%,
+            rgba(0, 0, 0, 0.42) 55%,
             rgba(5, 5, 5, 0.98) 100%
-        );
+        ),
+        url("../assets/hero/hero-home.jpg");
 
     background-size: cover;
-    background-position: center;
+    background-position: center center;
+    background-repeat: no-repeat;
+
+    transform: scale(1.01);
 }
 
 
-/*
-   Later we will put your real image here.
-
-   Example:
-
-   background-image:
-       linear-gradient(...),
-       url("../assets/hero/hero-1.jpg");
-*/
-
-
-/* Hero content */
+/* =========================================
+   HERO CONTENT
+========================================= */
 
 .hero-overlay {
     position: relative;
@@ -65,8 +63,6 @@
 }
 
 
-/* Small premium text */
-
 .hero-small-title {
     color: var(--gold-light);
 
@@ -79,19 +75,15 @@
 }
 
 
-/* Main hero heading */
-
 .hero h1 {
     color: var(--cream);
 
     margin-bottom: 18px;
 
     text-shadow:
-        0 4px 20px rgba(0, 0, 0, 0.8);
+        0 4px 20px rgba(0, 0, 0, 0.85);
 }
 
-
-/* Gold part can be added later */
 
 .hero p {
     color: #d5d5d5;
@@ -99,6 +91,8 @@
     font-size: 15px;
 
     margin-bottom: 25px;
+
+    line-height: 1.6;
 }
 
 
@@ -115,12 +109,14 @@
 }
 
 
-/* Category card */
+/* =========================================
+   CATEGORY CARD
+========================================= */
 
 .category-card {
     position: relative;
 
-    min-height: 230px;
+    min-height: 260px;
 
     overflow: hidden;
 
@@ -131,7 +127,7 @@
     background: #101010;
 
     box-shadow:
-        0 10px 30px rgba(0, 0, 0, 0.4);
+        0 10px 30px rgba(0, 0, 0, 0.45);
 
     transition:
         transform 0.2s ease,
@@ -144,46 +140,100 @@
 }
 
 
-/* Category image */
+/* =========================================
+   CATEGORY REAL IMAGE
+========================================= */
 
 .category-image {
     position: absolute;
     inset: 0;
 
-    background:
-        linear-gradient(
-            to bottom,
-            rgba(0, 0, 0, 0.05),
-            rgba(0, 0, 0, 0.9)
-        );
-
     background-size: cover;
     background-position: center;
+    background-repeat: no-repeat;
+
+    transition:
+        transform 0.45s ease,
+        filter 0.45s ease;
 }
 
 
-/*
-   Add your images later:
+/* =========================================
+   UNSTITCHED IMAGE
+========================================= */
 
-   .unstitched-image {
-       background-image: url("../assets/categories/unstitched.jpg");
-   }
-
-   .kurtis-image {
-       background-image: url("../assets/categories/kurtis.jpg");
-   }
-
-   .abaya-image {
-       background-image: url("../assets/categories/abayas.jpg");
-   }
-
-   .shawl-image {
-       background-image: url("../assets/categories/shawls.jpg");
-   }
-*/
+.unstitched-image {
+    background-image:
+        linear-gradient(
+            to bottom,
+            rgba(0, 0, 0, 0.05) 0%,
+            rgba(0, 0, 0, 0.18) 35%,
+            rgba(0, 0, 0, 0.92) 100%
+        ),
+        url("../assets/categories/unstitched.jpg");
+}
 
 
-/* Category content */
+/* =========================================
+   KURTIS IMAGE
+========================================= */
+
+.kurtis-image {
+    background-image:
+        linear-gradient(
+            to bottom,
+            rgba(0, 0, 0, 0.05) 0%,
+            rgba(0, 0, 0, 0.18) 35%,
+            rgba(0, 0, 0, 0.92) 100%
+        ),
+        url("../assets/categories/kurtis.jpg");
+}
+
+
+/* =========================================
+   ABAYAS IMAGE
+========================================= */
+
+.abaya-image {
+    background-image:
+        linear-gradient(
+            to bottom,
+            rgba(0, 0, 0, 0.05) 0%,
+            rgba(0, 0, 0, 0.18) 35%,
+            rgba(0, 0, 0, 0.92) 100%
+        ),
+        url("../assets/categories/abayas.jpg");
+}
+
+
+/* =========================================
+   SHAWLS IMAGE
+========================================= */
+
+.shawl-image {
+    background-image:
+        linear-gradient(
+            to bottom,
+            rgba(0, 0, 0, 0.05) 0%,
+            rgba(0, 0, 0, 0.18) 35%,
+            rgba(0, 0, 0, 0.92) 100%
+        ),
+        url("../assets/categories/shawls.jpg");
+}
+
+
+/* =========================================
+   IMAGE HOVER / TOUCH EFFECT
+========================================= */
+
+.category-card:hover .category-image {
+    transform: scale(1.04);
+}
+
+
+/* =========================================
+   CATEGORY CONTENT
+========================================= */
 
 .category-content {
     position: absolute;
@@ -194,15 +244,16 @@
 
     z-index: 2;
 
-    padding: 20px 14px 17px;
+    padding: 30px 14px 18px;
 
     text-align: center;
 
     background:
         linear-gradient(
             to top,
-            rgba(0, 0, 0, 0.95),
-            rgba(0, 0, 0, 0)
+            rgba(0, 0, 0, 0.96) 0%,
+            rgba(0, 0, 0, 0.68) 45%,
+            rgba(0, 0, 0, 0) 100%
         );
 }
 
@@ -212,11 +263,14 @@
 
     font-size: 18px;
 
-    line-height: 1.05;
+    line-height: 1.1;
 
     letter-spacing: 1px;
 
     margin-bottom: 10px;
+
+    text-shadow:
+        0 2px 10px rgba(0, 0, 0, 0.8);
 }
 
 
@@ -230,11 +284,16 @@
     font-weight: 500;
 
     letter-spacing: 0.5px;
+
+    border: 0;
+
+    cursor: pointer;
 }
 
 
 /* =========================================
    FEATURED PRODUCTS
+   THESE COME FROM THE BACKEND
 ========================================= */
 
 .products-grid {
@@ -245,8 +304,6 @@
     gap: 14px;
 }
 
-
-/* Product card */
 
 .product-card {
     position: relative;
@@ -277,7 +334,9 @@
 }
 
 
-/* Product image */
+/* =========================================
+   POSTED PRODUCT IMAGE
+========================================= */
 
 .product-card-image {
     width: 100%;
@@ -286,13 +345,17 @@
 
     object-fit: cover;
 
+    object-position: center;
+
     display: block;
 
     background: #151515;
 }
 
 
-/* Product information */
+/* =========================================
+   PRODUCT INFORMATION
+========================================= */
 
 .product-info {
     padding: 13px;
@@ -323,7 +386,9 @@
 }
 
 
-/* Favorite button */
+/* =========================================
+   FAVORITE BUTTON
+========================================= */
 
 .product-favorite {
     position: absolute;
@@ -349,6 +414,27 @@
     font-size: 19px;
 
     backdrop-filter: blur(8px);
+
+    z-index: 4;
+}
+
+
+/* =========================================
+   IMAGE PLACEHOLDER
+========================================= */
+
+.image-placeholder {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    background:
+        linear-gradient(
+            145deg,
+            #181818,
+            #090909
+        );
 }
 
 
@@ -431,15 +517,13 @@
 
 
 /* =========================================
-   GOLD DECORATION
+   SECTION TITLE
 ========================================= */
 
 .section-title h2 {
     position: relative;
 }
 
-
-/* Small gold line under titles */
 
 .section-title h2::after {
     content: "";
@@ -467,11 +551,6 @@
 
 main {
     width: 100%;
-}
 
-
-/* Prevent content hiding behind navigation */
-
-main {
     padding-bottom: 15px;
-  }
+}
