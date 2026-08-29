@@ -15,11 +15,16 @@
         content="#0d0d0d"
     >
 
+    <meta
+        name="description"
+        content="View product details from SANA Boutique."
+    >
+
     <title>Product | SANA Boutique</title>
 
 
     <!-- =====================================
-         FONTS
+         GOOGLE FONTS
     ====================================== -->
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -62,14 +67,290 @@
 
 
     <!-- =====================================
-         EXTRA PRODUCT VIEWER CSS
+         SANA HEADER STYLE
+         No header.css needed
     ====================================== -->
 
     <style>
 
         /* =====================================
-           PRODUCT IMAGE TAP AREA
-        ====================================== */
+           HEADER
+        ===================================== */
+
+        .app-header {
+
+            position: sticky;
+
+            top: 0;
+
+            z-index: 900;
+
+            width: 100%;
+
+            height: 70px;
+
+            display: grid;
+
+            grid-template-columns:
+                1fr
+                auto
+                1fr;
+
+            align-items: center;
+
+            padding: 0 18px;
+
+            background:
+                linear-gradient(
+                    to bottom,
+                    rgba(5, 5, 5, 0.98),
+                    rgba(8, 8, 8, 0.94)
+                );
+
+            border-bottom:
+                1px solid
+                rgba(217, 169, 40, 0.18);
+
+            box-shadow:
+                0 8px 25px
+                rgba(0, 0, 0, 0.35);
+
+            backdrop-filter:
+                blur(18px);
+
+            -webkit-backdrop-filter:
+                blur(18px);
+
+        }
+
+
+        /* =====================================
+           HEADER BUTTONS
+        ===================================== */
+
+        .header-button {
+
+            width: 42px;
+
+            height: 42px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 50%;
+
+            background:
+                rgba(255, 255, 255, 0.04);
+
+            border:
+                1px solid
+                rgba(217, 169, 40, 0.22);
+
+            color:
+                var(--gold-light);
+
+            font-size: 22px;
+
+            line-height: 1;
+
+            transition:
+                transform 0.2s ease,
+                background 0.2s ease,
+                box-shadow 0.2s ease;
+
+        }
+
+
+        .header-button:active {
+
+            transform: scale(0.90);
+
+        }
+
+
+        .header-button:hover {
+
+            background:
+                rgba(217, 169, 40, 0.10);
+
+            box-shadow:
+                0 0 18px
+                rgba(217, 169, 40, 0.14);
+
+        }
+
+
+        /* =====================================
+           LEFT HEADER BUTTON
+        ===================================== */
+
+        .app-header .header-button:first-child {
+
+            justify-self: start;
+
+        }
+
+
+        /* =====================================
+           RIGHT HEADER BUTTON
+        ===================================== */
+
+        .app-header .header-button:last-child {
+
+            justify-self: end;
+
+        }
+
+
+        /* =====================================
+           BRAND
+        ===================================== */
+
+        .app-header .brand {
+
+            display: flex;
+
+            flex-direction: column;
+
+            align-items: center;
+
+            justify-content: center;
+
+            text-align: center;
+
+            line-height: 1;
+
+        }
+
+
+        .app-header .brand-name {
+
+            font-family:
+                "Cormorant Garamond",
+                serif;
+
+            font-size: 27px;
+
+            font-weight: 600;
+
+            letter-spacing: 5px;
+
+            color:
+                var(--cream);
+
+            text-shadow:
+                0 0 15px
+                rgba(255, 255, 255, 0.06);
+
+        }
+
+
+        .app-header .brand-subtitle {
+
+            margin-top: 5px;
+
+            font-family:
+                "Inter",
+                sans-serif;
+
+            font-size: 8px;
+
+            font-weight: 600;
+
+            letter-spacing: 4px;
+
+            color:
+                var(--gold-light);
+
+        }
+
+
+        /* =====================================
+           PRODUCT PAGE
+        ===================================== */
+
+        .product-page {
+
+            width: 100%;
+
+            min-height: 100vh;
+
+        }
+
+
+        /* =====================================
+           MOBILE HEADER
+        ===================================== */
+
+        @media (max-width: 480px) {
+
+            .app-header {
+
+                height: 68px;
+
+                padding: 0 14px;
+
+            }
+
+
+            .header-button {
+
+                width: 40px;
+
+                height: 40px;
+
+                font-size: 21px;
+
+            }
+
+
+            .app-header .brand-name {
+
+                font-size: 25px;
+
+                letter-spacing: 4px;
+
+            }
+
+
+            .app-header .brand-subtitle {
+
+                font-size: 7px;
+
+                letter-spacing: 3px;
+
+            }
+
+        }
+
+
+        /* =====================================
+           LARGER SCREENS
+        ===================================== */
+
+        @media (min-width: 768px) {
+
+            .app-header {
+
+                max-width: 700px;
+
+                margin: 0 auto;
+
+            }
+
+        }
+
+    </style>
+
+
+    <!-- =====================================
+         PRODUCT IMAGE VIEWER CSS
+    ====================================== -->
+
+    <style>
 
         .product-main-image {
 
@@ -106,10 +387,6 @@
         }
 
 
-        /* =====================================
-           IMAGE VIEW HINT
-        ====================================== */
-
         .product-image-view-hint {
 
             position: absolute;
@@ -130,7 +407,8 @@
 
             border-radius: 999px;
 
-            background: rgba(0, 0, 0, 0.68);
+            background:
+                rgba(0, 0, 0, 0.68);
 
             color: #ffffff;
 
@@ -150,8 +428,8 @@
 
 
         /* =====================================
-           FULLSCREEN IMAGE VIEWER
-        ====================================== */
+           FULLSCREEN VIEWER
+        ===================================== */
 
         .product-image-viewer {
 
@@ -169,13 +447,15 @@
 
             padding: 20px;
 
-            background: rgba(0, 0, 0, 0.94);
+            background:
+                rgba(0, 0, 0, 0.94);
 
             backdrop-filter: blur(12px);
 
             opacity: 0;
 
-            transition: opacity 0.25s ease;
+            transition:
+                opacity 0.25s ease;
 
         }
 
@@ -206,7 +486,8 @@
             border-radius: 4px;
 
             box-shadow:
-                0 20px 70px rgba(0, 0, 0, 0.55);
+                0 20px 70px
+                rgba(0, 0, 0, 0.55);
 
             animation:
                 productImageZoom 0.25s ease;
@@ -237,7 +518,7 @@
 
         /* =====================================
            CLOSE BUTTON
-        ====================================== */
+        ===================================== */
 
         .product-viewer-close {
 
@@ -259,11 +540,14 @@
 
             justify-content: center;
 
-            border: 1px solid rgba(255,255,255,0.2);
+            border:
+                1px solid
+                rgba(255,255,255,0.2);
 
             border-radius: 50%;
 
-            background: rgba(20,20,20,0.8);
+            background:
+                rgba(20,20,20,0.8);
 
             color: #ffffff;
 
@@ -283,10 +567,6 @@
         }
 
 
-        /* =====================================
-           IMAGE LOADING
-        ====================================== */
-
         .product-viewer-loading {
 
             position: absolute;
@@ -302,10 +582,6 @@
         }
 
 
-        /* =====================================
-           BODY LOCK
-        ====================================== */
-
         body.product-viewer-open {
 
             overflow: hidden;
@@ -314,8 +590,8 @@
 
 
         /* =====================================
-           MOBILE
-        ====================================== */
+           MOBILE IMAGE VIEWER
+        ===================================== */
 
         @media (max-width: 600px) {
 
@@ -359,9 +635,12 @@
 
     <!-- =====================================
          HEADER
-    ====================================== -->
+    ===================================== -->
 
     <header class="app-header">
+
+
+        <!-- BACK -->
 
         <button
             type="button"
@@ -372,6 +651,8 @@
             ←
         </button>
 
+
+        <!-- BRAND -->
 
         <div class="brand">
 
@@ -385,6 +666,8 @@
 
         </div>
 
+
+        <!-- FAVORITE -->
 
         <button
             type="button"
@@ -411,7 +694,9 @@
         >
 
             <div class="loading">
+
                 Loading product...
+
             </div>
 
         </div>
@@ -485,7 +770,7 @@
 
         <a
             href="shop.html"
-            class="nav-item"
+            class="nav-item active"
         >
 
             <span class="nav-icon">
@@ -560,6 +845,7 @@
 <script src="../js/product.js"></script>
 
 
+
 <!-- =====================================
      PRODUCT IMAGE VIEWER
 ====================================== -->
@@ -610,8 +896,8 @@ function setupProductImageViewer() {
 
 
     /*
-     * Watch for the product image
-     * created dynamically by product.js.
+     * Product image is generated
+     * dynamically by product.js.
      */
 
     const observer =
@@ -623,7 +909,11 @@ function setupProductImageViewer() {
                 );
 
 
-            if (!productImage) return;
+            if (!productImage) {
+
+                return;
+
+            }
 
 
             if (
@@ -660,10 +950,6 @@ function setupProductImageViewer() {
                 }
             );
 
-
-            /*
-             * Add visual tap hint.
-             */
 
             const imageContainer =
                 productImage.closest(
@@ -719,7 +1005,7 @@ function setupProductImageViewer() {
 
     /* =====================================
        OPEN VIEWER
-    ====================================== */
+    ===================================== */
 
     function openProductImage(
         src,
@@ -739,6 +1025,9 @@ function setupProductImageViewer() {
 
             loading.style.display =
                 "block";
+
+            loading.textContent =
+                "Loading image...";
 
         }
 
@@ -788,7 +1077,7 @@ function setupProductImageViewer() {
 
     /* =====================================
        CLOSE VIEWER
-    ====================================== */
+    ===================================== */
 
     function closeViewer() {
 
@@ -816,10 +1105,6 @@ function setupProductImageViewer() {
     );
 
 
-    /*
-     * Tap outside image to close.
-     */
-
     viewer.addEventListener(
         "click",
         event => {
@@ -835,10 +1120,6 @@ function setupProductImageViewer() {
         }
     );
 
-
-    /*
-     * ESC key.
-     */
 
     document.addEventListener(
         "keydown",
