@@ -13,7 +13,9 @@
     <title>SANA Boutique</title>
 
 
-    <!-- Google Font -->
+    <!-- =====================================
+         GOOGLE FONTS
+    ====================================== -->
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
 
@@ -29,7 +31,9 @@
     >
 
 
-    <!-- CSS -->
+    <!-- =====================================
+         CSS
+    ====================================== -->
 
     <link
         rel="stylesheet"
@@ -56,532 +60,557 @@
 
 <body>
 
+<div id="app">
+
 
     <!-- =====================================
-         APP
+         HEADER
+         DO NOT CHANGE
     ====================================== -->
 
-    <div id="app">
+    <header class="app-header">
+
+        <button
+            class="header-button"
+            id="menuButton"
+            aria-label="Open menu"
+        >
+            ☰
+        </button>
+
+
+        <div class="brand">
+
+            <div class="brand-name">
+                SANA
+            </div>
+
+            <div class="brand-subtitle">
+                BOUTIQUE
+            </div>
+
+        </div>
+
+
+        <button
+            class="header-button"
+            id="bagButton"
+            aria-label="Favorites"
+        >
+            ♡
+        </button>
+
+    </header>
+
+
+
+    <!-- =====================================
+         MAIN CONTENT
+    ====================================== -->
+
+    <main id="main-content">
 
 
         <!-- =====================================
-             HEADER
-             DO NOT CHANGE
+             HERO
         ====================================== -->
 
-        <header class="app-header">
+        <section class="hero">
 
 
-            <button
-                class="header-button"
-                id="menuButton"
-                aria-label="Open menu"
+            <!--
+                REAL CINEMATIC HERO IMAGE
+
+                GitHub path:
+
+                assets/hero/hero-home.jpg
+            -->
+
+            <div
+                class="hero-image"
+                aria-hidden="true"
+            ></div>
+
+
+            <!-- Dark cinematic overlay -->
+
+            <div
+                class="hero-shade"
+                aria-hidden="true"
+            ></div>
+
+
+            <!-- Hero content -->
+
+            <div class="hero-overlay">
+
+
+                <span class="hero-small-title">
+                    PREMIUM FASHION
+                </span>
+
+
+                <h1>
+                    ELEGANCE
+                    <br>
+                    IN EVERY
+                    <br>
+                    THREAD
+                </h1>
+
+
+                <p>
+                    Crafted for comfort.
+                    <br>
+                    Designed for you.
+                </p>
+
+
+                <button
+                    class="gold-button"
+                    id="shopCollectionButton"
+                    type="button"
+                >
+                    SHOP COLLECTION
+                </button>
+
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =====================================
+             SHOP BY CATEGORY
+        ====================================== -->
+
+        <section class="section">
+
+
+            <div class="section-title">
+
+                <span>✦</span>
+
+                <h2>
+                    SHOP BY CATEGORY
+                </h2>
+
+                <span>✦</span>
+
+            </div>
+
+
+            <div class="category-grid">
+
+
+                <!-- =================================
+                     UNSTITCHED
+                ================================== -->
+
+                <article
+                    class="category-card"
+                    data-category="Unstitched"
+                >
+
+                    <div
+                        class="category-image unstitched-image"
+                        role="img"
+                        aria-label="Unstitched suits collection"
+                    ></div>
+
+
+                    <div class="category-content">
+
+                        <h3>
+                            UNSTITCHED
+                            <br>
+                            SUITS
+                        </h3>
+
+
+                        <button
+                            type="button"
+                            class="category-button"
+                            data-category="Unstitched"
+                        >
+                            Explore Collection →
+                        </button>
+
+                    </div>
+
+                </article>
+
+
+
+                <!-- =================================
+                     KURTIS
+                ================================== -->
+
+                <article
+                    class="category-card"
+                    data-category="Kurtis"
+                >
+
+                    <div
+                        class="category-image kurtis-image"
+                        role="img"
+                        aria-label="Kurtis collection"
+                    ></div>
+
+
+                    <div class="category-content">
+
+                        <h3>
+                            READY TO WEAR
+                            <br>
+                            KURTIS
+                        </h3>
+
+
+                        <button
+                            type="button"
+                            class="category-button"
+                            data-category="Kurtis"
+                        >
+                            Explore Collection →
+                        </button>
+
+                    </div>
+
+                </article>
+
+
+
+                <!-- =================================
+                     ABAYAS
+                ================================== -->
+
+                <article
+                    class="category-card"
+                    data-category="Abayas"
+                >
+
+                    <div
+                        class="category-image abaya-image"
+                        role="img"
+                        aria-label="Abayas collection"
+                    ></div>
+
+
+                    <div class="category-content">
+
+                        <h3>
+                            ABAYAS
+                        </h3>
+
+
+                        <button
+                            type="button"
+                            class="category-button"
+                            data-category="Abayas"
+                        >
+                            Explore Collection →
+                        </button>
+
+                    </div>
+
+                </article>
+
+
+
+                <!-- =================================
+                     SHAWLS
+                ================================== -->
+
+                <article
+                    class="category-card"
+                    data-category="Shawls"
+                >
+
+                    <div
+                        class="category-image shawl-image"
+                        role="img"
+                        aria-label="Shawls collection"
+                    ></div>
+
+
+                    <div class="category-content">
+
+                        <h3>
+                            SHAWLS
+                        </h3>
+
+
+                        <button
+                            type="button"
+                            class="category-button"
+                            data-category="Shawls"
+                        >
+                            Explore Collection →
+                        </button>
+
+                    </div>
+
+                </article>
+
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =====================================
+             FEATURED PRODUCTS
+             REAL PRODUCTS FROM BACKEND
+        ====================================== -->
+
+        <section class="section">
+
+
+            <div class="section-title">
+
+                <span>✦</span>
+
+                <h2>
+                    FEATURED
+                </h2>
+
+                <span>✦</span>
+
+            </div>
+
+
+            <div
+                class="products-grid"
+                id="featuredProducts"
             >
-                ☰
-            </button>
 
+                <div class="loading">
 
-            <div class="brand">
+                    <p>
+                        Loading products...
+                    </p>
 
-                <div class="brand-name">
-                    SANA
-                </div>
-
-                <div class="brand-subtitle">
-                    BOUTIQUE
                 </div>
 
             </div>
 
 
-            <button
-                class="header-button"
-                id="bagButton"
-                aria-label="Favorites"
-            >
-                ♡
-            </button>
-
-
-        </header>
+        </section>
 
 
 
         <!-- =====================================
-             MAIN CONTENT
+             WHY SANA
         ====================================== -->
 
-        <main id="main-content">
+        <section
+            class="section why-section"
+        >
 
 
-            <!-- =====================================
-                 HERO
-             Cinematic fashion image
-            ====================================== -->
+            <div class="section-title">
 
-            <section class="hero">
+                <span>✦</span>
 
+                <h2>
+                    WHY SANA?
+                </h2>
 
-                <div
-                    class="hero-image"
-                    aria-hidden="true"
-                ></div>
+                <span>✦</span>
 
-
-                <div class="hero-overlay">
+            </div>
 
 
-                    <span class="hero-small-title">
-                        PREMIUM FASHION
-                    </span>
+            <div class="features">
 
 
-                    <h1>
-                        ELEGANCE
-                        <br>
-                        IN EVERY
-                        <br>
-                        THREAD
-                    </h1>
+                <!-- PREMIUM QUALITY -->
 
+                <div class="feature">
+
+                    <div class="feature-icon">
+                        ◇
+                    </div>
+
+                    <h3>
+                        PREMIUM QUALITY
+                    </h3>
 
                     <p>
-                        Crafted for comfort.
-                        <br>
-                        Designed for you.
+                        Carefully selected fabrics
+                        and beautiful craftsmanship.
                     </p>
 
-
-                    <button
-                        class="gold-button"
-                        id="shopCollectionButton"
-                    >
-                        SHOP COLLECTION
-                    </button>
-
-
-                </div>
-
-
-            </section>
-
-
-
-            <!-- =====================================
-                 COLLECTIONS
-            ====================================== -->
-
-            <section class="section">
-
-
-                <div class="section-title">
-
-                    <span>✦</span>
-
-                    <h2>
-                        SHOP BY CATEGORY
-                    </h2>
-
-                    <span>✦</span>
-
                 </div>
 
 
 
-                <div class="category-grid">
+                <!-- TIMELESS STYLE -->
 
+                <div class="feature">
 
-                    <!-- =================================
-                         UNSTITCHED
-                    ================================== -->
-
-                    <article
-                        class="category-card"
-                        data-category="Unstitched"
-                    >
-
-                        <div
-                            class="category-image unstitched-image"
-                            role="img"
-                            aria-label="Unstitched suits collection"
-                        ></div>
-
-
-                        <div class="category-content">
-
-                            <h3>
-                                UNSTITCHED
-                                <br>
-                                SUITS
-                            </h3>
-
-
-                            <button
-                                type="button"
-                                class="category-button"
-                                data-category="Unstitched"
-                            >
-                                Explore Collection →
-                            </button>
-
-                        </div>
-
-                    </article>
-
-
-
-                    <!-- =================================
-                         KURTIS
-                    ================================== -->
-
-                    <article
-                        class="category-card"
-                        data-category="Kurtis"
-                    >
-
-                        <div
-                            class="category-image kurtis-image"
-                            role="img"
-                            aria-label="Ready to wear kurtis collection"
-                        ></div>
-
-
-                        <div class="category-content">
-
-                            <h3>
-                                READY TO WEAR
-                                <br>
-                                KURTIS
-                            </h3>
-
-
-                            <button
-                                type="button"
-                                class="category-button"
-                                data-category="Kurtis"
-                            >
-                                Explore Collection →
-                            </button>
-
-                        </div>
-
-                    </article>
-
-
-
-                    <!-- =================================
-                         ABAYAS
-                    ================================== -->
-
-                    <article
-                        class="category-card"
-                        data-category="Abayas"
-                    >
-
-                        <div
-                            class="category-image abaya-image"
-                            role="img"
-                            aria-label="Abayas collection"
-                        ></div>
-
-
-                        <div class="category-content">
-
-                            <h3>
-                                ABAYAS
-                            </h3>
-
-
-                            <button
-                                type="button"
-                                class="category-button"
-                                data-category="Abayas"
-                            >
-                                Explore Collection →
-                            </button>
-
-                        </div>
-
-                    </article>
-
-
-
-                    <!-- =================================
-                         SHAWLS
-                    ================================== -->
-
-                    <article
-                        class="category-card"
-                        data-category="Shawls"
-                    >
-
-                        <div
-                            class="category-image shawl-image"
-                            role="img"
-                            aria-label="Shawls collection"
-                        ></div>
-
-
-                        <div class="category-content">
-
-                            <h3>
-                                SHAWLS
-                            </h3>
-
-
-                            <button
-                                type="button"
-                                class="category-button"
-                                data-category="Shawls"
-                            >
-                                Explore Collection →
-                            </button>
-
-                        </div>
-
-                    </article>
-
-
-                </div>
-
-            </section>
-
-
-
-            <!-- =====================================
-                 FEATURED PRODUCTS
-                 REAL PRODUCTS FROM BACKEND
-            ====================================== -->
-
-            <section class="section">
-
-
-                <div class="section-title">
-
-                    <span>✦</span>
-
-                    <h2>
-                        FEATURED
-                    </h2>
-
-                    <span>✦</span>
-
-                </div>
-
-
-
-                <div
-                    class="products-grid"
-                    id="featuredProducts"
-                >
-
-                    <div class="loading">
-                        Loading products...
+                    <div class="feature-icon">
+                        ♡
                     </div>
 
-                </div>
+                    <h3>
+                        TIMELESS STYLE
+                    </h3>
 
-
-            </section>
-
-
-
-            <!-- =====================================
-                 WHY SANA
-            ====================================== -->
-
-            <section
-                class="section why-section"
-            >
-
-
-                <div class="section-title">
-
-                    <span>✦</span>
-
-                    <h2>
-                        WHY SANA?
-                    </h2>
-
-                    <span>✦</span>
+                    <p>
+                        Elegant designs made
+                        for every occasion.
+                    </p>
 
                 </div>
 
 
 
-                <div class="features">
+                <!-- TRUSTED BRAND -->
 
+                <div class="feature">
 
-                    <div class="feature">
-
-                        <div class="feature-icon">
-                            ◇
-                        </div>
-
-                        <h3>
-                            PREMIUM QUALITY
-                        </h3>
-
-                        <p>
-                            Carefully selected fabrics
-                            and beautiful craftsmanship.
-                        </p>
-
+                    <div class="feature-icon">
+                        ✦
                     </div>
 
+                    <h3>
+                        TRUSTED BRAND
+                    </h3>
 
-
-                    <div class="feature">
-
-                        <div class="feature-icon">
-                            ♡
-                        </div>
-
-                        <h3>
-                            TIMELESS STYLE
-                        </h3>
-
-                        <p>
-                            Elegant designs made
-                            for every occasion.
-                        </p>
-
-                    </div>
-
-
-
-                    <div class="feature">
-
-                        <div class="feature-icon">
-                            ✦
-                        </div>
-
-                        <h3>
-                            TRUSTED BRAND
-                        </h3>
-
-                        <p>
-                            Fashion created with
-                            care and attention.
-                        </p>
-
-                    </div>
-
+                    <p>
+                        Fashion created with
+                        care and attention.
+                    </p>
 
                 </div>
 
 
-            </section>
+            </div>
+
+        </section>
 
 
-        </main>
-
-
-
-        <!-- =====================================
-             BOTTOM NAVIGATION
-             DO NOT CHANGE
-        ====================================== -->
-
-        <nav class="bottom-navigation">
-
-
-            <a
-                href="index.html"
-                class="nav-item active"
-            >
-
-                <span class="nav-icon">
-                    ⌂
-                </span>
-
-                <span>
-                    Home
-                </span>
-
-            </a>
-
-
-
-            <a
-                href="pages/shop.html"
-                class="nav-item"
-            >
-
-                <span class="nav-icon">
-                    ♧
-                </span>
-
-                <span>
-                    Shop
-                </span>
-
-            </a>
-
-
-
-            <a
-                href="pages/post.html"
-                class="post-button"
-                id="postButton"
-                aria-label="Create post"
-            >
-                +
-            </a>
-
-
-
-            <a
-                href="pages/about.html"
-                class="nav-item"
-            >
-
-                <span class="nav-icon">
-                    ♙
-                </span>
-
-                <span>
-                    About
-                </span>
-
-            </a>
-
-
-
-            <a
-                href="pages/contact.html"
-                class="nav-item"
-            >
-
-                <span class="nav-icon">
-                    ⌕
-                </span>
-
-                <span>
-                    Contact
-                </span>
-
-            </a>
-
-
-        </nav>
-
-
-    </div>
+    </main>
 
 
 
     <!-- =====================================
-         JAVASCRIPT
+         BOTTOM NAVIGATION
     ====================================== -->
 
-    <script src="js/app.js"></script>
+    <nav class="bottom-navigation">
 
-    <script src="js/navigation.js"></script>
 
-    <script src="js/api.js"></script>
+        <!-- HOME -->
 
-    <script src="js/home.js"></script>
+        <a
+            href="index.html"
+            class="nav-item active"
+        >
+
+            <span class="nav-icon">
+                ⌂
+            </span>
+
+            <span>
+                Home
+            </span>
+
+        </a>
+
+
+
+        <!-- SHOP -->
+
+        <a
+            href="pages/shop.html"
+            class="nav-item"
+        >
+
+            <span class="nav-icon">
+                ♧
+            </span>
+
+            <span>
+                Shop
+            </span>
+
+        </a>
+
+
+
+        <!-- CENTER POST BUTTON -->
+
+        <a
+            href="pages/post.html"
+            class="post-button"
+            id="postButton"
+            aria-label="Create post"
+        >
+            +
+        </a>
+
+
+
+        <!-- ABOUT -->
+
+        <a
+            href="pages/about.html"
+            class="nav-item"
+        >
+
+            <span class="nav-icon">
+                ♙
+            </span>
+
+            <span>
+                About
+            </span>
+
+        </a>
+
+
+
+        <!-- CONTACT -->
+
+        <a
+            href="pages/contact.html"
+            class="nav-item"
+        >
+
+            <span class="nav-icon">
+                ⌕
+            </span>
+
+            <span>
+                Contact
+            </span>
+
+        </a>
+
+
+    </nav>
+
+
+</div>
+
+
+
+<!-- =====================================
+     JAVASCRIPT
+====================================== -->
+
+<script src="js/app.js"></script>
+
+<script src="js/navigation.js"></script>
+
+<script src="js/api.js"></script>
+
+<script src="js/home.js"></script>
 
 
 </body>
