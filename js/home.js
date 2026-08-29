@@ -41,11 +41,6 @@ async function loadFeaturedProducts() {
     if (!container) return;
 
 
-    /*
-     * The API connection will be connected
-     * to your existing backend in api.js.
-     */
-
     try {
 
         if (
@@ -99,7 +94,7 @@ async function loadFeaturedProducts() {
 
 
 /* =========================================
-   RENDER PRODUCTS
+   RENDER FEATURED PRODUCTS
 ========================================= */
 
 function renderFeaturedProducts(
@@ -110,7 +105,7 @@ function renderFeaturedProducts(
     container.innerHTML = "";
 
 
-    if (!products.length) {
+    if (!Array.isArray(products) || !products.length) {
 
         showEmptyProducts(container);
 
@@ -120,6 +115,9 @@ function renderFeaturedProducts(
 
 
     products.forEach(product => {
+
+        if (!product) return;
+
 
         const card =
             createProductCard(product);
@@ -133,7 +131,7 @@ function renderFeaturedProducts(
 
 
 /* =========================================
-   PRODUCT CARD
+   CREATE PRODUCT CARD
 ========================================= */
 
 function createProductCard(product) {
@@ -146,15 +144,11 @@ function createProductCard(product) {
         "product-card";
 
 
-    /*
-     * Backend may use different field names.
-     * We support the common ones here.
-     */
-
     const id =
         product.id ??
         product._id ??
-        product.product_id;
+        product.product_id ??
+        "";
 
 
     const name =
@@ -169,10 +163,16 @@ function createProductCard(product) {
         "";
 
 
+    /*
+     * This is the REAL IMAGE uploaded
+     * through the posting system.
+     */
+
     const image =
         product.image_url ??
         product.image ??
         product.photo ??
+        product.imageUrl ??
         "";
 
 
@@ -186,6 +186,7 @@ function createProductCard(product) {
             class="product-favorite"
             data-favorite="${escapeHTML(id)}"
             aria-label="Add to favorites"
+            type="button"
         >
             ♡
         </button>
@@ -199,12 +200,14 @@ function createProductCard(product) {
                         src="${escapeHTML(image)}"
                         alt="${escapeHTML(name)}"
                         loading="lazy"
+                        onerror="this.style.display='none';"
                     >
                   `
                 : `
                     <div
                         class="product-card-image
                                image-placeholder"
+                        aria-label="No product image"
                     ></div>
                   `
         }
@@ -225,9 +228,9 @@ function createProductCard(product) {
     `;
 
 
-    /*
-     * Open product details
-     */
+    /* =====================================
+       OPEN PRODUCT DETAILS
+    ===================================== */
 
     card.addEventListener(
         "click",
@@ -254,9 +257,9 @@ function createProductCard(product) {
     );
 
 
-    /*
-     * Favorite button
-     */
+    /* =====================================
+       FAVORITE
+    ===================================== */
 
     const favoriteButton =
         card.querySelector(
@@ -264,7 +267,7 @@ function createProductCard(product) {
         );
 
 
-    if (favoriteButton) {
+    if (favoriteButton && id) {
 
         updateFavoriteButton(
             favoriteButton,
@@ -278,7 +281,9 @@ function createProductCard(product) {
 
                 event.stopPropagation();
 
+
                 toggleFavorite(id);
+
 
                 updateFavoriteButton(
                     favoriteButton,
@@ -306,6 +311,16 @@ function updateFavoriteButton(
 ) {
 
     if (!button || !productId) return;
+
+
+    if (
+        typeof isFavorite !==
+        "function"
+    ) {
+
+        return;
+
+    }
 
 
     const favorite =
@@ -342,6 +357,8 @@ function setupCategoryButtons() {
             "click",
             event => {
 
+                event.preventDefault();
+
                 event.stopPropagation();
 
 
@@ -354,23 +371,17 @@ function setupCategoryButtons() {
                 if (!card) return;
 
 
-                const title =
-                    card.querySelector("h3");
-
-
-                if (!title) return;
-
+                /*
+                 * Use the data-category
+                 * already present in index.html.
+                 */
 
                 const category =
-                    title.textContent
-                        .trim()
-                        .replace(/\s+/g, " ");
+                    card.dataset.category;
 
 
-                /*
-                 * Shop page will later receive
-                 * the selected category.
-                 */
+                if (!category) return;
+
 
                 window.location.href =
                     `pages/shop.html?category=${encodeURIComponent(category)}`;
@@ -384,7 +395,7 @@ function setupCategoryButtons() {
 
 
 /* =========================================
-   SHOP BUTTON
+   SHOP COLLECTION BUTTON
 ========================================= */
 
 function setupShopButton() {
@@ -469,7 +480,7 @@ function showEmptyProducts(container) {
 
 
 /* =========================================
-   ERROR
+   PRODUCT ERROR
 ========================================= */
 
 function showProductError(container) {
@@ -485,6 +496,7 @@ function showProductError(container) {
             <button
                 class="gold-button"
                 id="retryProducts"
+                type="button"
                 style="margin-top:15px;"
             >
                 TRY AGAIN
@@ -505,7 +517,7 @@ function showProductError(container) {
 
         retry.addEventListener(
             "click",
-            loadFeaturedProducts
+            () => loadFeaturedProducts()
         );
 
     }
@@ -530,11 +542,12 @@ function escapeHTML(value) {
 
 
 /* =========================================
-   EXPOSE HOME FUNCTIONS
+   EXPOSE FUNCTIONS
 ========================================= */
 
 window.loadFeaturedProducts =
     loadFeaturedProducts;
+
 
 window.renderFeaturedProducts =
     renderFeaturedProducts;
