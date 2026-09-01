@@ -1,390 +1,394 @@
-import { CONFIG } from '../../config.js';
+/* =========================================
+   SANA BOUTIQUE
+   CONTACT PAGE CONTROLLER
+   Reads from CONFIG / CONFIG_LINKS (config.js)
+   — no hardcoded contact details here.
+========================================= */
 
-export const ContactPage = {
+"use strict";
 
-    async render() {
-        try {
-            const response = await fetch('./pages/contact/contact.html');
 
-            if (!response.ok) {
-                throw new Error(`HTTP ${response.status}`);
-            }
+document.addEventListener("DOMContentLoaded", () => {
 
-            const html = await response.text();
+    if (typeof CONFIG === "undefined") {
 
-            // Wait until the returned HTML has been inserted into the DOM
-            setTimeout(() => this.bindData(), 0);
+        console.error("CONFIG is not loaded — check that config.js is included before contact.js.");
 
-            return html;
+        return;
 
-        } catch (error) {
-            console.error('Error loading contact template:', error);
-
-            return `
-                <div class="contact-page-wrapper contact-error-page">
-                    <div class="contact-error-card">
-                        <h2>Unable to Load Contact Page</h2>
-                        <p>Please try again later.</p>
-                    </div>
-                </div>
-            `;
-        }
-    },
-
-    bindData() {
-
-        /* =====================================================
-           ALWAYS START CONTACT PAGE FROM THE TOP
-           ===================================================== */
-
-        const contactPage = document.querySelector('.contact-page-wrapper');
-
-        if (contactPage) {
-            contactPage.scrollTop = 0;
-        }
-
-        window.scrollTo(0, 0);
-
-
-        /* =====================================================
-           GOLD EMBER PARTICLES
-           ===================================================== */
-
-        this.spawnEmberParticles();
-
-
-        /* =====================================================
-           ELEMENTS
-           ===================================================== */
-
-        const avatar = document.getElementById('profileAvatarImg');
-        const appTitle = document.getElementById('appNameTitle');
-
-        const emailLink = document.getElementById('emailLink');
-        const emailVal = document.getElementById('emailVal');
-
-        const whatsappLink = document.getElementById('whatsappLink');
-        const whatsappVal = document.getElementById('whatsappVal');
-
-        const phoneLink = document.getElementById('phoneLink');
-        const phoneVal = document.getElementById('phoneVal');
-
-        const tiktokLink = document.getElementById('tiktokLink');
-        const tiktokVal = document.getElementById('tiktokVal');
-
-        const instagramLink = document.getElementById('instagramLink');
-        const instagramVal = document.getElementById('instagramVal');
-
-        const locationVal = document.getElementById('locationVal');
-
-        const mapDirectionsBtn =
-            document.getElementById('mapDirectionsBtn');
-
-        const mapFrame =
-            document.getElementById('mapFrame');
-
-        const helpWhatsAppButton =
-            document.getElementById('helpWhatsAppButton');
-
-
-        /* =====================================================
-           APP / PROFILE
-           ===================================================== */
-
-        if (avatar && CONFIG.PROFILE_IMAGE) {
-            avatar.src = CONFIG.PROFILE_IMAGE;
-        }
-
-        if (appTitle) {
-            appTitle.textContent =
-                CONFIG.APP_NAME || 'SAnA Boutique';
-        }
-
-
-        /* =====================================================
-           EMAIL
-           ===================================================== */
-
-        if (emailLink && CONFIG.EMAIL) {
-            emailLink.href = `mailto:${CONFIG.EMAIL}`;
-        }
-
-        if (emailVal) {
-            emailVal.textContent =
-                CONFIG.EMAIL || '';
-        }
-
-
-        /* =====================================================
-           WHATSAPP
-           EVERYTHING USES CONFIG.WHATSAPP_NUMBER
-           ===================================================== */
-
-        const cleanWhatsapp = String(
-            CONFIG.WHATSAPP_NUMBER || ''
-        ).replace(/\D/g, '');
-
-        const whatsappUrl = cleanWhatsapp
-            ? `https://wa.me/${cleanWhatsapp}`
-            : '#';
-
-
-        // WhatsApp contact card
-        if (whatsappLink) {
-            whatsappLink.href = whatsappUrl;
-        }
-
-        if (whatsappVal) {
-            whatsappVal.textContent = cleanWhatsapp
-                ? `+${cleanWhatsapp}`
-                : '';
-        }
-
-
-        // "Chat With Us" button
-        if (helpWhatsAppButton) {
-            helpWhatsAppButton.href = whatsappUrl;
-        }
-
-
-        /* =====================================================
-           PHONE
-           USES CONFIG.PHONE_NUMBER
-           ===================================================== */
-
-        const cleanPhone = String(
-            CONFIG.PHONE_NUMBER || ''
-        ).replace(/[^\d+]/g, '');
-
-        if (phoneLink) {
-            phoneLink.href = cleanPhone
-                ? `tel:${cleanPhone}`
-                : '#';
-        }
-
-        if (phoneVal) {
-            phoneVal.textContent =
-                CONFIG.PHONE_NUMBER || '';
-        }
-
-
-        /* =====================================================
-           TIKTOK
-           USES CONFIG.TIKTOK_USERNAME
-           ===================================================== */
-
-        const tiktokUsername = String(
-            CONFIG.TIKTOK_USERNAME || ''
-        )
-            .replace(/^@/, '')
-            .trim();
-
-        if (tiktokLink && tiktokUsername) {
-            tiktokLink.href =
-                `https://www.tiktok.com/@${tiktokUsername}`;
-        }
-
-        if (tiktokVal) {
-            tiktokVal.textContent =
-                tiktokUsername
-                    ? `@${tiktokUsername}`
-                    : '';
-        }
-
-
-        /* =====================================================
-           INSTAGRAM
-           USES CONFIG.INSTAGRAM_USERNAME
-           ===================================================== */
-
-        const instagramUsername = String(
-            CONFIG.INSTAGRAM_USERNAME || ''
-        )
-            .replace(/^@/, '')
-            .trim();
-
-        if (instagramLink && instagramUsername) {
-            instagramLink.href =
-                `https://www.instagram.com/${instagramUsername}/`;
-        }
-
-        if (instagramVal) {
-            instagramVal.textContent =
-                instagramUsername
-                    ? `@${instagramUsername}`
-                    : '';
-        }
-
-
-        /* =====================================================
-           LOCATION
-           ===================================================== */
-
-        if (locationVal) {
-            locationVal.textContent =
-                CONFIG.LOCATION_NAME || '';
-        }
-
-
-        /* =====================================================
-           GOOGLE MAP DIRECTIONS
-           ===================================================== */
-
-        if (
-            mapDirectionsBtn &&
-            CONFIG.MAPS_REDIRECT_URL
-        ) {
-            mapDirectionsBtn.href =
-                CONFIG.MAPS_REDIRECT_URL;
-        }
-
-
-        /* =====================================================
-           LIVE GOOGLE MAP
-           ===================================================== */
-
-        if (
-            mapFrame &&
-            CONFIG.MAPS_EMBED_URL
-        ) {
-            mapFrame.src =
-                CONFIG.MAPS_EMBED_URL;
-        }
-
-
-        /* =====================================================
-           EXTERNAL LINKS
-           PREVENT HASH ROUTER INTERFERENCE
-           ===================================================== */
-
-        document
-            .querySelectorAll('.external-link')
-            .forEach((link) => {
-
-                // Avoid attaching the same listener multiple times
-                if (link.dataset.externalBound === 'true') {
-                    return;
-                }
-
-                link.dataset.externalBound = 'true';
-
-                link.addEventListener('click', (event) => {
-                    event.stopPropagation();
-                });
-            });
-    },
-
-    /* =====================================================
-       GOLD EMBER PARTICLES
-       Spawns glowing gold particles that drift upward, like
-       embers. Two layers: a wide sparse one across the whole
-       hero banner, and a denser one over the photo panel.
-       Skipped entirely if the user has reduced-motion on.
-       ===================================================== */
-
-    spawnEmberParticles() {
-
-        if (
-            window.matchMedia &&
-            window.matchMedia('(prefers-reduced-motion: reduce)').matches
-        ) {
-            return;
-        }
-
-        this._spawnEmbersInto('heroEmberLayer', 35, {
-            sizeRange: [2, 5],
-            riseRange: [160, 320],
-            driftRange: [-40, 40],
-            durationRange: [5, 9]
-        });
-
-        this._spawnEmbersInto('avatarEmberLayer', 18, {
-            sizeRange: [1.5, 3.5],
-            riseRange: [60, 120],
-            driftRange: [-18, 18],
-            durationRange: [3, 5.5]
-        });
-
-        this._spawnTwinkleInto('heroTwinkleLayer', 40);
-    },
-
-    _spawnEmbersInto(containerId, count, opts) {
-        const container = document.getElementById(containerId);
-
-        if (!container) return;
-
-        // Guard against re-spawning if bindData ever runs twice
-        if (container.dataset.embersSpawned === 'true') return;
-        container.dataset.embersSpawned = 'true';
-
-        const {
-            sizeRange = [2, 5],
-            riseRange = [140, 260],
-            driftRange = [-30, 30],
-            durationRange = [4, 8]
-        } = opts || {};
-
-        const frag = document.createDocumentFragment();
-
-        for (let i = 0; i < count; i++) {
-            const particle = document.createElement('span');
-            particle.className = 'ember-particle';
-
-            const size = sizeRange[0] + Math.random() * (sizeRange[1] - sizeRange[0]);
-            const rise = riseRange[0] + Math.random() * (riseRange[1] - riseRange[0]);
-            const drift = driftRange[0] + Math.random() * (driftRange[1] - driftRange[0]);
-            const duration = durationRange[0] + Math.random() * (durationRange[1] - durationRange[0]);
-            const delay = -Math.random() * duration; // negative delay = already mid-flight on load
-            const left = Math.random() * 100;
-
-            particle.style.width = `${size}px`;
-            particle.style.height = `${size}px`;
-            particle.style.left = `${left}%`;
-            particle.style.setProperty('--rise', `-${rise}px`);
-            particle.style.setProperty('--drift', `${drift}px`);
-            particle.style.animationDuration = `${duration}s`;
-            particle.style.animationDelay = `${delay}s`;
-
-            frag.appendChild(particle);
-        }
-
-        container.appendChild(frag);
-    },
-
-    // Scattered static dots that fade in/out — no upward drift.
-    // Spread wide across the whole hero for that starry-background
-    // look, unlike the rising ember particles.
-    _spawnTwinkleInto(containerId, count) {
-        const container = document.getElementById(containerId);
-
-        if (!container) return;
-        if (container.dataset.twinkleSpawned === 'true') return;
-        container.dataset.twinkleSpawned = 'true';
-
-        const frag = document.createDocumentFragment();
-
-        for (let i = 0; i < count; i++) {
-            const dot = document.createElement('span');
-            dot.className = 'twinkle-dot';
-
-            const size = 1 + Math.random() * 2.5;
-            const duration = 2 + Math.random() * 4;
-            const delay = -Math.random() * duration;
-            const top = Math.random() * 100;
-            const left = Math.random() * 100;
-
-            dot.style.width = `${size}px`;
-            dot.style.height = `${size}px`;
-            dot.style.top = `${top}%`;
-            dot.style.left = `${left}%`;
-            dot.style.animationDuration = `${duration}s`;
-            dot.style.animationDelay = `${delay}s`;
-
-            frag.appendChild(dot);
-        }
-
-        container.appendChild(frag);
     }
-};
 
-window.ContactPage = ContactPage;
+    bindConnectCards();
+
+    bindMap();
+
+    bindContactForm();
+
+    bindNewsletterForm();
+
+    setupParticles();
+
+});
+
+
+/* =========================================
+   CONNECT WITH US CARDS
+========================================= */
+
+function bindConnectCards() {
+
+    const whatsappCard = document.getElementById("contactWhatsappCard");
+    const whatsappValue = document.getElementById("contactWhatsappValue");
+
+    if (whatsappCard && whatsappValue) {
+
+        whatsappCard.href = CONFIG_LINKS.whatsapp(
+            "Hi SANA Boutique! I have a question."
+        );
+
+        whatsappValue.textContent = CONFIG.WHATSAPP_NUMBER;
+
+    }
+
+    const phoneCard = document.getElementById("contactPhoneCard");
+    const phoneValue = document.getElementById("contactPhoneValue");
+
+    if (phoneCard && phoneValue) {
+
+        phoneCard.href = CONFIG_LINKS.phone();
+
+        phoneValue.textContent = CONFIG.PHONE_NUMBER;
+
+    }
+
+    const instaCard = document.getElementById("contactInstagramCard");
+    const instaValue = document.getElementById("contactInstagramValue");
+
+    if (instaCard && instaValue) {
+
+        instaCard.href = CONFIG_LINKS.instagram();
+
+        instaValue.textContent = "@" + CONFIG.INSTAGRAM_USERNAME;
+
+    }
+
+    const tiktokCard = document.getElementById("contactTiktokCard");
+    const tiktokValue = document.getElementById("contactTiktokValue");
+
+    if (tiktokCard && tiktokValue) {
+
+        tiktokCard.href = CONFIG_LINKS.tiktok();
+
+        tiktokValue.textContent = "@" + CONFIG.TIKTOK_USERNAME;
+
+    }
+
+}
+
+
+/* =========================================
+   MAP
+========================================= */
+
+function bindMap() {
+
+    const embed = document.getElementById("contactMapEmbed");
+    if (embed) embed.src = CONFIG.MAPS_EMBED_URL;
+
+    const largerLink = document.getElementById("contactMapLargerLink");
+    if (largerLink) largerLink.href = CONFIG.MAPS_DIRECTIONS_URL;
+
+    const mapName = document.getElementById("contactMapName");
+    if (mapName) mapName.textContent = CONFIG.LOCATION_NAME;
+
+    const mapAddress = document.getElementById("contactMapAddress");
+    if (mapAddress) mapAddress.textContent = CONFIG.LOCATION_ADDRESS;
+
+    const addressChip = document.getElementById("contactAddressChip");
+    if (addressChip) addressChip.textContent = CONFIG.LOCATION_ADDRESS;
+
+    const hoursChip = document.getElementById("contactHoursChip");
+
+    if (hoursChip) {
+
+        hoursChip.textContent =
+            CONFIG.OPEN_HOURS_WEEKDAY + "\n" + CONFIG.OPEN_HOURS_WEEKEND;
+
+    }
+
+}
+
+
+/* =========================================
+   CONTACT FORM
+   No backend exists yet, so submitting opens
+   a prefilled WhatsApp chat with the message
+   instead of silently doing nothing.
+========================================= */
+
+function bindContactForm() {
+
+    const form = document.getElementById("contactForm");
+
+    if (!form) return;
+
+    form.addEventListener("submit", event => {
+
+        event.preventDefault();
+
+        const name = document.getElementById("contactName").value.trim();
+        const email = document.getElementById("contactEmail").value.trim();
+        const subject = document.getElementById("contactSubject").value.trim();
+        const message = document.getElementById("contactMessage").value.trim();
+
+        if (!name || !email || !message) {
+
+            if (window.showToast) window.showToast("Please fill in your name, email, and message");
+
+            return;
+
+        }
+
+        const lines = [
+            "New message from the SANA Boutique website:",
+            "",
+            "Name: " + name,
+            "Email: " + email
+        ];
+
+        if (subject) lines.push("Subject: " + subject);
+
+        lines.push("", message);
+
+        const whatsappUrl = CONFIG_LINKS.whatsapp(lines.join("\n"));
+
+        window.open(whatsappUrl, "_blank", "noopener");
+
+        if (window.showToast) window.showToast("Opening WhatsApp to send your message");
+
+        form.reset();
+
+    });
+
+}
+
+
+/* =========================================
+   NEWSLETTER
+   No backend to store subscribers yet, so
+   this opens a prefilled email instead of
+   faking a successful subscription.
+========================================= */
+
+function bindNewsletterForm() {
+
+    const form = document.getElementById("contactNewsletterForm");
+
+    if (!form) return;
+
+    form.addEventListener("submit", event => {
+
+        event.preventDefault();
+
+        const emailField = document.getElementById("contactNewsletterEmail");
+        const email = emailField ? emailField.value.trim() : "";
+
+        if (!email) {
+
+            if (window.showToast) window.showToast("Please enter your email");
+
+            return;
+
+        }
+
+        const mailtoUrl = CONFIG_LINKS.email(
+            "Newsletter Subscription",
+            "Please add this email to the SANA Boutique newsletter: " + email
+        );
+
+        window.location.href = mailtoUrl;
+
+        if (window.showToast) window.showToast("Opening your email app to confirm");
+
+        form.reset();
+
+    });
+
+}
+
+
+/* =========================================
+   HERO PARTICLE CANVAS
+   Same lightweight gold-dust field used on
+   the About page hero.
+========================================= */
+
+function setupParticles() {
+
+    const canvas = document.getElementById("contactParticleCanvas");
+    const hero = document.querySelector(".contact-hero");
+
+    if (!canvas || !hero) return;
+
+    const ctx = canvas.getContext("2d");
+
+    if (!ctx) return;
+
+    const reduceMotion =
+        window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    let particles = [];
+    let raf = null;
+    let running = false;
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    let w = 0, h = 0, t = 0;
+
+    function rand(min, max) {
+        return Math.random() * (max - min) + min;
+    }
+
+    function seed() {
+
+        const count = Math.max(18, Math.min(Math.round((w * h) / 18000), 55));
+
+        particles = [];
+
+        for (let i = 0; i < count; i++) {
+
+            particles.push({
+                x: rand(0, w),
+                y: rand(0, h),
+                r: rand(0.6, 2),
+                vx: rand(-0.05, 0.08),
+                vy: rand(-0.12, -0.02),
+                baseAlpha: rand(0.2, 0.75),
+                twinkleSpeed: rand(0.6, 1.6),
+                twinklePhase: rand(0, Math.PI * 2)
+            });
+
+        }
+
+    }
+
+    function resize() {
+
+        const rect = hero.getBoundingClientRect();
+
+        w = rect.width;
+        h = rect.height;
+
+        canvas.width = Math.floor(w * dpr);
+        canvas.height = Math.floor(h * dpr);
+        canvas.style.width = w + "px";
+        canvas.style.height = h + "px";
+
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+        seed();
+
+    }
+
+    function draw() {
+
+        if (!canvas.isConnected) { stop(); return; }
+
+        t += 0.016;
+
+        ctx.clearRect(0, 0, w, h);
+
+        for (let i = 0; i < particles.length; i++) {
+
+            const p = particles[i];
+
+            p.x += p.vx;
+            p.y += p.vy;
+
+            if (p.y < -6) { p.y = h + 6; p.x = rand(0, w); }
+            if (p.x < -6) p.x = w + 6;
+            if (p.x > w + 6) p.x = -6;
+
+            const twinkle = 0.5 + 0.5 * Math.sin(t * p.twinkleSpeed + p.twinklePhase);
+            const alpha = p.baseAlpha * (0.4 + 0.6 * twinkle);
+
+            const glow = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r * 5);
+            glow.addColorStop(0, "rgba(244,201,93," + alpha + ")");
+            glow.addColorStop(1, "rgba(244,201,93,0)");
+
+            ctx.fillStyle = glow;
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.r * 5, 0, Math.PI * 2);
+            ctx.fill();
+
+            ctx.fillStyle = "rgba(255,244,214," + Math.min(1, alpha + 0.15) + ")";
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+            ctx.fill();
+
+        }
+
+        raf = window.requestAnimationFrame(draw);
+
+    }
+
+    function start() {
+
+        if (running || reduceMotion) return;
+
+        running = true;
+        raf = window.requestAnimationFrame(draw);
+
+    }
+
+    function stop() {
+
+        running = false;
+
+        if (raf) window.cancelAnimationFrame(raf);
+
+        raf = null;
+
+    }
+
+    resize();
+
+    if (!reduceMotion) start(); else draw();
+
+    let resizeTimer;
+
+    window.addEventListener("resize", () => {
+
+        window.clearTimeout(resizeTimer);
+        resizeTimer = window.setTimeout(resize, 150);
+
+    });
+
+    document.addEventListener("visibilitychange", () => {
+
+        if (document.hidden) stop(); else if (!reduceMotion) start();
+
+    });
+
+    if ("IntersectionObserver" in window) {
+
+        const io = new IntersectionObserver(
+
+            entries => {
+
+                entries.forEach(entry => {
+
+                    if (entry.isIntersecting && !document.hidden) start();
+                    else stop();
+
+                });
+
+            },
+
+            { threshold: 0.05 }
+
+        );
+
+        io.observe(hero);
+
+    }
+
+}
