@@ -30,6 +30,19 @@ async function initializeHome() {
 
 /* =========================================
    LOAD FEATURED PRODUCTS
+
+   FIX:
+   - Render's free tier puts the backend to
+     sleep when idle, so the FIRST request
+     after a while can take 20-50s to wake it
+     up and may time out / fail even though
+     the backend is fine.
+   - Rather than showing a scary error on
+     that first failure, this now retries
+     once automatically after a short delay,
+     with a "waking up" message in between.
+   - Only shows the real error + Try Again
+     button if the SECOND attempt also fails.
 ========================================= */
 
 async function loadFeaturedProducts() {
@@ -41,22 +54,22 @@ async function loadFeaturedProducts() {
     if (!container) return;
 
 
+    if (
+        typeof getFeaturedProducts !==
+        "function"
+    ) {
+
+        showEmptyProducts(container);
+
+        return;
+
+    }
+
+
+    setLoading(true);
+
+
     try {
-
-        if (
-            typeof getFeaturedProducts !==
-            "function"
-        ) {
-
-            showEmptyProducts(container);
-
-            return;
-
-        }
-
-
-        setLoading(true);
-
 
         const products =
             await getFeaturedProducts();
@@ -73,14 +86,56 @@ async function loadFeaturedProducts() {
             container
         );
 
+        setLoading(false);
 
-    } catch (error) {
+        return;
 
-        console.error(
-            "Failed to load products:",
-            error
+    } catch (firstError) {
+
+        console.warn(
+            "First attempt to load products failed, retrying:",
+            firstError
         );
 
+    }
+
+
+    /*
+     * FIRST ATTEMPT FAILED —
+     * likely a sleeping backend waking up.
+     * Show a friendly interim state and
+     * retry once after a short delay.
+     */
+
+    showWakingUp(container);
+
+
+    await wait(4000);
+
+
+    try {
+
+        const products =
+            await getFeaturedProducts();
+
+
+        AppState.products =
+            Array.isArray(products)
+                ? products
+                : [];
+
+
+        renderFeaturedProducts(
+            AppState.products,
+            container
+        );
+
+    } catch (secondError) {
+
+        console.error(
+            "Failed to load products after retry:",
+            secondError
+        );
 
         showProductError(container);
 
@@ -89,6 +144,19 @@ async function loadFeaturedProducts() {
         setLoading(false);
 
     }
+
+}
+
+
+/* =========================================
+   SIMPLE DELAY HELPER
+========================================= */
+
+function wait(ms) {
+
+    return new Promise(
+        resolve => setTimeout(resolve, ms)
+    );
 
 }
 
@@ -103,6 +171,17 @@ function renderFeaturedProducts(
 ) {
 
     container.innerHTML = "";
+
+
+    /*
+     * Tag the container so home.css can
+     * target it for the horizontal
+     * side-scroll layout.
+     */
+
+    container.classList.add(
+        "product-scroll-row"
+    );
 
 
     if (!Array.isArray(products) || !products.length) {
@@ -464,6 +543,11 @@ function formatPrice(price) {
 
 function showEmptyProducts(container) {
 
+    container.classList.remove(
+        "product-scroll-row"
+    );
+
+
     container.innerHTML = `
 
         <div class="loading">
@@ -480,10 +564,46 @@ function showEmptyProducts(container) {
 
 
 /* =========================================
+   WAKING UP
+   Shown between the first (failed) attempt
+   and the automatic retry, so a sleeping
+   Render backend doesn't look like an error.
+========================================= */
+
+function showWakingUp(container) {
+
+    container.classList.remove(
+        "product-scroll-row"
+    );
+
+
+    container.innerHTML = `
+
+        <div class="loading">
+
+            <p>
+                Waking up the store — this can
+                take a few seconds on the first
+                load.
+            </p>
+
+        </div>
+
+    `;
+
+}
+
+
+/* =========================================
    PRODUCT ERROR
 ========================================= */
 
 function showProductError(container) {
+
+    container.classList.remove(
+        "product-scroll-row"
+    );
+
 
     container.innerHTML = `
 
