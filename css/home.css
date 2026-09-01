@@ -408,6 +408,55 @@
 
 
 /* =========================================
+   FEATURED PRODUCTS — SIDE SCROLL
+   Applied by home.js (adds the
+   product-scroll-row class once real
+   products render). Two classes beat one,
+   so this overrides the grid above without
+   needing !important. The loading / waking
+   up / error states remove this class, so
+   they fall back to the plain grid block
+   above and stay single-column/centered.
+========================================= */
+
+.products-grid.product-scroll-row {
+    display: flex;
+
+    grid-template-columns: none;
+
+    gap: 14px;
+
+    overflow-x: auto;
+
+    scroll-snap-type: x mandatory;
+
+    -webkit-overflow-scrolling: touch;
+
+    padding: 4px 4px 12px;
+
+    margin: 0 -4px;
+
+    scrollbar-width: none;
+}
+
+
+.products-grid.product-scroll-row::-webkit-scrollbar {
+    display: none;
+}
+
+
+.products-grid.product-scroll-row .product-card {
+    flex: 0 0 auto;
+
+    width: 44vw;
+
+    max-width: 190px;
+
+    scroll-snap-align: start;
+}
+
+
+/* =========================================
    PRODUCT CARD
 ========================================= */
 
