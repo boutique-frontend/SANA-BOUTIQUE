@@ -1,556 +1,470 @@
-<div class="contact-page-wrapper">
+<!DOCTYPE html>
+<html lang="en">
 
-    <!-- =====================================================
-         CONTACT HERO
-         ===================================================== -->
+<head>
 
-    <section class="contact-hero">
+    <meta charset="UTF-8">
 
-        <!-- Wide scattered twinkling stars across the whole banner -->
-        <div class="ember-layer twinkle-layer" id="heroTwinkleLayer" aria-hidden="true"></div>
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
+    >
 
-        <!-- Ember particle layer — sits behind the content,
-             in front of the background -->
-        <div class="ember-layer ember-layer-hero" id="heroEmberLayer" aria-hidden="true"></div>
+    <meta
+        name="theme-color"
+        content="#0d0d0d"
+    >
 
-        <!-- Comet streak, top-right -->
-        <div class="comet-streak" aria-hidden="true"></div>
+    <meta
+        name="description"
+        content="Get in touch with SANA Boutique — WhatsApp, phone, Instagram, TikTok, and our Freetown location."
+    >
 
-        <div class="contact-hero-content">
+    <title>Contact | SANA Boutique</title>
 
-            <h1 class="contact-heading">
-                Contact Us
-            </h1>
 
-            <div class="contact-heading-divider"></div>
+    <!-- =====================================
+         GOOGLE FONTS
+    ====================================== -->
 
-            <p class="contact-hero-text">
-                We are here to assist you with your orders,
-                collections, and any questions you may have.
-            </p>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
 
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <!-- =====================================
+         CSS
+    ====================================== -->
+
+    <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="../css/header.css">
+    <link rel="stylesheet" href="../css/navigation.css">
+    <link rel="stylesheet" href="../css/contact.css">
+    <link rel="stylesheet" href="../css/responsive.css">
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================
+         ICON SPRITE (outline, currentColor)
+    ====================================== -->
+
+    <svg style="display:none" aria-hidden="true">
+
+        <symbol id="icon-send" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4 20-7Z"/>
+        </symbol>
+
+        <symbol id="icon-chat" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12a8 8 0 0 1-8 8H7l-4 3 1-4.6A8 8 0 1 1 21 12Z"/>
+        </symbol>
+
+        <symbol id="icon-heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 20.5s-7.6-4.6-10-9.2C.4 8 1.8 4.5 5.2 3.6c2.1-.6 4.3.3 5.6 2.1a.9.9 0 0 0 1.4 0c1.3-1.8 3.5-2.7 5.6-2.1 3.4.9 4.8 4.4 3.2 7.7-2.4 4.6-10 9.2-10 9.2Z"/>
+        </symbol>
+
+        <symbol id="icon-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 3 4 6v6c0 5 3.4 8.2 8 9 4.6-.8 8-4 8-9V6l-8-3Z"/>
+        </symbol>
+
+        <symbol id="icon-phone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.7a2 2 0 0 1-.4 2.1L8 9.9a16 16 0 0 0 6 6l1.4-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.5 2.7.6a2 2 0 0 1 1.8 2Z"/>
+        </symbol>
+
+        <symbol id="icon-whatsapp" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12.01 2C6.5 2 2.02 6.48 2.02 12c0 1.9.53 3.68 1.44 5.2L2 22l4.94-1.42A9.9 9.9 0 0 0 12.01 22C17.52 22 22 17.52 22 12S17.52 2 12.01 2Zm0 18.1c-1.7 0-3.28-.5-4.6-1.36l-.33-.2-3.02.87.9-2.94-.22-.34a8.06 8.06 0 0 1-1.32-4.13C3.42 7.5 7.2 3.9 12.01 3.9c2.16 0 4.2.85 5.73 2.38a8.03 8.03 0 0 1 2.37 5.72c0 4.5-3.79 8.1-8.1 8.1Zm4.44-6.02c-.24-.12-1.44-.71-1.66-.79-.22-.08-.39-.12-.55.12-.16.24-.63.79-.78.95-.14.16-.29.18-.53.06-.24-.12-1.02-.38-1.94-1.2-.72-.64-1.2-1.43-1.34-1.67-.14-.24-.02-.37.11-.49.11-.11.24-.29.36-.43.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.55-1.32-.75-1.8-.2-.48-.4-.42-.55-.42h-.47c-.16 0-.42.06-.64.3-.22.24-.85.83-.85 2.02s.87 2.35.99 2.51c.12.16 1.71 2.6 4.14 3.65.58.25 1.03.4 1.38.51.58.19 1.11.16 1.53.1.47-.07 1.44-.59 1.64-1.16.2-.57.2-1.06.14-1.16-.06-.1-.22-.16-.46-.28Z"/>
+        </symbol>
+
+        <symbol id="icon-instagram" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+            <rect x="3" y="3" width="18" height="18" rx="5"/>
+            <circle cx="12" cy="12" r="4.2"/>
+            <circle cx="17.4" cy="6.6" r="1" fill="currentColor" stroke="none"/>
+        </symbol>
+
+        <symbol id="icon-tiktok" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M16.6 2h-3v13.6a2.9 2.9 0 1 1-2.05-2.77V9.7a6 6 0 1 0 5.05 5.93V8.9a7.9 7.9 0 0 0 4.4 1.34V7.2a4.9 4.9 0 0 1-4.4-3.9V2Z"/>
+        </symbol>
+
+        <symbol id="icon-headset-heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 13v-1a8 8 0 0 1 16 0v1"/>
+            <rect x="2.5" y="13" width="4" height="6" rx="1.6"/>
+            <rect x="17.5" y="13" width="4" height="6" rx="1.6"/>
+            <path d="M12 12.5c.9-1 2.6-.7 2.6.8 0 1.3-1.7 2.4-2.6 3-0.9-.6-2.6-1.7-2.6-3 0-1.5 1.7-1.8 2.6-.8Z" fill="currentColor" stroke="none"/>
+        </symbol>
+
+        <symbol id="icon-person" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="8" r="3.6"/><path d="M4.5 20c1.5-4 4.2-6 7.5-6s6 2 7.5 6"/>
+        </symbol>
+
+        <symbol id="icon-envelope" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="5" width="18" height="14" rx="2"/><path d="m4 6.5 8 6.5 8-6.5"/>
+        </symbol>
+
+        <symbol id="icon-tag" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 12.5 12.5 20a1.7 1.7 0 0 1-2.4 0L4 13.9a1.7 1.7 0 0 1 0-2.4L11.5 4H19a1 1 0 0 1 1 1v7.5Z"/><circle cx="15.3" cy="8.7" r="1.3"/>
+        </symbol>
+
+        <symbol id="icon-pencil" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m16.5 3.5 4 4L7 21l-4.5 1L4 17.5 16.5 3.5Z"/>
+        </symbol>
+
+        <symbol id="icon-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="4" y="10.5" width="16" height="10" rx="2"/><path d="M7.5 10.5V7a4.5 4.5 0 0 1 9 0v3.5"/>
+        </symbol>
+
+        <symbol id="icon-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 21s7-6.5 7-12a7 7 0 1 0-14 0c0 5.5 7 12 7 12Z"/><circle cx="12" cy="9" r="2.4"/>
+        </symbol>
+
+        <symbol id="icon-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.2 2"/>
+        </symbol>
+
+        <symbol id="icon-dress" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9.5 3h5l.7 3.2L18 20H6l2.8-13.8L9.5 3Z"/><path d="M9.5 3a2.5 2.5 0 0 0 5 0"/>
+        </symbol>
+
+        <symbol id="icon-truck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="1.5" y="7" width="12" height="9" rx="1"/><path d="M13.5 10h4l3 3v3h-7z"/><circle cx="6" cy="18" r="1.6"/><circle cx="16.5" cy="18" r="1.6"/>
+        </symbol>
+
+        <symbol id="icon-medal" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="9" r="5.5"/><path d="m8.5 13.5-2 6.5 5.5-2.5 5.5 2.5-2-6.5"/>
+        </symbol>
+
+        <symbol id="icon-gift" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="9.5" width="18" height="11" rx="1"/><path d="M3 13.5h18"/><path d="M12 9.5v11"/>
+            <path d="M12 9.5c-2-4-6.5-3.6-6.5-.6 0 1.6 1.6 2.6 3.2 2.6H12"/>
+            <path d="M12 9.5c2-4 6.5-3.6 6.5-.6 0 1.6-1.6 2.6-3.2 2.6H12"/>
+        </symbol>
+
+        <symbol id="icon-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <path d="M12 5v14M5 12h14"/>
+        </symbol>
+
+    </svg>
+
+
+
+<div id="app">
+
+
+    <!-- =====================================
+         HEADER
+    ===================================== -->
+
+    <header class="app-header">
+
+        <button
+            type="button"
+            class="header-button"
+            onclick="history.back()"
+            aria-label="Go back"
+        >
+            ←
+        </button>
+
+        <div class="brand">
+            <div class="brand-name">SANA</div>
+            <div class="brand-subtitle">BOUTIQUE</div>
         </div>
 
-        <div class="contact-hero-image">
+        <span class="header-button" style="visibility:hidden" aria-hidden="true">←</span>
 
-            <!-- Ambient gold glow behind the photo -->
-            <div class="hero-image-glow" aria-hidden="true"></div>
+    </header>
 
-            <img
-                id="profileAvatarImg"
-                src=""
-                alt="SAnA Boutique"
-                onerror="this.style.display='none';"
-            >
 
-            <!-- Glowing rotating-ring SANA emblem, centered over the photo -->
-            <div class="sana-glow-badge" aria-hidden="true">
 
-                <div class="badge-ring ring-1"></div>
-                <div class="badge-ring ring-2"></div>
-                <div class="badge-ring ring-3"></div>
+    <!-- =====================================
+         CONTACT PAGE
+    ====================================== -->
 
-                <div class="badge-core">
+    <main class="contact-page">
 
-                    <svg class="badge-icon" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M3 14v-2a9 9 0 0 1 18 0v2"></path>
-                        <path d="M21 14a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-1a2 2 0 0 1 2-2h3z"></path>
-                        <path d="M3 14a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-1a2 2 0 0 0-2-2H3z"></path>
-                        <path d="M12 13.5c1.2-1.2 2.4-.4 2.4.9 0 1-1 1.9-2.4 3.1-1.4-1.2-2.4-2.1-2.4-3.1 0-1.3 1.2-2.1 2.4-.9z" fill="currentColor" stroke="none"></path>
-                    </svg>
 
-                    <span class="badge-title">SANA</span>
-                    <span class="badge-subtitle">BOUTIQUE</span>
+        <!-- =====================================
+             INTRO / HERO
+        ====================================== -->
+
+        <section class="contact-hero">
+
+            <canvas class="contact-hero-canvas" id="contactParticleCanvas" aria-hidden="true"></canvas>
+
+            <div class="contact-hero-grid">
+
+                <div class="contact-hero-copy">
+
+                    <p class="contact-eyebrow">Get In Touch</p>
+
+                    <h1 class="contact-hero-title">
+                        We'd Love To<br>Hear From You
+                    </h1>
+
+                    <div class="contact-rule"></div>
+
+                    <p class="contact-hero-text">
+                        Have a question, need help, or just want to say hello?
+                        We are here for you.
+                    </p>
+
+                    <a class="contact-outline-button" id="contactReplyFastBtn" href="#contactForm">
+                        <svg class="icon" width="16" height="16"><use href="#icon-send"/></svg>
+                        We Reply Fast
+                    </a>
 
                 </div>
+
+                <div class="contact-hero-badge-wrap">
+
+                    <div class="contact-badge">
+                        <svg class="icon contact-badge-icon" width="34" height="34"><use href="#icon-headset-heart"/></svg>
+                        <span class="contact-badge-name">SANA</span>
+                        <span class="contact-badge-sub">BOUTIQUE</span>
+                    </div>
+
+                </div>
+
+                <ul class="contact-hero-features">
+
+                    <li>
+                        <svg class="icon" width="20" height="20"><use href="#icon-chat"/></svg>
+                        <div>
+                            <strong>Quick Response</strong>
+                            <span>We reply as fast as we can</span>
+                        </div>
+                    </li>
+
+                    <li>
+                        <svg class="icon" width="20" height="20"><use href="#icon-heart"/></svg>
+                        <div>
+                            <strong>We Care</strong>
+                            <span>Your satisfaction is our priority</span>
+                        </div>
+                    </li>
+
+                    <li>
+                        <svg class="icon" width="20" height="20"><use href="#icon-shield"/></svg>
+                        <div>
+                            <strong>Trusted Support</strong>
+                            <span>We're here to help you anytime</span>
+                        </div>
+                    </li>
+
+                </ul>
 
             </div>
 
-            <!-- Embers rising over the photo panel -->
-            <div class="ember-layer ember-layer-avatar" id="avatarEmberLayer" aria-hidden="true"></div>
+        </section>
 
-        </div>
 
-    </section>
 
+        <!-- =====================================
+             CONNECT WITH US
+        ====================================== -->
 
-    <!-- =====================================================
-         MAIN CONTACT CONTENT
-         ===================================================== -->
+        <section class="section">
 
-    <section class="contact-main-grid">
+            <h2 class="section-title"><span>✦</span> Connect With Us <span>✦</span></h2>
 
-        <!-- =================================================
-             CONTACT INFORMATION
-             ================================================= -->
+            <div class="contact-connect-grid">
 
-        <div class="contact-info-column">
-
-            <!-- =================================================
-                 EMAIL
-                 ================================================= -->
-
-            <a
-                id="emailLink"
-                href="#"
-                class="contact-card external-link"
-            >
-
-                <div class="card-icon icon-email">
-                    <i class="fa-solid fa-envelope"></i>
-                </div>
-
-                <div class="card-info">
-
-                    <h3>
-                        Email
-                    </h3>
-
-                    <p id="emailVal">
-                        Loading...
-                    </p>
-
-                    <small>
-                        We reply within 24 hours
-                    </small>
-
-                </div>
-
-                <i class="fa-solid fa-chevron-right arrow-icon"></i>
-
-            </a>
-
-
-            <!-- =================================================
-                 WHATSAPP
-                 ================================================= -->
-
-            <a
-                id="whatsappLink"
-                href="#"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="contact-card whatsapp-card external-link"
-            >
-
-                <div class="card-icon icon-whatsapp">
-                    <i class="fa-brands fa-whatsapp"></i>
-                </div>
-
-                <div class="card-info">
-
-                    <h3>
-                        WhatsApp
-                    </h3>
-
-                    <p id="whatsappVal">
-                        Loading...
-                    </p>
-
-                    <small>
-                        Message Us Directly
-                    </small>
-
-                </div>
-
-                <i class="fa-solid fa-chevron-right arrow-icon"></i>
-
-            </a>
-
-
-            <!-- =================================================
-                 PHONE NUMBER
-                 ================================================= -->
-
-            <a
-                id="phoneLink"
-                href="#"
-                class="contact-card external-link"
-            >
-
-                <div class="card-icon icon-phone">
-                    <i class="fa-solid fa-phone"></i>
-                </div>
-
-                <div class="card-info">
-
-                    <h3>
-                        Phone Number
-                    </h3>
-
-                    <p id="phoneVal">
-                        Loading...
-                    </p>
-
-                    <small>
-                        Mon - Sat | 10AM - 8PM
-                    </small>
-
-                </div>
-
-                <i class="fa-solid fa-chevron-right arrow-icon"></i>
-
-            </a>
-
-
-            <!-- =================================================
-                 TIKTOK
-                 ================================================= -->
-
-            <a
-                id="tiktokLink"
-                href="#"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="contact-card external-link"
-            >
-
-                <div class="card-icon icon-tiktok">
-                    <i class="fa-brands fa-tiktok"></i>
-                </div>
-
-                <div class="card-info">
-
-                    <h3>
-                        TikTok
-                    </h3>
-
-                    <p id="tiktokVal">
-                        Loading...
-                    </p>
-
-                    <small>
-                        Follow us for latest updates
-                    </small>
-
-                </div>
-
-                <i class="fa-solid fa-chevron-right arrow-icon"></i>
-
-            </a>
-
-
-            <!-- =================================================
-                 INSTAGRAM
-                 ================================================= -->
-
-            <a
-                id="instagramLink"
-                href="#"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="contact-card external-link"
-            >
-
-                <div class="card-icon icon-instagram">
-                    <i class="fa-brands fa-instagram"></i>
-                </div>
-
-                <div class="card-info">
-
-                    <h3>
-                        Instagram
-                    </h3>
-
-                    <p id="instagramVal">
-                        Loading...
-                    </p>
-
-                    <small>
-                        See our new collections
-                    </small>
-
-                </div>
-
-                <i class="fa-solid fa-chevron-right arrow-icon"></i>
-
-            </a>
-
-        </div>
-
-
-        <!-- =================================================
-             BUSINESS HOURS / VALUE
-             ================================================= -->
-
-        <div class="business-hours-card">
-
-            <h2 class="business-hours-heading">
-
-                <i class="fa-regular fa-clock"></i>
-
-                Business Hours
-
-            </h2>
-
-
-            <ul class="business-hours-list">
-
-                <li class="business-hours-row">
-
-                    <span class="business-hours-day">
-                        Monday
+                <a class="card contact-connect-card" id="contactWhatsappCard" href="#" target="_blank" rel="noopener">
+                    <span class="contact-connect-icon contact-connect-icon--whatsapp">
+                        <svg class="icon" width="24" height="24"><use href="#icon-whatsapp"/></svg>
                     </span>
+                    <strong>WhatsApp</strong>
+                    <span class="contact-connect-label">Chat with us</span>
+                    <span class="contact-connect-value contact-connect-value--whatsapp" id="contactWhatsappValue"></span>
+                </a>
 
-                    <span class="business-hours-time">
-                        10:00 AM - 8:00 PM
+                <a class="card contact-connect-card" id="contactPhoneCard" href="#">
+                    <span class="contact-connect-icon contact-connect-icon--phone">
+                        <svg class="icon" width="22" height="22"><use href="#icon-phone"/></svg>
                     </span>
+                    <strong>Phone</strong>
+                    <span class="contact-connect-label">Call us anytime</span>
+                    <span class="contact-connect-value" id="contactPhoneValue"></span>
+                </a>
 
-                </li>
-
-
-                <li class="business-hours-row">
-
-                    <span class="business-hours-day">
-                        Tuesday
+                <a class="card contact-connect-card" id="contactInstagramCard" href="#" target="_blank" rel="noopener">
+                    <span class="contact-connect-icon contact-connect-icon--instagram">
+                        <svg class="icon" width="22" height="22"><use href="#icon-instagram"/></svg>
                     </span>
+                    <strong>Instagram</strong>
+                    <span class="contact-connect-label">DM us</span>
+                    <span class="contact-connect-value" id="contactInstagramValue"></span>
+                </a>
 
-                    <span class="business-hours-time">
-                        10:00 AM - 8:00 PM
+                <a class="card contact-connect-card" id="contactTiktokCard" href="#" target="_blank" rel="noopener">
+                    <span class="contact-connect-icon contact-connect-icon--tiktok">
+                        <svg class="icon" width="20" height="20"><use href="#icon-tiktok"/></svg>
                     </span>
-
-                </li>
-
-
-                <li class="business-hours-row">
-
-                    <span class="business-hours-day">
-                        Wednesday
-                    </span>
-
-                    <span class="business-hours-time">
-                        10:00 AM - 8:00 PM
-                    </span>
-
-                </li>
-
-
-                <li class="business-hours-row">
-
-                    <span class="business-hours-day">
-                        Thursday
-                    </span>
-
-                    <span class="business-hours-time">
-                        10:00 AM - 8:00 PM
-                    </span>
-
-                </li>
-
-
-                <li class="business-hours-row">
-
-                    <span class="business-hours-day">
-                        Friday
-                    </span>
-
-                    <span class="business-hours-time">
-                        10:00 AM - 8:00 PM
-                    </span>
-
-                </li>
-
-
-                <li class="business-hours-row">
-
-                    <span class="business-hours-day">
-                        Saturday
-                    </span>
-
-                    <span class="business-hours-time">
-                        10:00 AM - 8:00 PM
-                    </span>
-
-                </li>
-
-
-                <li class="business-hours-row">
-
-                    <span class="business-hours-day">
-                        Sunday
-                    </span>
-
-                    <span class="business-hours-time">
-                        12:00 PM - 6:00 PM
-                    </span>
-
-                </li>
-
-            </ul>
-
-
-            <!-- =================================================
-                 DECORATIVE DIVIDER
-                 ================================================= -->
-
-            <div class="value-divider"></div>
-
-
-            <!-- =================================================
-                 WE VALUE YOU
-                 ================================================= -->
-
-            <h2 class="value-heading">
-
-                <i class="fa-solid fa-heart"></i>
-
-                We Value You
-
-            </h2>
-
-
-            <p class="value-message">
-                Your satisfaction means everything to us.
-                Thank you for choosing SAnA Boutique and
-                allowing us to be part of your style journey.
-            </p>
-
-
-            <span class="value-heart">
-                ♥
-            </span>
-
-        </div>
-
-    </section>
-
-
-    <!-- =====================================================
-         LOCATION
-         ===================================================== -->
-
-    <section class="contact-location-section">
-
-        <div class="location-card">
-
-            <!-- =================================================
-                 LIVE MAP BACKGROUND
-                 ================================================= -->
-
-            <div class="location-map-background">
-
-                <iframe
-                    id="mapFrame"
-                    class="location-map-iframe"
-                    src=""
-                    title="SAnA Boutique Location"
-                    allowfullscreen=""
-                    loading="lazy"
-                    referrerpolicy="no-referrer-when-downgrade"
-                ></iframe>
-
-            </div>
-
-
-            <!-- =================================================
-                 LOCATION CONTENT
-                 ================================================= -->
-
-            <div class="location-content">
-
-                <div class="location-icon">
-
-                    <i class="fa-solid fa-location-dot"></i>
-
-                </div>
-
-
-                <div class="location-text">
-
-                    <h2>
-                        Our Location
-                    </h2>
-
-                    <p id="locationVal">
-                        Loading location...
-                    </p>
-
-                </div>
-
-
-                <a
-                    id="mapDirectionsBtn"
-                    href="#"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="location-directions external-link"
-                >
-
-                    Directions
-
-                    <i class="fa-solid fa-arrow-up-right-from-square"></i>
-
+                    <strong>TikTok</strong>
+                    <span class="contact-connect-label">Follow us</span>
+                    <span class="contact-connect-value" id="contactTiktokValue"></span>
                 </a>
 
             </div>
 
-        </div>
-
-    </section>
+        </section>
 
 
-    <!-- =====================================================
-         NEED HELP
-         ===================================================== -->
 
-    <section class="help-section">
+        <!-- =====================================
+             FORM + MAP
+        ====================================== -->
 
-        <div class="help-card">
+        <section class="section contact-split">
 
-            <!-- =================================================
-                 SUPPORT ICON
-                 ================================================= -->
+            <form class="card contact-form-card" id="contactForm">
 
-            <div class="help-icon">
+                <p class="contact-eyebrow">Send Us A Message</p>
 
-                <i class="fa-solid fa-headset"></i>
+                <label class="contact-field">
+                    <svg class="icon" width="16" height="16"><use href="#icon-person"/></svg>
+                    <input type="text" id="contactName" placeholder="Your Name" required>
+                </label>
 
-            </div>
+                <label class="contact-field">
+                    <svg class="icon" width="16" height="16"><use href="#icon-envelope"/></svg>
+                    <input type="email" id="contactEmail" placeholder="Your Email" required>
+                </label>
 
+                <label class="contact-field">
+                    <svg class="icon" width="16" height="16"><use href="#icon-tag"/></svg>
+                    <input type="text" id="contactSubject" placeholder="Subject">
+                </label>
 
-            <!-- =================================================
-                 SUPPORT TEXT
-                 ================================================= -->
+                <label class="contact-field contact-field--textarea">
+                    <svg class="icon" width="16" height="16"><use href="#icon-pencil"/></svg>
+                    <textarea id="contactMessage" placeholder="Your Message" required></textarea>
+                </label>
 
-            <div class="help-content">
+                <button type="submit" class="gold-button contact-send-button">
+                    <svg class="icon" width="16" height="16"><use href="#icon-send"/></svg>
+                    Send Message
+                </button>
 
-                <h2>
-                    Need Help?
-                </h2>
-
-                <p>
-                    Have a question about an order, product,
-                    or our collections? We're always happy
-                    to help.
+                <p class="contact-privacy-note">
+                    <svg class="icon" width="14" height="14"><use href="#icon-lock"/></svg>
+                    Your information is safe with us. We respect your privacy.
                 </p>
 
+            </form>
+
+
+            <div class="card contact-map-card">
+
+                <p class="contact-eyebrow">Find Us Here</p>
+
+                <div class="contact-map-frame">
+
+                    <div class="contact-map-callout">
+                        <strong id="contactMapName"></strong>
+                        <span id="contactMapAddress"></span>
+                        <a id="contactMapLargerLink" href="#" target="_blank" rel="noopener">View larger map</a>
+                    </div>
+
+                    <iframe
+                        id="contactMapEmbed"
+                        src=""
+                        loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade"
+                        title="SANA Boutique location"
+                    ></iframe>
+
+                </div>
+
+                <div class="contact-info-chips">
+
+                    <div class="contact-info-chip">
+                        <svg class="icon" width="18" height="18"><use href="#icon-pin"/></svg>
+                        <div>
+                            <strong>Our Location</strong>
+                            <span id="contactAddressChip"></span>
+                        </div>
+                    </div>
+
+                    <div class="contact-info-chip">
+                        <svg class="icon" width="18" height="18"><use href="#icon-clock"/></svg>
+                        <div>
+                            <strong>Open Hours</strong>
+                            <span id="contactHoursChip"></span>
+                        </div>
+                    </div>
+
+                </div>
+
             </div>
 
+        </section>
 
-            <!-- =================================================
-                 CHAT WITH US
 
-                 WhatsApp number is NOT hardcoded.
-                 contact.js will set this from:
-                 CONFIG.WHATSAPP_NUMBER
-                 ================================================= -->
 
-            <a
-                id="helpWhatsAppButton"
-                href="#"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="help-button external-link"
-            >
+        <!-- =====================================
+             WHY SHOP WITH SANA
+        ====================================== -->
 
-                Chat With Us
+        <section class="section">
 
-                <i class="fa-brands fa-whatsapp"></i>
+            <h2 class="section-title"><span>✦</span> Why Shop With SANA? <span>✦</span></h2>
 
-            </a>
+            <div class="contact-why-grid">
 
-        </div>
+                <div class="contact-why-item">
+                    <svg class="icon" width="26" height="26"><use href="#icon-dress"/></svg>
+                    <strong>Premium Quality</strong>
+                    <span>Finest fabrics &amp; craftsmanship</span>
+                </div>
 
-    </section>
+                <div class="contact-why-item">
+                    <svg class="icon" width="26" height="26"><use href="#icon-truck"/></svg>
+                    <strong>Fast Delivery</strong>
+                    <span>Quick &amp; reliable delivery service</span>
+                </div>
 
-</div>
+                <div class="contact-why-item">
+                    <svg class="icon" width="26" height="26"><use href="#icon-medal"/></svg>
+                    <strong>Trusted Brand</strong>
+                    <span>Loved by hundreds of happy customers</span>
+                </div>
+
+                <div class="contact-why-item">
+                    <svg class="icon" width="26" height="26"><use href="#icon-lock"/></svg>
+                    <strong>Secure Shopping</strong>
+                    <span>Your data is safe and protected</span>
+                </div>
+
+                <div class="contact-why-item">
+                    <svg class="icon" width="26" height="26"><use href="#icon-heart"/></svg>
+                    <strong>Made With Love</strong>
+                    <span>Every piece is made with care</span>
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =====================================
+             NEWSLETTER
+        ====================================== -->
+
+        <section class="section contact-newsletter-section">
+
+            <div class="card contact-newsletter-card">
+
+                <div class="contact-newsletter-copy">
