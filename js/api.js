@@ -444,6 +444,60 @@ async function getProducts() {
 
 
 /* =========================================
+   GET FEATURED PRODUCTS
+
+   FIX:
+   - home.js calls this function to fill the
+     "Featured" section, but it never existed
+     in api.js — so home.js always fell into
+     its "no function found" branch and showed
+     the empty state, even when the backend
+     had real products.
+   - Reuses getProducts() (same normalized
+     data, same ID-safety fixes) and just
+     trims it to a featured-sized slice.
+   - Prefers products explicitly flagged as
+     featured by the backend, if that field
+     exists; otherwise falls back to the most
+     recent products.
+========================================= */
+
+async function getFeaturedProducts(
+    limit = 8
+) {
+
+    const products =
+        await getProducts();
+
+
+    if (!Array.isArray(products)) {
+
+        return [];
+
+    }
+
+
+    const flaggedFeatured =
+        products.filter(
+            product =>
+                product.featured === true ||
+                product.is_featured === true ||
+                product.isFeatured === true
+        );
+
+
+    const source =
+        flaggedFeatured.length
+            ? flaggedFeatured
+            : products;
+
+
+    return source.slice(0, limit);
+
+}
+
+
+/* =========================================
    GET ONE PRODUCT
 ========================================= */
 
@@ -930,6 +984,10 @@ window.API_ENDPOINTS =
 
 window.getProducts =
     getProducts;
+
+
+window.getFeaturedProducts =
+    getFeaturedProducts;
 
 
 window.getProductById =
