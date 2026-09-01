@@ -1,261 +1,442 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-<title>About Us — SANA Boutique</title>
-<meta name="description" content="SANA Boutique — Elegance Redefined. Discover our story, mission, and the craftsmanship behind every piece." />
 
-<!-- Fonts: Playfair Display for the display/serif voice, Jost for clean body/UI text -->
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet" />
+    <meta charset="UTF-8">
 
-<link rel="stylesheet" href="about.css" />
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
+    >
+
+    <meta
+        name="theme-color"
+        content="#0d0d0d"
+    >
+
+    <meta
+        name="description"
+        content="The story, mission, and craftsmanship behind SANA Boutique."
+    >
+
+    <title>About | SANA Boutique</title>
+
+
+    <!-- =====================================
+         GOOGLE FONTS
+    ====================================== -->
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <!-- =====================================
+         CSS
+    ====================================== -->
+
+    <link
+        rel="stylesheet"
+        href="../css/base.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="../css/header.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="../css/navigation.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="../css/about.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="../css/responsive.css"
+    >
+
 </head>
+
+
 <body>
 
-<!-- ================= HEADER ================= -->
-<header class="site-header" data-reveal>
-  <button class="icon-btn" id="backBtn" aria-label="Go back" type="button">
-    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-  </button>
+<div id="app">
 
-  <a class="brand-mark" href="../../index.html" aria-label="SANA Boutique home">
-    <span class="brand-name">SANA</span>
-    <span class="brand-sub">About&nbsp;Us</span>
-  </a>
 
-  <button class="icon-btn" id="wishBtn" aria-label="Wishlist" type="button" aria-pressed="false">
-    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.5s-7.6-4.6-10-9.2C.4 8 1.8 4.5 5.2 3.6c2.1-.6 4.3.3 5.6 2.1a.9.9 0 0 0 1.4 0c1.3-1.8 3.5-2.7 5.6-2.1 3.4.9 4.8 4.4 3.2 7.7-2.4 4.6-10 9.2-10 9.2Z"/></svg>
-  </button>
-</header>
+    <!-- =====================================
+         HEADER
+    ===================================== -->
 
-<main id="top">
+    <header class="app-header">
 
-  <!-- ================= HERO ================= -->
-  <section class="hero" id="hero">
-    <canvas class="hero-particles" id="particleCanvas" aria-hidden="true"></canvas>
 
-    <svg class="hero-fabric" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-      <defs>
-        <linearGradient id="fabricGoldA" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stop-color="#f6d98a" stop-opacity="0.55"/>
-          <stop offset="45%" stop-color="#c9962f" stop-opacity="0.28"/>
-          <stop offset="100%" stop-color="#3a2a10" stop-opacity="0"/>
-        </linearGradient>
-        <linearGradient id="fabricGoldB" x1="100%" y1="0%" x2="0%" y2="100%">
-          <stop offset="0%" stop-color="#ffe9b0" stop-opacity="0.4"/>
-          <stop offset="50%" stop-color="#a67c22" stop-opacity="0.18"/>
-          <stop offset="100%" stop-color="#000" stop-opacity="0"/>
-        </linearGradient>
-      </defs>
-      <path class="fabric-strand strand-1" d="M 1180 -80 C 820 120, 760 340, 900 520 C 1040 700, 860 820, 620 980" fill="none" stroke="url(#fabricGoldA)" stroke-width="46" stroke-linecap="round"/>
-      <path class="fabric-strand strand-2" d="M 1240 20 C 900 200, 900 420, 1040 560 C 1180 700, 980 860, 760 1040" fill="none" stroke="url(#fabricGoldB)" stroke-width="30" stroke-linecap="round"/>
-      <path class="fabric-strand strand-3" d="M 1120 -120 C 760 60, 700 300, 860 460 C 1020 620, 820 760, 560 900" fill="none" stroke="url(#fabricGoldA)" stroke-width="14" stroke-linecap="round"/>
-    </svg>
+        <!-- BACK -->
 
-    <div class="hero-inner" data-reveal>
-      <p class="eyebrow">Our Story</p>
-      <h1 class="hero-title">Elegance<br><span class="gold-text">Redefined</span></h1>
-      <div class="rule"></div>
-      <p class="hero-copy">SANA Boutique is more than a brand — it's a celebration of timeless style, quality, and the beauty of tradition woven into modern fashion.</p>
+        <button
+            type="button"
+            class="header-button"
+            onclick="history.back()"
+            aria-label="Go back"
+        >
+            ←
+        </button>
 
-      <div class="cta-row">
-        <a class="btn btn-gold" href="#story" data-scroll>
-          <span>Discover Our Journey</span>
-        </a>
-        <a class="btn btn-ghost" href="../shop/shop.html">
-          <span>Explore Collection</span>
-        </a>
-      </div>
-    </div>
 
-    <button class="scroll-cue" id="scrollCue" type="button" aria-label="Scroll to explore">
-      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="8" y="2" width="8" height="14" rx="4"/><line x1="12" y1="6" x2="12" y2="9" stroke-width="1.8" stroke-linecap="round"/></svg>
-      <span>Scroll to Explore</span>
-    </button>
-  </section>
+        <!-- BRAND -->
 
-  <!-- ================= MISSION ================= -->
-  <section class="section" id="story">
-    <div class="mission-grid">
+        <div class="brand">
 
-      <figure class="mission-visual" data-reveal>
-        <div class="mission-frame">
-          <svg viewBox="0 0 400 400" class="fabric-close" aria-hidden="true">
-            <defs>
-              <radialGradient id="silkGlow" cx="35%" cy="30%" r="75%">
-                <stop offset="0%" stop-color="#5b4322"/>
-                <stop offset="55%" stop-color="#231a0d"/>
-                <stop offset="100%" stop-color="#0b0906"/>
-              </radialGradient>
-              <linearGradient id="threadLine" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0%" stop-color="#f2d98d"/>
-                <stop offset="100%" stop-color="#a97e2c"/>
-              </linearGradient>
-            </defs>
-            <rect width="400" height="400" fill="url(#silkGlow)"/>
-            <g class="thread-group" stroke="url(#threadLine)" fill="none" stroke-width="1.4" opacity="0.85">
-              <path d="M20 300 C120 260 160 340 260 300 S 380 260 400 300"/>
-              <path d="M0 240 C100 210 150 270 240 230 S 360 190 400 220"/>
-              <path d="M20 360 C130 330 190 380 300 350 S 380 330 400 350"/>
-            </g>
-            <g class="petal-group" fill="none" stroke="#f7e3ab" stroke-width="1.2" opacity="0.9">
-              <path d="M120 150 q14 -22 28 0 q-14 22 -28 0 Z"/>
-              <path d="M170 190 q12 -20 24 0 q-12 20 -24 0 Z"/>
-              <path d="M90 210 q10 -18 20 0 q-10 18 -20 0 Z"/>
-              <circle cx="134" cy="150" r="3" fill="#f7e3ab"/>
-              <circle cx="182" cy="190" r="2.5" fill="#f7e3ab"/>
-              <circle cx="100" cy="210" r="2.5" fill="#f7e3ab"/>
-            </g>
-          </svg>
-          <button class="play-btn" id="playToggle" type="button" aria-pressed="true" aria-label="Pause fabric motion">
-            <svg class="icon-pause" viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
-            <svg class="icon-play" viewBox="0 0 24 24" width="18" height="18" fill="currentColor" hidden><path d="M8 5v14l11-7z"/></svg>
-          </button>
+            <div class="brand-name">
+                SANA
+            </div>
+
+            <div class="brand-subtitle">
+                ABOUT US
+            </div>
+
         </div>
-        <div class="dots" aria-hidden="true"><span class="dot is-active"></span><span class="dot"></span><span class="dot"></span></div>
-      </figure>
 
-      <div class="mission-copy" data-reveal>
-        <p class="eyebrow">Our Mission</p>
-        <h2 class="section-title">Crafting Beauty,<br><span class="gold-text">Inspiring Confidence</span></h2>
-        <div class="rule"></div>
-        <p class="section-text">We bring you carefully curated pieces that blend comfort with elegance. Every stitch, every fabric, and every detail is chosen with love.</p>
 
-        <ul class="feature-chips">
-          <li><span class="chip-icon"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3c4 3 7 6 7 10a7 7 0 0 1-14 0c0-4 3-7 7-10Z"/><path d="M9 15c1 1 2 1.5 3 1.5"/></svg></span><span>Thoughtful Design</span></li>
-          <li><span class="chip-icon"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 20.5s-7.6-4.6-10-9.2C.4 8 1.8 4.5 5.2 3.6c2.1-.6 4.3.3 5.6 2.1a.9.9 0 0 0 1.4 0c1.3-1.8 3.5-2.7 5.6-2.1 3.4.9 4.8 4.4 3.2 7.7-2.4 4.6-10 9.2-10 9.2Z"/></svg></span><span>Premium Quality</span></li>
-          <li><span class="chip-icon"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2l2.4 6.8L21 11l-6.6 2.2L12 20l-2.4-6.8L3 11l6.6-2.2L12 2Z"/></svg></span><span>Made For You</span></li>
-        </ul>
-      </div>
-    </div>
-  </section>
+        <!-- SHARE -->
 
-  <!-- ================= VALUES ================= -->
-  <section class="section section--values" id="values">
-    <div class="section-head center" data-reveal>
-      <p class="eyebrow">Our Values</p>
-      <h2 class="section-title">What We Stand For</h2>
-      <div class="rule center"></div>
-    </div>
+        <button
+            type="button"
+            class="header-button"
+            id="aboutShareButton"
+            aria-label="Share SANA Boutique"
+        >
+            ↗
+        </button>
 
-    <div class="values-wrap" data-reveal>
-      <button class="carousel-arrow left" id="valuesPrev" type="button" aria-label="Previous value">
-        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M15 18l-6-6 6-6"/></svg>
-      </button>
+    </header>
 
-      <ul class="values-track" id="valuesTrack">
-        <li class="value-card">
-          <span class="value-icon"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M6 3h12l3 5-9 13L3 8Z"/><path d="M3 8h18M9 3l3 5 3-5M12 8l-2 13M12 8l2 13"/></svg></span>
-          <h3>Quality</h3>
-          <p>Premium fabrics and finest craftsmanship in every piece.</p>
-        </li>
-        <li class="value-card">
-          <span class="value-icon"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M12 20.5s-7.6-4.6-10-9.2C.4 8 1.8 4.5 5.2 3.6c2.1-.6 4.3.3 5.6 2.1a.9.9 0 0 0 1.4 0c1.3-1.8 3.5-2.7 5.6-2.1 3.4.9 4.8 4.4 3.2 7.7-2.4 4.6-10 9.2-10 9.2Z"/></svg></span>
-          <h3>Passion</h3>
-          <p>We love what we do and it reflects in our designs.</p>
-        </li>
-        <li class="value-card">
-          <span class="value-icon"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M12 3c4 3 7 6 7 10a7 7 0 0 1-14 0c0-4 3-7 7-10Z"/><path d="M9 15c1 1 2 1.5 3 1.5"/></svg></span>
-          <h3>Tradition</h3>
-          <p>Rooted in tradition, designed for the modern you.</p>
-        </li>
-        <li class="value-card">
-          <span class="value-icon"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M12 2l2.9 6 6.6.7-5 4.5 1.5 6.5L12 16.9 6 19.7l1.5-6.5-5-4.5 6.6-.7L12 2Z"/></svg></span>
-          <h3>Trust</h3>
-          <p>Our customers are our family. Your trust is our strength.</p>
-        </li>
-      </ul>
 
-      <button class="carousel-arrow right" id="valuesNext" type="button" aria-label="Next value">
-        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 18l6-6-6-6"/></svg>
-      </button>
-    </div>
 
-    <div class="dots" id="valuesDots" aria-hidden="true">
-      <span class="dot is-active"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span>
-    </div>
-  </section>
+    <!-- =====================================
+         ABOUT CONTENT
+    ====================================== -->
 
-  <!-- ================= BEHIND THE BRAND ================= -->
-  <section class="section section--light" id="makers">
-    <div class="mission-grid reverse">
-      <div class="mission-copy" data-reveal>
-        <p class="eyebrow eyebrow--dark">Behind the Brand</p>
-        <h2 class="section-title dark">Made With <span class="gold-text">Heart</span></h2>
-        <div class="rule"></div>
-        <p class="section-text dark">From concept to creation, every collection is designed with heart and attention to detail. We believe fashion should make you feel beautiful, confident, and you.</p>
-        <a class="btn btn-dark" href="#values" data-scroll>
-          <span>Meet the Makers</span>
-          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+    <main class="about-page">
+
+
+        <!-- =====================================
+             HERO
+        ====================================== -->
+
+        <section class="about-hero" id="aboutHero">
+
+            <canvas
+                class="about-hero-canvas"
+                id="aboutParticleCanvas"
+                aria-hidden="true"
+            ></canvas>
+
+            <svg
+                class="about-hero-fabric"
+                viewBox="0 0 1000 1000"
+                preserveAspectRatio="xMidYMid slice"
+                aria-hidden="true"
+            >
+                <defs>
+                    <linearGradient id="aboutFabricA" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#f4c95d" stop-opacity="0.5"/>
+                        <stop offset="45%" stop-color="#d9a928" stop-opacity="0.25"/>
+                        <stop offset="100%" stop-color="#3a2a10" stop-opacity="0"/>
+                    </linearGradient>
+                    <linearGradient id="aboutFabricB" x1="100%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" stop-color="#f4c95d" stop-opacity="0.35"/>
+                        <stop offset="50%" stop-color="#9b7418" stop-opacity="0.16"/>
+                        <stop offset="100%" stop-color="#000" stop-opacity="0"/>
+                    </linearGradient>
+                </defs>
+                <path class="about-strand about-strand-1" d="M 1180 -80 C 820 120, 760 340, 900 520 C 1040 700, 860 820, 620 980" fill="none" stroke="url(#aboutFabricA)" stroke-width="46" stroke-linecap="round"/>
+                <path class="about-strand about-strand-2" d="M 1240 20 C 900 200, 900 420, 1040 560 C 1180 700, 980 860, 760 1040" fill="none" stroke="url(#aboutFabricB)" stroke-width="30" stroke-linecap="round"/>
+                <path class="about-strand about-strand-3" d="M 1120 -120 C 760 60, 700 300, 860 460 C 1020 620, 820 760, 560 900" fill="none" stroke="url(#aboutFabricA)" stroke-width="14" stroke-linecap="round"/>
+            </svg>
+
+            <div class="about-hero-inner">
+
+                <p class="about-eyebrow">Our Story</p>
+
+                <h1 class="about-hero-title">
+                    Elegance,<br>
+                    <span class="about-gold-text">Redefined</span>
+                </h1>
+
+                <div class="about-rule"></div>
+
+                <p class="about-hero-copy">
+                    SANA Boutique is more than a brand — it's a celebration of
+                    timeless style, quality, and the beauty of tradition woven
+                    into modern fashion.
+                </p>
+
+                <div class="about-cta-row">
+
+                    <a class="gold-button" href="#aboutStory">
+                        Discover Our Journey
+                    </a>
+
+                    <a class="about-outline-button" href="shop.html">
+                        Explore Collection
+                    </a>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =====================================
+             MISSION
+        ====================================== -->
+
+        <section class="section" id="aboutStory">
+
+            <div class="about-mission-grid">
+
+                <figure class="about-visual card">
+
+                    <svg viewBox="0 0 400 320" class="about-fabric-close" aria-hidden="true">
+                        <defs>
+                            <radialGradient id="aboutSilkGlow" cx="35%" cy="30%" r="75%">
+                                <stop offset="0%" stop-color="#3a2c12"/>
+                                <stop offset="55%" stop-color="#171310"/>
+                                <stop offset="100%" stop-color="#0b0906"/>
+                            </radialGradient>
+                            <linearGradient id="aboutThreadLine" x1="0" y1="0" x2="1" y2="1">
+                                <stop offset="0%" stop-color="#f4c95d"/>
+                                <stop offset="100%" stop-color="#9b7418"/>
+                            </linearGradient>
+                        </defs>
+                        <rect width="400" height="320" fill="url(#aboutSilkGlow)"/>
+                        <g class="about-thread-group" stroke="url(#aboutThreadLine)" fill="none" stroke-width="1.4" opacity="0.85">
+                            <path d="M20 220 C120 190 160 250 260 220 S 380 190 400 220"/>
+                            <path d="M0 170 C100 145 150 200 240 165 S 360 130 400 155"/>
+                            <path d="M20 270 C130 245 190 285 300 260 S 380 245 400 260"/>
+                        </g>
+                        <g class="about-petal-group" fill="none" stroke="#f4c95d" stroke-width="1.2" opacity="0.9">
+                            <path d="M120 110 q14 -22 28 0 q-14 22 -28 0 Z"/>
+                            <path d="M170 145 q12 -20 24 0 q-12 20 -24 0 Z"/>
+                            <circle cx="134" cy="110" r="3" fill="#f4c95d"/>
+                            <circle cx="182" cy="145" r="2.5" fill="#f4c95d"/>
+                        </g>
+                    </svg>
+
+                    <button
+                        type="button"
+                        class="about-play-btn"
+                        id="aboutPlayToggle"
+                        aria-pressed="true"
+                        aria-label="Pause motion"
+                    >
+                        ❙❙
+                    </button>
+
+                </figure>
+
+                <div class="about-mission-copy">
+
+                    <p class="about-eyebrow">Our Mission</p>
+
+                    <h2 class="about-block-title">
+                        Crafting Beauty,<br>
+                        <span class="about-gold-text">Inspiring Confidence</span>
+                    </h2>
+
+                    <div class="about-rule"></div>
+
+                    <p>
+                        We bring you carefully curated pieces that blend comfort
+                        with elegance. Every stitch, every fabric, and every
+                        detail is chosen with love.
+                    </p>
+
+                    <ul class="about-chip-row">
+                        <li><span>❦</span> Thoughtful Design</li>
+                        <li><span>♥</span> Premium Quality</li>
+                        <li><span>✦</span> Made For You</li>
+                    </ul>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =====================================
+             VALUES
+        ====================================== -->
+
+        <section class="section">
+
+            <h2 class="section-title">
+                <span>✦</span> What We Stand For <span>✦</span>
+            </h2>
+
+            <div class="about-values-grid">
+
+                <div class="card about-value-card">
+                    <div class="about-value-icon">◈</div>
+                    <h3>Quality</h3>
+                    <p>Premium fabrics and finest craftsmanship in every piece.</p>
+                </div>
+
+                <div class="card about-value-card">
+                    <div class="about-value-icon">♥</div>
+                    <h3>Passion</h3>
+                    <p>We love what we do and it reflects in our designs.</p>
+                </div>
+
+                <div class="card about-value-card">
+                    <div class="about-value-icon">❦</div>
+                    <h3>Tradition</h3>
+                    <p>Rooted in tradition, designed for the modern you.</p>
+                </div>
+
+                <div class="card about-value-card">
+                    <div class="about-value-icon">★</div>
+                    <h3>Trust</h3>
+                    <p>Our customers are our family. Your trust is our strength.</p>
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =====================================
+             BEHIND THE BRAND
+        ====================================== -->
+
+        <section class="section">
+
+            <div class="card about-makers-card">
+
+                <p class="about-eyebrow">Behind the Brand</p>
+
+                <h2 class="about-block-title">
+                    Made With <span class="about-gold-text">Heart</span>
+                </h2>
+
+                <div class="about-rule"></div>
+
+                <p>
+                    From concept to creation, every collection is designed with
+                    heart and attention to detail. We believe fashion should
+                    make you feel beautiful, confident, and you.
+                </p>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =====================================
+             FINAL CTA
+        ====================================== -->
+
+        <section class="section about-final-cta">
+
+            <p class="about-eyebrow" style="justify-content:center;">Join Us</p>
+
+            <h2 class="about-block-title" style="text-align:center;">
+                Ready to Wear<br>
+                <span class="about-gold-text">Your Story?</span>
+            </h2>
+
+            <p style="text-align:center; color: var(--muted); margin-top: 10px;">
+                Step into a world where every piece is chosen with intention — for you.
+            </p>
+
+            <div class="about-cta-row center">
+
+                <a class="gold-button" href="shop.html">
+                    Shop the Collection
+                </a>
+
+                <a class="about-outline-button" href="contact.html">
+                    Contact Us
+                </a>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+
+    <!-- =====================================
+         BOTTOM NAVIGATION
+    ====================================== -->
+
+    <nav class="bottom-navigation">
+
+        <a href="../index.html" class="nav-item">
+            <span class="nav-icon">⌂</span>
+            <span>Home</span>
         </a>
-      </div>
 
-      <figure class="mission-visual" data-reveal>
-        <div class="mission-frame frame--light">
-          <svg viewBox="0 0 400 300" class="atelier-scene" aria-hidden="true">
-            <defs>
-              <linearGradient id="atelierBg" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0%" stop-color="#3a2b16"/>
-                <stop offset="100%" stop-color="#161009"/>
-              </linearGradient>
-            </defs>
-            <rect width="400" height="300" fill="url(#atelierBg)"/>
-            <g class="needle-group" stroke="#f0d28e" stroke-width="2" fill="none" stroke-linecap="round">
-              <line x1="200" y1="30" x2="200" y2="110"/>
-              <path d="M180 110 h40 v18 h-40 Z" fill="#161009"/>
-            </g>
-            <g class="stitch-line" stroke="#f7e3ab" stroke-width="1.4" fill="none" stroke-dasharray="6 8">
-              <path d="M40 220 C 140 190 260 250 360 200"/>
-            </g>
-          </svg>
-          <button class="play-btn" id="playToggle2" type="button" aria-pressed="true" aria-label="Pause atelier motion">
-            <svg class="icon-pause" viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
-            <svg class="icon-play" viewBox="0 0 24 24" width="18" height="18" fill="currentColor" hidden><path d="M8 5v14l11-7z"/></svg>
-          </button>
-        </div>
-      </figure>
-    </div>
-  </section>
+        <a href="shop.html" class="nav-item">
+            <span class="nav-icon">♧</span>
+            <span>Shop</span>
+        </a>
 
-  <!-- ================= FINAL CTA ================= -->
-  <section class="section cta-final" data-reveal>
-    <p class="eyebrow">Join Us</p>
-    <h2 class="section-title">Ready to Wear<br><span class="gold-text">Your Story?</span></h2>
-    <p class="section-text">Step into a world where every piece is chosen with intention — for you.</p>
-    <div class="cta-row center">
-      <a class="btn btn-gold" href="../shop/shop.html"><span>Shop the Collection</span></a>
-      <a class="btn btn-ghost" href="../contact/contact.html"><span>Contact Us</span></a>
-    </div>
-  </section>
+        <a href="post.html" class="post-button" id="postButton" aria-label="Create product">
+            +
+        </a>
 
-</main>
+        <a href="about.html" class="nav-item active">
+            <span class="nav-icon">♙</span>
+            <span>About</span>
+        </a>
 
-<!-- ================= BOTTOM NAV ================= -->
-<nav class="bottom-nav" aria-label="Primary">
-  <a href="../../index.html" class="nav-item">
-    <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 11.5 12 4l9 7.5"/><path d="M5 10v10h14V10"/></svg>
-    <span>Home</span>
-  </a>
-  <a href="../shop/shop.html" class="nav-item">
-    <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="4" width="7" height="7" rx="1.2"/><rect x="13" y="4" width="7" height="7" rx="1.2"/><rect x="4" y="13" width="7" height="7" rx="1.2"/><rect x="13" y="13" width="7" height="7" rx="1.2"/></svg>
-    <span>Shop</span>
-  </a>
-  <a href="../post/post.html" class="nav-item nav-item--fab" aria-label="Create">
-    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
-  </a>
-  <a href="../about/about.html" class="nav-item is-active" aria-current="page">
-    <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="3.4"/><path d="M4.5 20c1.5-4 4.2-6 7.5-6s6 2 7.5 6"/></svg>
-    <span>About</span>
-  </a>
-  <a href="../contact/contact.html" class="nav-item">
-    <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>
-    <span>Contact</span>
-  </a>
-</nav>
+        <a href="contact.html" class="nav-item">
+            <span class="nav-icon">⌕</span>
+            <span>Contact</span>
+        </a>
 
-<script src="about.js"></script>
+    </nav>
+
+
+</div>
+
+
+
+<!-- =====================================
+     JAVASCRIPT
+====================================== -->
+
+<script src="../js/app.js"></script>
+
+<script src="../js/navigation.js"></script>
+
+<script src="../js/about.js"></script>
+
+
 </body>
+
 </html>
+  
