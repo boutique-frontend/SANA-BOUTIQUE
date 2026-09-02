@@ -23,6 +23,21 @@ const LAST_PRODUCT_KEY = "sana_last_product_id";
 --------------------------------------------------------- */
 document.addEventListener("DOMContentLoaded", initializeShop);
 
+/*
+ * FIX: mobile browsers can restore this page from the
+ * back/forward cache (e.g. tapping the back button after
+ * viewing a product) WITHOUT re-running this script. When
+ * that happens, navigationLock stays stuck at true from the
+ * earlier click, and every product tap after the first one
+ * silently does nothing. pageshow with event.persisted
+ * tells us exactly when that restore happened.
+ */
+window.addEventListener("pageshow", event => {
+    if (event.persisted) {
+        navigationLock = false;
+    }
+});
+
 async function initializeShop() {
     setupSearch();
     setupSearchButton();
