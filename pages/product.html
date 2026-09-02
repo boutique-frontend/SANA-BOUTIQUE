@@ -746,6 +746,82 @@
 
 
     <!-- =====================================
+         DELETE PASSWORD MODAL
+    ====================================== -->
+
+    <div
+        id="deletePasswordModal"
+        class="delete-password-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Confirm password to delete product"
+    >
+
+        <div class="delete-password-dialog">
+
+            <div class="delete-password-icon">
+                ⚿
+            </div>
+
+            <h2>Delete Product</h2>
+
+            <p>
+                Enter the password to permanently
+                delete this product.
+            </p>
+
+            <div class="delete-password-field">
+
+                <input
+                    type="password"
+                    id="deletePasswordInput"
+                    placeholder="Password"
+                    autocomplete="off"
+                >
+
+                <button
+                    type="button"
+                    class="toggle-delete-password"
+                    id="toggleDeletePasswordVisibility"
+                    aria-label="Show password"
+                >
+                    ⌕
+                </button>
+
+            </div>
+
+            <p
+                class="delete-password-error"
+                id="deletePasswordError"
+            ></p>
+
+            <div class="delete-modal-actions">
+
+                <button
+                    type="button"
+                    class="delete-cancel-button"
+                    id="deletePasswordCancel"
+                >
+                    CANCEL
+                </button>
+
+                <button
+                    type="button"
+                    class="delete-confirm-button"
+                    id="deletePasswordConfirm"
+                >
+                    DELETE
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================================
          BOTTOM NAVIGATION
     ====================================== -->
 
@@ -1003,6 +1079,9 @@ function setupProductImageViewer() {
     }
 
 
+    let pendingClearTimeout = null;
+
+
     /* =====================================
        OPEN VIEWER
     ===================================== */
@@ -1013,6 +1092,25 @@ function setupProductImageViewer() {
     ) {
 
         if (!src) return;
+
+
+        /*
+         * FIX: if the viewer was just closed,
+         * a delayed src-clear from closeViewer()
+         * may still be pending. Without this,
+         * that stale timeout fires AFTER this
+         * reopen and wipes the image back out —
+         * this is what caused "tap to view"
+         * to silently fail on a quick retap.
+         */
+
+        if (pendingClearTimeout) {
+
+            clearTimeout(pendingClearTimeout);
+
+            pendingClearTimeout = null;
+
+        }
 
 
         viewerImage.src = "";
@@ -1090,11 +1188,14 @@ function setupProductImageViewer() {
         );
 
 
-        setTimeout(() => {
+        pendingClearTimeout =
+            setTimeout(() => {
 
-            viewerImage.src = "";
+                viewerImage.src = "";
 
-        }, 250);
+                pendingClearTimeout = null;
+
+            }, 250);
 
     }
 
