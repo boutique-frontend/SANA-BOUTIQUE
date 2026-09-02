@@ -6,6 +6,29 @@
 "use strict";
 
 
+/* =========================================
+   SAFETY NET
+
+   FIX:
+   - AppState normally comes from app.js.
+   - If app.js ever fails to parse (syntax
+     error, etc.), AppState would not exist
+     at all, and the line below that sets
+     AppState.products would throw and kill
+     product loading before it starts — the
+     same failure pattern setLoading had.
+   - This guarantees AppState always exists
+     here, without overriding the real one
+     when app.js loads correctly.
+========================================= */
+
+if (typeof window.AppState === "undefined") {
+
+    window.AppState = { products: [] };
+
+}
+
+
 document.addEventListener("DOMContentLoaded", () => {
 
     initializeHome();
@@ -66,7 +89,7 @@ async function loadFeaturedProducts() {
     }
 
 
-    setLoading(true);
+    safeSetLoading(true);
 
 
     try {
@@ -86,7 +109,7 @@ async function loadFeaturedProducts() {
             container
         );
 
-        setLoading(false);
+        safeSetLoading(false);
 
         return;
 
@@ -141,7 +164,33 @@ async function loadFeaturedProducts() {
 
     } finally {
 
-        setLoading(false);
+        safeSetLoading(false);
+
+    }
+
+}
+
+
+/* =========================================
+   SAFE setLoading
+
+   FIX:
+   - setLoading() lives in app.js. If app.js
+     ever fails to load or has a syntax error,
+     setLoading would be undefined and calling
+     it directly would throw — which, outside
+     a try/catch, silently kills this whole
+     function before it ever fetches products.
+   - This guards every call so a problem in
+     app.js can no longer take the featured
+     products section down with it.
+========================================= */
+
+function safeSetLoading(isLoading) {
+
+    if (typeof setLoading === "function") {
+
+        setLoading(isLoading);
 
     }
 
