@@ -67,6 +67,51 @@
 
 <body>
 
+<!-- =====================================
+     TEMPORARY DEBUG BANNER
+     Shows any JS error directly on screen
+     so it can be read without dev tools.
+     Safe to delete once the bug is found.
+====================================== -->
+
+<div
+    id="sanaDebugBanner"
+    style="display:none; position:fixed; top:0; left:0; right:0; z-index:99999;
+           background:#3a0808; color:#ffdede; font-family:monospace;
+           font-size:12px; line-height:1.5; padding:12px 14px;
+           border-bottom:2px solid #ff5252; white-space:pre-wrap;
+           word-break:break-word; max-height:45vh; overflow:auto;"
+></div>
+
+<script>
+(function () {
+    "use strict";
+
+    var banner = document.getElementById("sanaDebugBanner");
+
+    function show(text) {
+        banner.style.display = "block";
+        banner.textContent += (banner.textContent ? "\n\n---\n\n" : "") + text;
+    }
+
+    window.addEventListener("error", function (event) {
+        show(
+            "JS ERROR\n" +
+            (event.message || "Unknown error") +
+            "\nFile: " + (event.filename || "unknown") +
+            "\nLine: " + (event.lineno || "?") + ":" + (event.colno || "?")
+        );
+    });
+
+    window.addEventListener("unhandledrejection", function (event) {
+        var reason = event.reason;
+        var msg = (reason && (reason.stack || reason.message)) ? (reason.stack || reason.message) : String(reason);
+        show("UNHANDLED PROMISE REJECTION\n" + msg);
+    });
+})();
+</script>
+
+
 <div id="app">
 
 
