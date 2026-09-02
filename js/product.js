@@ -11,7 +11,7 @@ let selectedSize = "";
  * Frontend password gate only.
  * IMPORTANT: real security must also be enforced by Flask.
  */
-const SANA_DELETE_PASSWORD = "SANA2026";
+const SANA_DELETE_PASSWORD = "5090";
 
 document.addEventListener(
     "DOMContentLoaded",
@@ -27,6 +27,7 @@ async function initializeProduct() {
     }
 
     setupFavoriteButton();
+    setupDeletePasswordModal();
     await loadProduct(id);
 }
 
@@ -214,20 +215,6 @@ function renderProduct(product, container) {
                         <div class="image-placeholder"></div>
                     `
             }
-
-            <div class="product-delete-zone">
-                <button
-                    type="button"
-                    class="product-delete-button"
-                    id="deleteProductButton"
-                >
-                    <span
-                        class="delete-icon"
-                        aria-hidden="true"
-                    >⌫</span>
-                    <span>DELETE PRODUCT</span>
-                </button>
-            </div>
         </div>
 
         <section class="product-information">
@@ -300,6 +287,25 @@ function renderProduct(product, container) {
                     ↗
                 </button>
             </div>
+
+            <div class="product-delete-section">
+                <button
+                    type="button"
+                    class="delete-product-button"
+                    id="deleteProductButton"
+                >
+                    <span
+                        class="delete-icon"
+                        aria-hidden="true"
+                    >⌫</span>
+                    <span>DELETE PRODUCT</span>
+                </button>
+
+                <p class="delete-product-note">
+                    Deleting a product is permanent
+                    and requires a password.
+                </p>
+            </div>
         </section>
     `;
 
@@ -316,62 +322,215 @@ function setupDeleteButton(product) {
 
     button.addEventListener(
         "click",
-        async event => {
+        event => {
             event.preventDefault();
             event.stopPropagation();
 
-            await deleteProductWithPassword(
-                product,
-                button
-            );
+            openDeletePasswordModal(product);
         }
     );
 }
 
-async function deleteProductWithPassword(
-    product,
-    button
-) {
+
+/* =========================================
+   DELETE PASSWORD MODAL
+
+   Replaces the old window.prompt() /
+   window.confirm() flow with the modal
+   markup + styling that already existed in
+   product.css but was never connected to
+   any JS.
+========================================= */
+
+let deleteModalProduct = null;
+
+function getDeleteModalEls() {
+    return {
+        modal:
+            document.getElementById(
+                "deletePasswordModal"
+            ),
+        input:
+            document.getElementById(
+                "deletePasswordInput"
+            ),
+        toggle:
+            document.getElementById(
+                "toggleDeletePasswordVisibility"
+            ),
+        error:
+            document.getElementById(
+                "deletePasswordError"
+            ),
+        cancel:
+            document.getElementById(
+                "deletePasswordCancel"
+            ),
+        confirm:
+            document.getElementById(
+                "deletePasswordConfirm"
+            )
+    };
+}
+
+function openDeletePasswordModal(product) {
+    const { modal, input, error } =
+        getDeleteModalEls();
+
+    if (!modal) return;
+
+    deleteModalProduct = product;
+
+    if (input) input.value = "";
+    if (error) error.textContent = "";
+
+    modal.classList.add("show");
+
+    if (input) {
+        window.setTimeout(
+            () => input.focus(),
+            50
+        );
+    }
+}
+
+function closeDeletePasswordModal() {
+    const { modal, error } =
+        getDeleteModalEls();
+
+    if (!modal) return;
+
+    modal.classList.remove("show");
+
+    deleteModalProduct = null;
+
+    if (error) error.textContent = "";
+}
+
+function setupDeletePasswordModal() {
+    const {
+        modal,
+        input,
+        toggle,
+        cancel,
+        confirm
+    } = getDeleteModalEls();
+
+    if (!modal) return;
+
+    if (cancel) {
+        cancel.addEventListener(
+            "click",
+            closeDeletePasswordModal
+        );
+    }
+
+    modal.addEventListener(
+        "click",
+        event => {
+            if (event.target === modal) {
+                closeDeletePasswordModal();
+            }
+        }
+    );
+
+    if (toggle && input) {
+        toggle.addEventListener(
+            "click",
+            () => {
+                const isPassword =
+                    input.type === "password";
+
+                input.type =
+                    isPassword ? "text" : "password";
+
+                toggle.setAttribute(
+                    "aria-label",
+                    isPassword
+                        ? "Hide password"
+                        : "Show password"
+                );
+            }
+        );
+    }
+
+    if (input) {
+        input.addEventListener(
+            "keydown",
+            event => {
+                if (event.key === "Enter") {
+                    event.preventDefault();
+                    handleDeleteConfirm();
+                }
+            }
+        );
+    }
+
+    if (confirm) {
+        confirm.addEventListener(
+            "click",
+            handleDeleteConfirm
+        );
+    }
+
+    document.addEventListener(
+        "keydown",
+        event => {
+            if (
+                event.key === "Escape" &&
+                modal.classList.contains("show")
+            ) {
+                closeDeletePasswordModal();
+            }
+        }
+    );
+}
+
+async function handleDeleteConfirm() {
+    const { input, error, confirm } =
+        getDeleteModalEls();
+
+    const product = deleteModalProduct;
+
+    if (!product) return;
+
     const id =
         getProductObjectId(product);
 
     if (id === null) {
-        showProductToast(
-            "Product ID is missing."
-        );
+        if (error) {
+            error.textContent =
+                "Product ID is missing.";
+        }
         return;
     }
 
     const password =
-        window.prompt(
-            "Enter the SANA delete password:"
-        );
-
-    if (password === null) {
-        return;
-    }
+        input ? input.value : "";
 
     if (
         password !==
         SANA_DELETE_PASSWORD
     ) {
-        showProductToast(
-            "Incorrect password."
-        );
+        if (error) {
+            error.textContent =
+                "Incorrect password.";
+        }
+
+        if (input) {
+            input.focus();
+            input.select();
+        }
+
         return;
     }
 
-    const confirmed =
-        window.confirm(
-            "Delete this product permanently?"
-        );
+    if (error) error.textContent = "";
 
-    if (!confirmed) return;
-
-    button.disabled = true;
-    button.classList.add("deleting");
-    button.innerHTML =
-        "<span>DELETING...</span>";
+    if (confirm) {
+        confirm.disabled = true;
+        confirm.classList.add("loading");
+    }
 
     try {
         if (
@@ -387,6 +546,8 @@ async function deleteProductWithPassword(
 
         removeCachedProduct(id);
 
+        closeDeletePasswordModal();
+
         showProductToast(
             "Product deleted successfully."
         );
@@ -399,25 +560,24 @@ async function deleteProductWithPassword(
             650
         );
 
-    } catch (error) {
+    } catch (err) {
         console.error(
             "Delete error:",
-            error
+            err
         );
 
-        button.disabled = false;
-        button.classList.remove(
-            "deleting"
-        );
+        if (error) {
+            error.textContent =
+                err?.message ||
+                "Unable to delete product.";
+        }
 
-        button.innerHTML =
-            `<span class="delete-icon">⌫</span>
-             <span>DELETE PRODUCT</span>`;
-
-        showProductToast(
-            error?.message ||
-            "Unable to delete product."
-        );
+        if (confirm) {
+            confirm.disabled = false;
+            confirm.classList.remove(
+                "loading"
+            );
+        }
     }
 }
 
