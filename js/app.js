@@ -1,430 +1,448 @@
 /* =========================================
-SANA BOUTIQUE
-MAIN APP CONTROLLER
+   SANA BOUTIQUE
+   MAIN APP CONTROLLER
 ========================================= */
 
 "use strict";
 
+
 /* =========================================
-APP CONFIGURATION
+   APP CONFIGURATION
 ========================================= */
 
 const SANA_APP = {
 
-name: "SANA Boutique",  
+    name: "SANA Boutique",
 
-version: "1.0.0",  
+    version: "1.0.0",
 
-/* Backend URL  
-   We will connect your existing backend here later.  
-*/  
-API_BASE_URL: "",  
+    /* Backend URL
+       We will connect your existing backend here later.
+    */
+    API_BASE_URL: "",
 
-debug: true
+    debug: true
 
 };
 
+
 /* =========================================
-GLOBAL APP STATE
+   GLOBAL APP STATE
 ========================================= */
 
 const AppState = {
 
-currentPage: "home",  
+    currentPage: "home",
 
-products: [],  
+    products: [],
 
-selectedProduct: null,  
+    selectedProduct: null,
 
-favorites: [],  
+    favorites: [],
 
-cart: [],  
+    cart: [],
 
-isLoading: false
+    isLoading: false
 
 };
 
+
 /* =========================================
-APP INITIALIZATION
+   APP INITIALIZATION
 ========================================= */
 
 document.addEventListener("DOMContentLoaded", () => {
 
-console.log(  
-    `${SANA_APP.name} v${SANA_APP.version} started`  
-);  
+    console.log(
+        `${SANA_APP.name} v${SANA_APP.version} started`
+    );
 
-initializeApp();
+    initializeApp();
 
 });
 
+
 function initializeApp() {
 
-detectCurrentPage();  
+    detectCurrentPage();
 
-loadLocalState();  
+    loadLocalState();
 
-setupGlobalEvents();
+    setupGlobalEvents();
 
 }
 
+
 /* =========================================
-DETECT CURRENT PAGE
+   DETECT CURRENT PAGE
 ========================================= */
 
 function detectCurrentPage() {
 
-const path = window.location.pathname.toLowerCase();  
+    const path = window.location.pathname.toLowerCase();
 
-if (  
-    path.endsWith("/") ||  
-    path.endsWith("index.html")  
-) {  
+    if (
+        path.endsWith("/") ||
+        path.endsWith("index.html")
+    ) {
 
-    AppState.currentPage = "home";  
+        AppState.currentPage = "home";
 
-} else if (path.includes("shop")) {  
+    } else if (path.includes("shop")) {
 
-    AppState.currentPage = "shop";  
+        AppState.currentPage = "shop";
 
-} else if (path.includes("post")) {  
+    } else if (path.includes("post")) {
 
-    AppState.currentPage = "post";  
+        AppState.currentPage = "post";
 
-} else if (path.includes("product")) {  
+    } else if (path.includes("product")) {
 
-    AppState.currentPage = "product";  
+        AppState.currentPage = "product";
 
-} else if (path.includes("about")) {  
+    } else if (path.includes("about")) {
 
-    AppState.currentPage = "about";  
+        AppState.currentPage = "about";
 
-} else if (path.includes("contact")) {  
+    } else if (path.includes("contact")) {
 
-    AppState.currentPage = "contact";  
+        AppState.currentPage = "contact";
+
+    }
 
 }
 
-}
 
 /* =========================================
-LOCAL STORAGE
+   LOCAL STORAGE
 ========================================= */
 
 function loadLocalState() {
 
-try {  
+    try {
 
-    const savedFavorites =  
-        localStorage.getItem("sana_favorites");  
+        const savedFavorites =
+            localStorage.getItem("sana_favorites");
 
-    const savedCart =  
-        localStorage.getItem("sana_cart");  
-
-
-    if (savedFavorites) {  
-
-        AppState.favorites =  
-            JSON.parse(savedFavorites);  
-
-    }  
+        const savedCart =
+            localStorage.getItem("sana_cart");
 
 
-    if (savedCart) {  
+        if (savedFavorites) {
 
-        AppState.cart =  
-            JSON.parse(savedCart);  
+            AppState.favorites =
+                JSON.parse(savedFavorites);
 
-    }  
+        }
 
-} catch (error) {  
 
-    console.error(  
-        "Could not load local app state:",  
-        error  
-    );  
+        if (savedCart) {
+
+            AppState.cart =
+                JSON.parse(savedCart);
+
+        }
+
+    } catch (error) {
+
+        console.error(
+            "Could not load local app state:",
+            error
+        );
+
+    }
 
 }
 
-}
 
 /* =========================================
-SAVE LOCAL STATE
+   SAVE LOCAL STATE
 ========================================= */
 
 function saveLocalState() {
 
-try {  
+    try {
 
-    localStorage.setItem(  
-        "sana_favorites",  
-        JSON.stringify(AppState.favorites)  
-    );  
+        localStorage.setItem(
+            "sana_favorites",
+            JSON.stringify(AppState.favorites)
+        );
 
 
-    localStorage.setItem(  
-        "sana_cart",  
-        JSON.stringify(AppState.cart)  
-    );  
+        localStorage.setItem(
+            "sana_cart",
+            JSON.stringify(AppState.cart)
+        );
 
-} catch (error) {  
+    } catch (error) {
 
-    console.error(  
-        "Could not save app state:",  
-        error  
-    );  
+        console.error(
+            "Could not save app state:",
+            error
+        );
+
+    }
 
 }
 
-}
 
 /* =========================================
-GLOBAL EVENTS
+   GLOBAL EVENTS
 ========================================= */
 
 function setupGlobalEvents() {
 
-/* Prevent accidental double tapping */  
+    /* Prevent accidental double tapping */
 
-document.addEventListener(  
-    "dblclick",  
-    event => {  
+    document.addEventListener(
+        "dblclick",
+        event => {
 
-        if (  
-            event.target.tagName === "BUTTON"  
-        ) {  
+            if (
+                event.target.tagName === "BUTTON"
+            ) {
 
-            event.preventDefault();  
+                event.preventDefault();
 
-        }  
+            }
 
-    }  
-);  
-
-
-/* Handle online/offline state */  
-
-window.addEventListener(  
-    "online",  
-    () => {  
-
-        showToast(  
-            "Connection restored"  
-        );  
-
-    }  
-);  
+        }
+    );
 
 
-window.addEventListener(  
-    "offline",  
-    () => {  
+    /* Handle online/offline state */
 
-        showToast(  
-            "You are offline"  
-        );  
+    window.addEventListener(
+        "online",
+        () => {
 
-    }  
-);
+            showToast(
+                "Connection restored"
+            );
+
+        }
+    );
+
+
+    window.addEventListener(
+        "offline",
+        () => {
+
+            showToast(
+                "You are offline"
+            );
+
+        }
+    );
 
 }
 
+
 /* =========================================
-NAVIGATION HELPER
+   NAVIGATION HELPER
 ========================================= */
 
 function goTo(url) {
 
-window.location.href = url;
+    window.location.href = url;
 
 }
 
+
 /* =========================================
-PRODUCT PAGE
+   PRODUCT PAGE
 ========================================= */
 
 function openProduct(productId) {
 
-if (!productId) return;  
+    if (!productId) return;
 
-window.location.href =  
-    `pages/product.html?id=${encodeURIComponent(productId)}`;
+    window.location.href =
+        `pages/product.html?id=${encodeURIComponent(productId)}`;
 
 }
 
+
 /* =========================================
-FAVORITES
+   FAVORITES
 ========================================= */
 
 function toggleFavorite(productId) {
 
-if (!productId) return;  
+    if (!productId) return;
 
 
-const index =  
-    AppState.favorites.indexOf(productId);  
+    const index =
+        AppState.favorites.indexOf(productId);
 
 
-if (index === -1) {  
+    if (index === -1) {
 
-    AppState.favorites.push(productId);  
+        AppState.favorites.push(productId);
 
-    showToast("Added to favorites");  
+        showToast("Added to favorites");
 
-} else {  
+    } else {
 
-    AppState.favorites.splice(index, 1);  
+        AppState.favorites.splice(index, 1);
 
-    showToast("Removed from favorites");  
+        showToast("Removed from favorites");
 
-}  
-
-
-saveLocalState();  
+    }
 
 
-/* Refresh favorite buttons */  
+    saveLocalState();
 
-document  
-    .querySelectorAll(  
-        `[data-favorite="${productId}"]`  
-    )  
-    .forEach(button => {  
 
-        button.classList.toggle(  
-            "active",  
-            AppState.favorites.includes(productId)  
-        );  
+    /* Refresh favorite buttons */
 
-    });
+    document
+        .querySelectorAll(
+            `[data-favorite="${productId}"]`
+        )
+        .forEach(button => {
+
+            button.classList.toggle(
+                "active",
+                AppState.favorites.includes(productId)
+            );
+
+        });
 
 }
 
+
 /* =========================================
-CHECK FAVORITE
+   CHECK FAVORITE
 ========================================= */
 
 function isFavorite(productId) {
 
-return AppState.favorites.includes(  
-    productId  
-);
+    return AppState.favorites.includes(
+        productId
+    );
 
 }
 
+
 /* =========================================
-CART
+   CART
 ========================================= */
 
 function addToCart(product) {
 
-if (!product || !product.id) return;  
+    if (!product || !product.id) return;
 
 
-AppState.cart.push(product);  
+    AppState.cart.push(product);
 
-saveLocalState();  
+    saveLocalState();
 
-showToast("Added to bag");
+    showToast("Added to bag");
 
 }
 
+
 /* =========================================
-REMOVE FROM CART
+   REMOVE FROM CART
 ========================================= */
 
 function removeFromCart(productId) {
 
-AppState.cart =  
-    AppState.cart.filter(  
-        product =>  
-            product.id !== productId  
-    );  
+    AppState.cart =
+        AppState.cart.filter(
+            product =>
+                product.id !== productId
+        );
 
 
-saveLocalState();
+    saveLocalState();
 
 }
 
+
 /* =========================================
-TOAST MESSAGE
+   TOAST MESSAGE
 ========================================= */
 
 function showToast(message) {
 
-let toast =  
-    document.querySelector(".sana-toast");  
+    let toast =
+        document.querySelector(".sana-toast");
 
 
-if (!toast) {  
+    if (!toast) {
 
-    toast =  
-        document.createElement("div");  
+        toast =
+            document.createElement("div");
 
-    toast.className =  
-        "sana-toast";  
+        toast.className =
+            "sana-toast";
 
-    document.body.appendChild(toast);  
+        document.body.appendChild(toast);
 
-}  
-
-
-toast.textContent = message;  
-
-toast.classList.add("show");  
+    }
 
 
-clearTimeout(  
-    toast.hideTimer  
-);  
+    toast.textContent = message;
+
+    toast.classList.add("show");
 
 
-toast.hideTimer =  
-    setTimeout(() => {  
+    clearTimeout(
+        toast.hideTimer
+    );
 
-        toast.classList.remove("show");  
 
-    }, 2200);
+    toast.hideTimer =
+        setTimeout(() => {
+
+            toast.classList.remove("show");
+
+        }, 2200);
 
 }
 
+
 /* =========================================
-LOADING STATE
+   LOADING STATE
 ========================================= */
 
 function setLoading(isLoading) {
 
-AppState.isLoading =  
-    Boolean(isLoading);  
+    AppState.isLoading =
+        Boolean(isLoading);
 
 
-document.body.classList.toggle(  
-    "app-loading",  
-    AppState.isLoading  
-);
+    document.body.classList.toggle(
+        "app-loading",
+        AppState.isLoading
+    );
 
 }
 
+
 /* =========================================
-SAFE JSON
+   SAFE JSON
 ========================================= */
 
 function safeJSON(value, fallback = null) {
 
-try {  
+    try {
 
-    return JSON.parse(value);  
+        return JSON.parse(value);
 
-} catch {  
+    } catch {
 
-    return fallback;  
+        return fallback;
+
+    }
 
 }
 
-}
 
 /* =========================================
-EXPORT GLOBAL APP
+   EXPORT GLOBAL APP
 ========================================= */
 
 window.SANA_APP = SANA_APP;
@@ -448,4 +466,3 @@ window.showToast = showToast;
 window.setLoading = setLoading;
 
 window.safeJSON = safeJSON;
-Update it no mistake
