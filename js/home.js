@@ -29,6 +29,51 @@ if (typeof window.AppState === "undefined") {
 }
 
 
+/* =========================================
+   PRODUCT CACHE
+
+   Same approach shop.js already uses: save
+   the exact clicked product object before
+   navigating, so product.js can read it back
+   directly instead of re-fetching and having
+   to re-match an ID that may not resolve the
+   same way twice (the backend has duplicate/
+   missing real IDs — see api.js).
+========================================= */
+
+const PRODUCT_CACHE_PREFIX = "sana_product_";
+const LAST_PRODUCT_KEY = "sana_last_product_id";
+
+function cacheProduct(product, id) {
+
+    try {
+
+        const key =
+            PRODUCT_CACHE_PREFIX +
+            encodeURIComponent(String(id));
+
+        sessionStorage.setItem(
+            key,
+            JSON.stringify(product)
+        );
+
+        sessionStorage.setItem(
+            LAST_PRODUCT_KEY,
+            String(id)
+        );
+
+    } catch (error) {
+
+        console.warn(
+            "Product cache failed:",
+            error
+        );
+
+    }
+
+}
+
+
 document.addEventListener("DOMContentLoaded", () => {
 
     initializeHome();
@@ -328,8 +373,14 @@ function createProductCard(product) {
                         src="${escapeHTML(image)}"
                         alt="${escapeHTML(name)}"
                         loading="lazy"
-                        onerror="this.style.display='none';"
+                        onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
                     >
+                    <div
+                        class="product-card-image
+                               image-placeholder"
+                        style="display:none"
+                        aria-label="Image unavailable"
+                    ></div>
                   `
                 : `
                     <div
@@ -376,6 +427,8 @@ function createProductCard(product) {
 
 
             if (id) {
+
+                cacheProduct(product, id);
 
                 openProduct(id);
 
