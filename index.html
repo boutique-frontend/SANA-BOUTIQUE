@@ -14,6 +14,25 @@
 
 
     <!-- =====================================
+         PWA / INSTALL-AS-APP SETUP
+    ====================================== -->
+
+    <link rel="manifest" href="manifest.json">
+
+    <meta name="theme-color" content="#000000">
+
+    <!-- Icon Android uses for the home screen / app icon -->
+    <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="icons/icon-512.png">
+
+    <!-- iOS support, in case this is ever opened on an iPhone -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="SANA">
+    <link rel="apple-touch-icon" href="icons/icon-180.png">
+
+
+    <!-- =====================================
          GOOGLE FONTS
     ====================================== -->
 
@@ -643,6 +662,23 @@
 <script src="js/api.js?v=2"></script>
 
 <script src="js/home.js?v=2"></script>
+
+
+<!-- =====================================
+     SERVICE WORKER REGISTRATION
+     Needed so Android Chrome allows this
+     site to be installed as an app.
+====================================== -->
+
+<script>
+if ("serviceWorker" in navigator) {
+    window.addEventListener("load", function () {
+        navigator.serviceWorker.register("sw.js").catch(function (err) {
+            console.log("Service worker registration failed:", err);
+        });
+    });
+}
+</script>
 
 
 </body>
